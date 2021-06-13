@@ -31,8 +31,11 @@ module Function =
   
   /// <summary>プログラムをExcelからデタッチする.</summary>
   let detach (excel: IExcelApplication) = excel.Dispose()
+  
+  /// <summary>空のワークブックを新規作成する.</summary>
+  let create () = Excel.BlankWorkbook()
 
-  /// <summary>テンプレートファイルから新しくワークブックを作成する.</summary>
+  /// <summary>テンプレートファイルからワークブックを新規作成する.</summary>
   let createFrom (template: string) =
     let extention = Path.GetExtension template
     let path = if extention = ".xls" || extention = ".xlsx" then template else $"{template}.xlsx"
