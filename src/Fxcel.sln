@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31320.298
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fxcel", "Fxcel\Fxcel.fsproj", "{E0B6EABC-A7D6-4312-84D5-F95DB403FCEB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B8BF1E8F-1535-4C05-8355-36F122F1BC6E}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fxcel.Sample", "Fxcel.Sample\Fxcel.Sample.fsproj", "{D1684AEB-72EE-4AFD-8296-A216186D3BAF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E0B6EABC-A7D6-4312-84D5-F95DB403FCEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0B6EABC-A7D6-4312-84D5-F95DB403FCEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0B6EABC-A7D6-4312-84D5-F95DB403FCEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0B6EABC-A7D6-4312-84D5-F95DB403FCEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1684AEB-72EE-4AFD-8296-A216186D3BAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1684AEB-72EE-4AFD-8296-A216186D3BAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1684AEB-72EE-4AFD-8296-A216186D3BAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1684AEB-72EE-4AFD-8296-A216186D3BAF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {742D3D9D-0A5E-4AAE-8B7A-25CAC68BC077}
+	EndGlobalSection
+EndGlobal

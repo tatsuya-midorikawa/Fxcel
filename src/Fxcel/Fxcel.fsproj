@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <WarnOn>3390;$(WarnOn)</WarnOn>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.0.2</Version>
+    <Authors>midoliy</Authors>
+    <Company>midoliy</Company>
+    <Copyright>© 2021 Tatsuya Midorikawa. All rights rserved</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>midoliy,Excel,COM,windows,fsharp</PackageTags>
+    <PackageProjectUrl>https://github.com/tatsuya-midorikawa/Fxcel</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/tatsuya-midorikawa/Fxcel</RepositoryUrl>
+    <PackageIcon>fxcel.png</PackageIcon>
+    <PackageIconUrl />
+    <Description>Excel COM tools for F#</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Function.fs" />
+  </ItemGroup>
+ 
+  <ItemGroup>
+    <PackageReference Include="Midoliy.Office.Interop.Excel" Version="0.0.6.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\assets\fxcel.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
