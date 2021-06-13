@@ -8,6 +8,8 @@ module Function =
   [<Struct>]
   type Handle = { Name: string; Hwnd: int }
 
+  let private isNullOrEmpty value = System.String.IsNullOrEmpty(value)
+
   /// <summary>起動しているExcelプロセスを列挙する.</summary>
   let enumerate () = 
     Excel.EnumerateProcess()
@@ -36,11 +38,12 @@ module Function =
     excel.[index]
     
   /// <summary>指定したindexの位置にあるWorksheetを取得する.</summary>
-  let worksheet (index: int) (book: IWorkbook) =
-    if index <= 0 then
-      raise (exn "index は 1 以上で指定してください")
-    book.[index]
-    
+  let worksheet (target: obj) (book: IWorkbook) =
+    match target with
+    | :? string as name -> if isNullOrEmpty name then book.[1] else book.[name]
+    | :? int as index -> if index <= 0 then book.[1] else book.[index]
+    | _ -> book.[1]
+
   /// <summary>Cell/Range/Row/Columnなど、Valueプロパティを持つインスタンスに対して値を取得する</summary>
   let inline get (cell: ^a) = (^a: (member get_Value: unit -> obj) cell)
 
