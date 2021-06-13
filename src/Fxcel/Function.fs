@@ -20,12 +20,15 @@ module Function =
     |> Array.iteri (fun i handle -> 
       printfn $"[{i}] Active workbook= {handle.Name}"
       use excel = Excel.Attach handle.Hwnd
-      excel |> Seq.iteri (fun j wb -> printfn $"  workbok({j+1})= {wb.Name}"))
+      excel |> Seq.iteri (fun j wb -> printfn $"  workbook({j+1})= {wb.Name}"))
     ps
 
   /// <summary>handleがExcelの場合アタッチする.</summary>
   let attach (handle: Handle) = Excel.Attach handle.Hwnd
   
+  /// <summary>プログラムをExcelからデタッチする.</summary>
+  let detach (excel: IExcelApplication) = excel.Dispose()
+
   /// <summary>指定したindexの位置にあるWorkbookを取得する.</summary>
   let workbook (index: int) (excel: IExcelApplication) =
     if index <= 0 then
