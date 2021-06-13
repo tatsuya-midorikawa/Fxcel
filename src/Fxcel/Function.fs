@@ -1,6 +1,7 @@
 ﻿namespace Fxcel
 
 open Midoliy.Office.Interop
+open System.IO
 
 [<AutoOpen>]
 module Function =
@@ -30,6 +31,12 @@ module Function =
   
   /// <summary>プログラムをExcelからデタッチする.</summary>
   let detach (excel: IExcelApplication) = excel.Dispose()
+
+  /// <summary>テンプレートファイルから新しくワークブックを作成する.</summary>
+  let createFrom (template: string) =
+    let extention = Path.GetExtension template
+    let path = if extention = ".xls" || extention = ".xlsx" then template else $"{template}.xlsx"
+    Excel.CreateFrom(template)
 
   /// <summary>指定したindexの位置にあるWorkbookを取得する.</summary>
   let workbook (index: int) (excel: IExcelApplication) =
