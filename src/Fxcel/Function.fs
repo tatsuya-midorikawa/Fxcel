@@ -33,9 +33,8 @@ module Function =
 
   /// <summary>指定したindexの位置にあるWorkbookを取得する.</summary>
   let workbook (index: int) (excel: IExcelApplication) =
-    if index <= 0 then
-      raise (exn "index は 1 以上で指定してください")
-    excel.[index]
+    if index <= 0 then raise (exn "index は 1 以上で指定してください")
+    else excel.[index]
     
   /// <summary>指定したindexの位置にあるWorksheetを取得する.</summary>
   let worksheet (target: obj) (book: IWorkbook) =
