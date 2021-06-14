@@ -10,6 +10,9 @@ module Function =
   type Handle = { Name: string; Hwnd: int }
 
   let private isNullOrEmpty value = System.String.IsNullOrEmpty(value)
+  let private getExcelPath (path: string) =
+    let extention = Path.GetExtension path
+    if extention = ".xls" || extention = ".xlsx" then path else $"{path}.xlsx"
 
   /// <summary>起動しているExcelプロセスを列挙する.</summary>
   let enumerate () = 
@@ -36,10 +39,10 @@ module Function =
   let create () = Excel.BlankWorkbook()
 
   /// <summary>テンプレートファイルからワークブックを新規作成する.</summary>
-  let createFrom (template: string) =
-    let extention = Path.GetExtension template
-    let path = if extention = ".xls" || extention = ".xlsx" then template else $"{template}.xlsx"
-    Excel.CreateFrom(template)
+  let createFrom (template: string) = Excel.CreateFrom(getExcelPath template)
+
+  /// <summary>既存のワークブックを開く.</summary>
+  let open' (filepath: string) = Excel.Open(getExcelPath filepath)
 
   /// <summary>指定したindexの位置にあるWorkbookを取得する.</summary>
   let workbook (index: int) (excel: IExcelApplication) =
