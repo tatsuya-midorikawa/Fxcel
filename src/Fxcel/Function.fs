@@ -88,7 +88,7 @@ module Function =
   /// Cellなどから値を取得する.
   /// int型と互換性がない値の場合, 例外が発生する.
   /// </summary>
-  let inline integer (cell: ^Cell) = get cell |> System.Convert.ToUInt32
+  let inline integer (cell: ^Cell) = get cell |> System.Convert.ToInt32
 
   /// <summary>
   /// Cellなどから値を取得する.
