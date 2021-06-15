@@ -55,31 +55,67 @@ module Function =
     | :? string as name -> if isNullOrEmpty name then book.[1] else book.[name]
     | :? int as index -> if index <= 0 then book.[1] else book.[index]
     | _ -> book.[1]
-
-  /// <summary>Cell/Range/Row/Columnなど、Valueプロパティを持つインスタンスに対して値を取得する</summary>
-  let inline get (cell: ^a) = (^a: (member get_Value: unit -> obj) cell)
-
-  /// <summary>
-  /// Cell/Range/Row/Columnなど、Valueプロパティを持つインスタンスに対して値を取得する.
-  /// float型と互換性がない値の場合、例外が発生する.
-  /// </summary>
-  let inline number (cell: ^a) = get cell |> System.Convert.ToDouble
-
-  /// <summary>
-  /// Cell/Range/Row/Columnなど、Valueプロパティを持つインスタンスに対して値を取得する.
-  /// string型と互換性がない値の場合、例外が発生する.
-  /// </summary>
-  let inline str (cell: ^a) = get cell |> System.Convert.ToString
   
   /// <summary>
-  /// Cell/Range/Row/Columnなど、Valueプロパティを持つインスタンスに対して値を取得する.
-  /// DateTime型と互換性がない値の場合、例外が発生する.
+  /// WorkbookやWorksheet, Cellなどを選択する.
+  /// activate関数で選択した場合, 単一選択となる.
   /// </summary>
-  let inline date (cell: ^a) = get cell |> System.Convert.ToDateTime
+  let inline activate (target: ^T) = (^T: (member Activate: unit -> unit) target)
+  
+  /// <summary>
+  /// WorkbookやWorksheet, Cellなどを選択する.
+  /// select関数で選択した場合, 複数選択となる.
+  /// 複数選択を解除したい場合, activate関数を特定のWorkbookやWorksheet, Cellに対して呼び出す.
+  /// </summary>
+  let inline select (target: ^T) = (^T: (member Select: unit -> unit) target)
+  
+  /// <summary>Cellなどからアドレス文字列を取得する</summary>
+  let inline address (cell: ^Cell) = (^Cell: (member get_Address: unit -> string) cell)
 
-  /// <summary>Cell/Range/Row/Columnなど、Valueプロパティを持つインスタンスに対して値を設定する.</summary>
-  let inline set value (cell: ^a) = (^a: (member set_Value: obj -> unit) cell, value)
+  /// <summary>Cellなどから値を取得する</summary>
+  let inline get (cell: ^Cell) = (^Cell: (member get_Value: unit -> obj) cell)
+  
+  /// <summary>Rangeなどの範囲選択したCellから値を取得し配列情報に変換する.</summary>
+  let inline gets (range: ^Range) = 
+    let values = get range
+    if values.GetType() = typeof<obj[,]> then
+      let xs = values :?> obj[,]
+      xs.[*,*]
+    else
+      Array2D.init 1 1 (fun i j -> values)
 
-  /// <summary>Cell/Range/Row/Columnなど、Formulaプロパティを持つインスタンスに対して値を設定する.</summary>
-  let inline fx value (cell: ^a) =
-    (^a: (member set_Formula: obj -> unit) cell, if (string value).StartsWith("=") then value else $"={value}")
+  /// <summary>
+  /// Cellなどから値を取得する.
+  /// int型と互換性がない値の場合, 例外が発生する.
+  /// </summary>
+  let inline integer (cell: ^Cell) = get cell |> System.Convert.ToUInt32
+
+  /// <summary>
+  /// Cellなどから値を取得する.
+  /// float型と互換性がない値の場合, 例外が発生する.
+  /// </summary>
+  let inline number (cell: ^Cell) = get cell |> System.Convert.ToDouble
+
+  /// <summary>
+  /// Cellなどから値を取得する.
+  /// decimal型と互換性がない値の場合, 例外が発生する.
+  /// </summary>
+  let inline money (cell: ^Cell) = get cell |> System.Convert.ToDecimal
+
+  /// <summary>
+  /// Cellなどから値を取得する.
+  /// string型と互換性がない値の場合, 例外が発生する.
+  /// </summary>
+  let inline str (cell: ^Cell) = get cell |> System.Convert.ToString
+  
+  /// <summary>
+  /// Cellなどから値を取得する.
+  /// DateTime型と互換性がない値の場合, 例外が発生する.
+  /// </summary>
+  let inline date (cell: ^Cell) = get cell |> System.Convert.ToDateTime
+
+  /// <summary>Cellなどに値を設定する.</summary>
+  let inline set value (cell: ^Cell) = (^Cell: (member set_Value: obj -> unit) cell, value)
+
+  /// <summary>Cellなどに関数を設定する.</summary>
+  let inline fx value (cell: ^Cell) = (^Cell: (member set_Formula: obj -> unit) cell, if (string value).StartsWith("=") then value else $"={value}")
