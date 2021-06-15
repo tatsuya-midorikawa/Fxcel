@@ -10,9 +10,12 @@ module Function =
   type Handle = { Name: string; Hwnd: int }
 
   let private isNullOrEmpty value = System.String.IsNullOrEmpty(value)
+  
   let private getExcelPath (path: string) =
-    let extention = Path.GetExtension path
-    if extention = ".xls" || extention = ".xlsx" then path else $"{path}.xlsx"
+    let extension = Path.GetExtension path
+    match extension with
+    | ".xls" | ".xlsx" | ".xlsm" -> path
+    | _ -> $"{path}.xlsx"
 
   /// <summary>起動しているExcelプロセスを列挙する.</summary>
   let enumerate () = 
@@ -83,6 +86,49 @@ module Function =
       xs.[*,*]
     else
       Array2D.init 1 1 (fun i j -> values)
+      
+  /// <summary>Rangeなどの範囲選択した場所から行単位で列挙する.</summary>
+  let inline rows (range: ^Range) =
+    let range' = range |> gets
+    let length = Array2D.length1 range'
+    seq {
+      for row = 0 to length - 1 do
+        yield range'.[row, *]
+    }
+    
+  /// <summary>Rangeなどの範囲選択した場所から行単位で列挙する.</summary>
+  let inline rowsi (range: ^Range) =
+    let range' = range |> gets
+    let length = Array2D.length1 range'
+    seq {
+      for row = 0 to length - 1 do
+        yield (row + 1, range'.[row, *])
+    }
+
+  /// <summary>Rangeなどの範囲選択した場所から列単位で列挙する.</summary>
+  let inline columns (range: ^Range) =
+    let range' = range |> gets
+    let length = Array2D.length2 range'
+    seq {
+      for col = 0 to length - 1 do
+        yield range'.[*, col]
+    }
+
+  /// <summary>Rangeなどの範囲選択した場所から列単位で列挙する.</summary>
+  let inline columnsi (range: ^Range) =
+    let range' = range |> gets
+    let length = Array2D.length2 range'
+    seq {
+      for col = 0 to length - 1 do
+        yield (col + 1, range'.[*, col])
+    }
+    
+  /// <summary>Applies the given function to each element of the collection.</summary>
+  let iter = Seq.iter
+
+  /// <summary>gets関数で取得した配列の長さ情報を取得する.</summary>
+  /// <return>(row数, column数)</return>
+  let len (range: #obj[,]) = (Array2D.length1 range, Array2D.length2 range)
 
   /// <summary>
   /// Cellなどから値を取得する.
@@ -119,3 +165,4 @@ module Function =
 
   /// <summary>Cellなどに関数を設定する.</summary>
   let inline fx value (cell: ^Cell) = (^Cell: (member set_Formula: obj -> unit) cell, if (string value).StartsWith("=") then value else $"={value}")
+
