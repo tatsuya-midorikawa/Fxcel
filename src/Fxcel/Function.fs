@@ -1,11 +1,30 @@
 ﻿namespace Fxcel
 
-open Midoliy.Office.Interop
 open System.IO
+open System.Collections.Generic
+open Midoliy.Office.Interop
+
+[<AutoOpen>]
+type Excel () =
+  static member cells (row: IExcelRow) : seq<IExcelRange> =
+    let enumerator = row.GetEnumerator()
+    seq {
+      while enumerator.MoveNext() do
+        yield enumerator.Current
+    }
+
+  static member cells (column: IExcelColumn) : seq<IExcelRange> =
+    let enumerator = column.GetEnumerator()
+    seq {
+      while enumerator.MoveNext() do
+        yield enumerator.Current
+    }
 
 [<AutoOpen>]
 module Function =
-
+  type Color = System.Drawing.Color
+  type Pattern = Midoliy.Office.Interop.Pattern
+  
   [<Struct>]
   type Handle = { Name: string; Hwnd: int }
 
@@ -76,55 +95,46 @@ module Function =
   let inline address (cell: ^Cell) = (^Cell: (member get_Address: unit -> string) cell)
 
   /// <summary>Cellなどから値を取得する</summary>
-  let inline get (cell: ^Cell) = (^Cell: (member get_Value: unit -> obj) cell)
+  let inline value (cell: ^Cell) = (^Cell: (member get_Value: unit -> obj) cell)
   
   /// <summary>Rangeなどの範囲選択したCellから値を取得し配列情報に変換する.</summary>
-  let inline gets (range: ^Range) = 
-    let values = get range
-    if values.GetType() = typeof<obj[,]> then
-      let xs = values :?> obj[,]
+  let inline values (range: ^Range) = 
+    let vs = value range
+    if vs.GetType() = typeof<obj[,]> then
+      let xs = vs :?> obj[,]
       xs.[*,*]
     else
-      Array2D.init 1 1 (fun i j -> values)
+      Array2D.init 1 1 (fun i j -> vs)
       
   /// <summary>Rangeなどの範囲選択した場所から行単位で列挙する.</summary>
-  let inline rows (range: ^Range) =
-    let range' = range |> gets
-    let length = Array2D.length1 range'
+  let inline rows (range: IExcelRange) : seq<IExcelRow> =
+    let enumerator = range.Rows.GetEnumerator()
     seq {
-      for row = 0 to length - 1 do
-        yield range'.[row, *]
-    }
-    
-  /// <summary>Rangeなどの範囲選択した場所から行単位で列挙する.</summary>
-  let inline rowsi (range: ^Range) =
-    let range' = range |> gets
-    let length = Array2D.length1 range'
-    seq {
-      for row = 0 to length - 1 do
-        yield (row + 1, range'.[row, *])
+      while enumerator.MoveNext() do
+        yield enumerator.Current
     }
 
   /// <summary>Rangeなどの範囲選択した場所から列単位で列挙する.</summary>
-  let inline columns (range: ^Range) =
-    let range' = range |> gets
-    let length = Array2D.length2 range'
+  let inline columns (range: IExcelRange) : seq<IExcelColumn> =
+    let enumerator = range.Columns.GetEnumerator()
     seq {
-      for col = 0 to length - 1 do
-        yield range'.[*, col]
-    }
-
-  /// <summary>Rangeなどの範囲選択した場所から列単位で列挙する.</summary>
-  let inline columnsi (range: ^Range) =
-    let range' = range |> gets
-    let length = Array2D.length2 range'
-    seq {
-      for col = 0 to length - 1 do
-        yield (col + 1, range'.[*, col])
+      while enumerator.MoveNext() do
+        yield enumerator.Current
     }
     
   /// <summary>Applies the given function to each element of the collection.</summary>
   let iter = Seq.iter
+
+  /// <summary>
+  /// Applies the given function to each element of the collection.
+  /// The integer passed to the function indicates the index of element.
+  /// The index starts at 1.
+  /// </summary>
+  let inline iteri (action: int -> ^T -> unit) (source: seq< ^T>) =
+    let mutable i = 1
+    for x in source do
+      action i x
+      i <- i + 1
 
   /// <summary>gets関数で取得した配列の長さ情報を取得する.</summary>
   /// <return>(row数, column数)</return>
@@ -134,35 +144,41 @@ module Function =
   /// Cellなどから値を取得する.
   /// int型と互換性がない値の場合, 例外が発生する.
   /// </summary>
-  let inline integer (cell: ^Cell) = get cell |> System.Convert.ToInt32
+  let inline integer (cell: ^Cell) = value cell |> System.Convert.ToInt32
 
   /// <summary>
   /// Cellなどから値を取得する.
   /// float型と互換性がない値の場合, 例外が発生する.
   /// </summary>
-  let inline number (cell: ^Cell) = get cell |> System.Convert.ToDouble
+  let inline number (cell: ^Cell) = value cell |> System.Convert.ToDouble
 
   /// <summary>
   /// Cellなどから値を取得する.
   /// decimal型と互換性がない値の場合, 例外が発生する.
   /// </summary>
-  let inline money (cell: ^Cell) = get cell |> System.Convert.ToDecimal
+  let inline money (cell: ^Cell) = value cell |> System.Convert.ToDecimal
 
   /// <summary>
   /// Cellなどから値を取得する.
   /// string型と互換性がない値の場合, 例外が発生する.
   /// </summary>
-  let inline str (cell: ^Cell) = get cell |> System.Convert.ToString
+  let inline str (cell: ^Cell) = value cell |> System.Convert.ToString
   
   /// <summary>
   /// Cellなどから値を取得する.
   /// DateTime型と互換性がない値の場合, 例外が発生する.
   /// </summary>
-  let inline date (cell: ^Cell) = get cell |> System.Convert.ToDateTime
+  let inline date (cell: ^Cell) = value cell |> System.Convert.ToDateTime
 
   /// <summary>Cellなどに値を設定する.</summary>
   let inline set value (cell: ^Cell) = (^Cell: (member set_Value: obj -> unit) cell, value)
 
   /// <summary>Cellなどに関数を設定する.</summary>
   let inline fx value (cell: ^Cell) = (^Cell: (member set_Formula: obj -> unit) cell, if (string value).StartsWith("=") then value else $"={value}")
+  
+  /// <summary>Cellなどに背景色を設定する.</summary>
+  let inline bgcolor (color: Color) (cell: IExcelRange) = cell.Interior.Color <- color
+
+  /// <summary>Cellなどに背景色パターンを設定する.</summary>
+  let inline bgpattern (pattern: Pattern) (cell: IExcelRange) = cell.Interior.Pattern <- pattern
 

@@ -23,7 +23,7 @@
   </ItemGroup>
  
   <ItemGroup>
-    <PackageReference Include="Midoliy.Office.Interop.Excel" Version="0.0.6.8" />
+    <PackageReference Include="Midoliy.Office.Interop.Excel" Version="0.0.6.12" />
   </ItemGroup>
 
   <ItemGroup>
