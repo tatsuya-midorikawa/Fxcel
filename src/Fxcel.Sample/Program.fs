@@ -1,5 +1,4 @@
 ﻿open Fxcel
-open Midoliy.Office.Interop
 
 let read () = System.Console.ReadLine()
 let toInt (s: string) = System.Convert.ToInt32(s)
@@ -24,8 +23,8 @@ let ps = enumerate()
 let app = attach ps.[0]
 let sheet = app |> workbook(1) |> worksheet(1)
 
-sheet.["A1:A3"] |> set 100
-sheet.["B1"] |> fx "SUM(A1:A3)"
+//sheet.["A1:A3"] |> set 100
+//sheet.["B1"] |> fx "SUM(A1:A3)"
 
 //sheet.["A1:B3"]
 //|> gets
@@ -82,9 +81,35 @@ sheet.["B1"] |> fx "SUM(A1:A3)"
 
 
 let range = sheet.["A1:B3"]
-range |> rows |> iteri (fun i row ->
-  if i % 2 = 0 then row |> bgcolor Color.Azure
-  else row |> bgpattern Pattern.Gray16)
+//range |> rows |> iteri (fun i row ->
+//  if i % 2 = 0 then row |> bgcolor Color.Azure
+//  else row |> bgpattern Pattern.Gray16)
+
+
+// 罫線の設定
+ruledline sheet.["B2:C5"] {
+  top (border { color Color.Red })
+  left (border { color Color.Red; weight thick })
+  right (border { style dashdot })
+  bottom (border { weight medium })
+  horizontal (border { color Color.Blue; weight thick })
+  vertical (border { color Color.Green; weight thick })
+  // growing と falling は値がExcel内部で共有されているため、設定値は後勝ちする。
+  growing (border { color Color.Red })
+  falling (border { color Color.Blue })
+}
+|> ignore
+
+
+
+
+
+
+
+
+
+
+
 
 
 

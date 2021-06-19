@@ -182,3 +182,4 @@ module Function =
   /// <summary>Cellなどに背景色パターンを設定する.</summary>
   let inline bgpattern (pattern: Pattern) (cell: IExcelRange) = cell.Interior.Pattern <- pattern
 
+
