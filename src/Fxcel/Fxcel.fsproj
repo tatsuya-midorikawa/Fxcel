@@ -5,7 +5,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <WarnOn>3390;$(WarnOn)</WarnOn>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.0.4</Version>
+    <Version>0.0.5</Version>
     <Authors>midoliy</Authors>
     <Company>midoliy</Company>
     <Copyright>© 2021 Tatsuya Midorikawa. All rights rserved</Copyright>
