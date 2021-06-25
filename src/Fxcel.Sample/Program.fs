@@ -96,12 +96,22 @@ ruledline sheet.["B2:C5"] {
   vertical (border { color Color.Green; weight thick })
   // growing と falling は値がExcel内部で共有されているため、設定値は後勝ちする。
   growing (border { color Color.Red })
-  falling (border { color Color.Blue })
+  top (border { style lineNone })
+}
+|> ignore
+
+sheet.["A1"] |> set "サンプルテキスト"
+font sheet.["A1"] {
+  name "あんずもじ"
+  size 24.0
+  color Color.Blue
+  bold true
+  strikethrough true
 }
 |> ignore
 
 
-
+//showFonts()
 
 
 
