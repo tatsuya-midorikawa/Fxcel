@@ -20,10 +20,29 @@ type Excel () =
         yield enumerator.Current
     }
 
+  static member cellsi (row: IExcelRow) : seq<(int * IExcelRange)> =
+    let enumerator = row.GetEnumerator()
+    let mutable i = 0
+    seq {
+      while enumerator.MoveNext() do
+        i <- i + 1
+        yield (i, enumerator.Current)
+    }
+
+  static member cellsi (column: IExcelColumn) : seq<(int * IExcelRange)> =
+    let enumerator = column.GetEnumerator()
+    let mutable i = 0
+    seq {
+      while enumerator.MoveNext() do
+        i <- i + 1
+        yield (i, enumerator.Current)
+    }
+
 [<AutoOpen>]
 module Function =
   type Color = System.Drawing.Color
   type Pattern = Midoliy.Office.Interop.Pattern
+  type DeleteShiftDirection = Midoliy.Office.Interop.DeleteShiftDirection
   
   [<Struct>]
   type Handle = { Name: string; Hwnd: int }
@@ -90,6 +109,9 @@ module Function =
   /// 複数選択を解除したい場合, activate関数を特定のWorkbookやWorksheet, Cellに対して呼び出す.
   /// </summary>
   let inline select (target: ^T) = (^T: (member Select: unit -> unit) target)
+
+  /// <summary>対象のセル, 行, 列などを削除する</summary>
+  let inline delete (direction: DeleteShiftDirection) (range: ^Range) = (^Range: (member Delete: DeleteShiftDirection -> bool) range, direction)
   
   /// <summary>Cellなどからアドレス文字列を取得する</summary>
   let inline address (cell: ^Cell) = (^Cell: (member get_Address: unit -> string) cell)
@@ -114,12 +136,32 @@ module Function =
         yield enumerator.Current
     }
 
+  /// <summary>Rangeなどの範囲選択した場所から行単位で列挙する(index付き).</summary>
+  let inline rowsi (range: IExcelRange) : seq<(int * IExcelRow)> =
+    let enumerator = range.Rows.GetEnumerator()
+    let mutable i = 0
+    seq {
+      while enumerator.MoveNext() do
+        i <- i + 1
+        yield (i, enumerator.Current)
+    }
+
   /// <summary>Rangeなどの範囲選択した場所から列単位で列挙する.</summary>
   let inline columns (range: IExcelRange) : seq<IExcelColumn> =
     let enumerator = range.Columns.GetEnumerator()
     seq {
       while enumerator.MoveNext() do
         yield enumerator.Current
+    }
+
+  /// <summary>Rangeなどの範囲選択した場所から列単位で列挙する(index付き).</summary>
+  let inline columnsi (range: IExcelRange) : seq<(int * IExcelColumn)> =
+    let enumerator = range.Columns.GetEnumerator()
+    let mutable i = 0
+    seq {
+      while enumerator.MoveNext() do
+        i <- i + 1
+        yield (i, enumerator.Current)
     }
     
   /// <summary>Applies the given function to each element of the collection.</summary>
@@ -135,11 +177,26 @@ module Function =
     for x in source do
       action i x
       i <- i + 1
-
-  /// <summary>gets関数で取得した配列の長さ情報を取得する.</summary>
-  /// <return>(row数, column数)</return>
-  let len (range: #obj[,]) = (Array2D.length1 range, Array2D.length2 range)
-
+  
+  let inline cast<'T> (value: obj) =
+    match typeof<'T> with
+    | t when t = typeof<bool> -> System.Convert.ToBoolean value |> box :?> 'T
+    | t when t = typeof<int8> -> System.Convert.ToSByte value |> box :?> 'T
+    | t when t = typeof<int16> -> System.Convert.ToInt16 value |> box :?> 'T
+    | t when t = typeof<int> -> System.Convert.ToInt32 value |> box :?> 'T
+    | t when t = typeof<int64> -> System.Convert.ToInt64 value |> box :?> 'T
+    | t when t = typeof<uint8> -> System.Convert.ToByte value |> box :?> 'T
+    | t when t = typeof<uint16> -> System.Convert.ToUInt16 value |> box :?> 'T
+    | t when t = typeof<uint> -> System.Convert.ToUInt32 value |> box :?> 'T
+    | t when t = typeof<uint64> -> System.Convert.ToUInt64 value |> box :?> 'T
+    | t when t = typeof<float> -> System.Convert.ToDouble value |> box :?> 'T
+    | t when t = typeof<float32> -> System.Convert.ToSingle value |> box :?> 'T
+    | t when t = typeof<decimal> -> System.Convert.ToDecimal value |> box :?> 'T
+    | t when t = typeof<System.DateTime> -> System.Convert.ToDateTime value |> box :?> 'T
+    | t when t = typeof<string> -> System.Convert.ToString value |> box :?> 'T
+    | t when t = typeof<obj> -> value :?> 'T
+    | _ -> value :?> 'T
+    
   /// <summary>
   /// Cellなどから値を取得する.
   /// int型と互換性がない値の場合, 例外が発生する.
