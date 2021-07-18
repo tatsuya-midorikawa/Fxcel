@@ -43,7 +43,8 @@ module Function =
   type Color = System.Drawing.Color
   type Pattern = Midoliy.Office.Interop.Pattern
   type DeleteShiftDirection = Midoliy.Office.Interop.DeleteShiftDirection
-  
+  type AppVisibility = Midoliy.Office.Interop.AppVisibility
+
   [<Struct>]
   type Handle = { Name: string; Hwnd: int }
 

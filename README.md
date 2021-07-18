@@ -14,7 +14,9 @@
 
 ## Get started  
 
-### F# Scriptで利用する
+### 1. F# Scriptで利用する
+
+#### 1-1. **.fsx** ファイルを作成する  
 
 まずはコーディングを始めるために **main.fsx** を作成して、VSCode で開きましょう。  
 
@@ -25,11 +27,30 @@ new-item main.fsx
 code D:/work
 ```
 
-### Fxcel を読み込む
+#### 1-2. Fxcel を読み込む
 
 **main.fsx** に Fxcel を利用するためのコードを追加します。
 
 ```fsharp
 #r "nuget: Fxcel"
 open Fxcel
-```
+```  
+
+### 2. F# プロジェクトで利用する
+
+#### 2-1. 新規プロジェクトを作成する  
+
+```powershell
+mkdir D:/work
+cd D:/work
+dotnet new console -lang=F# -o=FxcelSample
+``` 
+#### 2-2. Fxcel を読み込む 
+
+```powershell
+cd D:/work/FxcelSample
+dotnet add package Fxcel
+``` 
+
+
+## Reference

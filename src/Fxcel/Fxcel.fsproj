@@ -5,7 +5,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <WarnOn>3390;$(WarnOn)</WarnOn>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.0.9</Version>
+    <Version>0.0.10</Version>
     <Authors>midoliy</Authors>
     <Company>midoliy</Company>
     <Copyright>© 2021 Tatsuya Midorikawa. All rights rserved</Copyright>
@@ -15,7 +15,7 @@
     <RepositoryUrl>https://github.com/tatsuya-midorikawa/Fxcel</RepositoryUrl>
     <PackageIcon>fxcel.png</PackageIcon>
     <PackageIconUrl />
-    <Description>Excel COM tools for F#</Description>
+    <Description>Excel COM operation tools for F#</Description>
   </PropertyGroup>
 
   <ItemGroup>
