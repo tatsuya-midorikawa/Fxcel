@@ -53,4 +53,80 @@ dotnet add package Fxcel
 ``` 
 
 
-## Reference
+## Reference  
+
+### Excelワークブックを新規作成する
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = create()
+```
+
+### 既存のExcelワークブックを開く
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  excel |> workbook(1) |> saveAs "C:/work/sample.xlsx"
+```
+
+### Excelワークブックを名前を付けて保存する
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  // Excelワークブックを新規作成
+  use excel = create()
+  // 先頭のワークブックを取得する
+  let book = excel |> workbook(1)
+  
+  // do somethings
+
+  // 名前を付けて保存
+  book |> saveAs "C:/work/sample.xlsx"
+```
+
+### Excelワークブックを上書き保存する
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  // 既存のExcelワークブックを開く
+  use excel = open' "C:/work/sample.xlsx"
+  // 先頭のワークブックを取得する
+  let book = excel |> workbook(1)
+
+  // do somethings
+
+  // 上書き保存する
+  book |> save
+```
+
+### Excelワークブックオブジェクトを取得する
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+
+  // ワークブックオブジェクトを取得する
+  //   -> index は 1 始まりであることに注意する
+  let book = excel |> workbook(1)
+```
+
+### Excelワークシートオブジェクトを取得する
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+
+  // ワークシートオブジェクトを取得する
+  //   -> index は 1 始まりであることに注意する
+  let sheet = excel |> workbook(1) |> worksheet(1)
+
+  // シート名を指定して取得することもできる
+  let sheet = excel |> workbook(1) |> worksheet("Sheet1")
+```
