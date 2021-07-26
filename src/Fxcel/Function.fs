@@ -85,6 +85,12 @@ module Function =
 
   /// <summary>既存のワークブックを開く.</summary>
   let open' (filepath: string) = Excel.Open(getExcelPath filepath)
+  
+  /// <summary>ドキュメントを上書き保存する.</summary>
+  let inline save (doc: ^Doc) = (^Doc: (member Save: unit -> unit) doc)
+  
+  /// <summary>ドキュメントを名前を付けて保存する.</summary>
+  let inline saveAs filepath (doc: ^Doc) = (^Doc: (member SaveAs: string -> unit) doc, filepath)
 
   /// <summary>指定したindexの位置にあるWorkbookを取得する.</summary>
   let workbook (index: int) (excel: IExcelApplication) =

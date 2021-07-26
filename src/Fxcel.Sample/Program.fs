@@ -1,15 +1,29 @@
 ﻿open Fxcel
 
+let (| Even | Odd |) value = 
+  if value % 2 = 0 then Even else Odd
+
+[<Measure>]
+type kg
+
 [<EntryPoint>]
 let main argv =
-  use excel = create()
+  //use excel = create()
+  //excel.Visibility <- AppVisibility.Visible
+
+  //let sheet = excel |> workbook(1) |> worksheet(1)
+  //sheet.["A1:A3"] |> set 100
+
+  //sheet |> saveAs @"D:\OneDrive\デスクトップ\foo.xlsx"
+
+
+  use excel = open' @"D:\OneDrive\デスクトップ\foo.xlsx"
   excel.Visibility <- AppVisibility.Visible
 
   let sheet = excel |> workbook(1) |> worksheet(1)
-  sheet.["A1:A3"] |> set 100
+  sheet.["B1:B3"] |> set 200
+  sheet |> save
 
-  sheet.SaveAs(@"D:\OneDrive\デスクトップ\foo.xlsx")
-  
   0
 
 
