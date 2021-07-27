@@ -52,7 +52,6 @@ cd D:/work/FxcelSample
 dotnet add package Fxcel
 ``` 
 
-
 ## Reference  
 
 ### Excelワークブックを新規作成する / ```create ()```
@@ -63,7 +62,7 @@ let main argv =
   use excel = create ()
 ```
 
-### 既存のExcelワークブックをテンプレートとして新規Excelワークブックを作成する / ```create (filepath: string)```
+### 既存のExcelワークブックをテンプレートとして新規Excelワークブックを作成する / ```create (template: string)```
 
 ```fsharp
 [<EntryPoint>]
@@ -255,7 +254,7 @@ let main argv =
   let v: int = sheet.["A1:B3"] |> gets<int> |> last
 ```
 
-###  Excel Cellオブジェクトから関数を取得する / ```getfx (cell: ^Cell)```
+###  Excel Cellオブジェクトから関数を取得する / ```getfx (cell: IExcelRange)```
 
 ```fsharp
 [<EntryPoint>]
@@ -267,7 +266,7 @@ let main argv =
   let fn: string = sheet.["A1"] |> getfx
 ```
 
-###  Excel Rnageオブジェクトから関数を取得する / ```getsfx (range: ^Range)```
+###  Excel Rnageオブジェクトから関数を取得する / ```getsfx (range: IExcelRange)```
 
 ```fsharp
 [<EntryPoint>]
@@ -279,7 +278,7 @@ let main argv =
   let fns: string [,] = sheet.["A1:A3"] |> getsfx
 ```
 
-###  Excel Cell / Rangeオブジェクトに値を設定する / ```set (value: obj) (target: ^T)```
+###  Excel Cell / Rangeオブジェクトに値を設定する / ```set (value: obj) (target: IExcelRange)```
 
 ```fsharp
 [<EntryPoint>]
@@ -292,7 +291,7 @@ let main argv =
   sheet.["A1:B3"] |> set 100
 ```
 
-###  Excel Cell / Rangeオブジェクトに関数を設定する / ```fx (func: string) (target: ^T)```
+###  Excel Cell / Rangeオブジェクトに関数を設定する / ```fx (func: string) (target: IExcelRange)```
 
 ```fsharp
 [<EntryPoint>]
