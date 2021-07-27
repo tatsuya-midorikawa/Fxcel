@@ -3,7 +3,7 @@
 ![Fxcel](https://raw.githubusercontent.com/tatsuya-midorikawa/Fxcel/main/assets/fxcel.png)  
 
 
-## What's this?  
+## 🔷 What's this?  
 
 - Fxcel は F# で簡単に Excel の COM 操作をするためのライブラリです。  
   - C# 向けの Excel COM 操作ライブラリである ***[Midoliy.Office.Interop.Excel](https://github.com/Midoliy/Midoliy.Office.Interop.Excel)*** のラッパーライブラリとなります。
@@ -13,11 +13,28 @@
 
 ---
 
-## Get started  
+## 🔷 Get started  
 
-### 1. F# Scriptで利用する
+### ◼◻ F# Interactiveで利用する
 
-#### 1-1. **.fsx** ファイルを作成する  
+#### 1. FSIを起動する  
+
+```powershell
+dotnet fsi
+```
+
+#### 2. Fxcel を読み込む
+
+Fxcel を nuget から読み込みます。
+
+```fsharp
+#r "nuget: Fxcel, 0.0.10";;
+open Fxcel;;
+```  
+
+### ◼◻ F# Scriptで利用する
+
+#### 1. **.fsx** ファイルを作成する  
 
 まずはコーディングを始めるために **main.fsx** を作成して、VSCode で開きましょう。  
 
@@ -28,7 +45,7 @@ new-item main.fsx
 code D:/work
 ```
 
-#### 1-2. Fxcel を読み込む
+#### 2. Fxcel を読み込む
 
 **main.fsx** に Fxcel を利用するためのコードを追加します。
 
@@ -37,16 +54,16 @@ code D:/work
 open Fxcel
 ```  
 
-### 2. F# プロジェクトで利用する
+### ◼◻ F# プロジェクトで利用する
 
-#### 2-1. 新規プロジェクトを作成する  
+#### 1. 新規プロジェクトを作成する  
 
 ```powershell
 mkdir D:/work
 cd D:/work
 dotnet new console -lang=F# -o=FxcelSample
 ``` 
-#### 2-2. Fxcel を読み込む 
+#### 2. Fxcel を読み込む 
 
 ```powershell
 cd D:/work/FxcelSample
@@ -55,28 +72,28 @@ dotnet add package Fxcel
 
 ---
 
-## Reference for F# Interactive
+## 🔷 Reference for F# Interactive
 
-### 起動中のExcelプロセス一覧をターミナルに表示しつつ取得する / ```show ()```
+### ◼◻ 起動中のExcelプロセス一覧をターミナルに表示しつつ取得する / ```show ()```
 
 ```fsharp
 let processList = show ();;
 ```
 
-### 起動中のExcelプロセス一覧を取得する / ```enumerate ()```
+### ◼◻ 起動中のExcelプロセス一覧を取得する / ```enumerate ()```
 
 ```fsharp
 let processList = enumerate ();;
 ```
 
-### 起動中のExcelプロセスにアタッチする / ```attach (excel: Handle)```
+### ◼◻ 起動中のExcelプロセスにアタッチする / ```attach (excel: Handle)```
 
 ```fsharp
 let processList = enumerate ();;
 let excel = processList.[0] |> attach;;
 ```
 
-### アタッチ済みのExcelプロセスをデタッチする / ```detach (excel: IExcelApplication)```
+### ◼◻ アタッチ済みのExcelプロセスをデタッチする / ```detach (excel: IExcelApplication)```
 
 ```fsharp
 let processList = enumerate ();;
@@ -89,9 +106,9 @@ excel |> detach;;
 
 ---
 
-## Reference  
+## 🔷 Reference  
 
-### Excelワークブックを新規作成する / ```create ()```
+### ◼◻ Excelワークブックを新規作成する / ```create ()```
 
 ```fsharp
 [<EntryPoint>]
@@ -99,7 +116,7 @@ let main argv =
   use excel = create ()
 ```
 
-### 既存のExcelワークブックをテンプレートとして新規Excelワークブックを作成する / ```create (template: string)```
+### ◼◻ 既存のExcelワークブックをテンプレートとして新規Excelワークブックを作成する / ```create (template: string)```
 
 ```fsharp
 [<EntryPoint>]
@@ -107,7 +124,7 @@ let main argv =
   use excel = create "C:/work/sample.xlsx"
 ```
 
-### 既存のExcelワークブックを開く / ```open' (filepath: string)```
+### ◼◻ 既存のExcelワークブックを開く / ```open' (filepath: string)```
 
 ```fsharp
 [<EntryPoint>]
@@ -115,7 +132,7 @@ let main argv =
   use excel = open' "C:/work/sample.xlsx"
 ```
 
-### Excelワークブックを名前を付けて保存する / ```saveAs (filepath: string) excelObject```
+### ◼◻ Excelワークブックを名前を付けて保存する / ```saveAs (filepath: string) excelObject```
 
 ```fsharp
 [<EntryPoint>]
@@ -131,7 +148,7 @@ let main argv =
   book |> saveAs "C:/work/sample.xlsx"
 ```
 
-### Excelワークブックを上書き保存する / ```save excelObject```
+### ◼◻ Excelワークブックを上書き保存する / ```save excelObject```
 
 ```fsharp
 [<EntryPoint>]
@@ -147,7 +164,7 @@ let main argv =
   book |> save
 ```
 
-### Excelワークブックオブジェクトを取得する / ```workbook (index: int) (excel: IExcelApplication)```
+### ◼◻ Excelワークブックオブジェクトを取得する / ```workbook (index: int) (excel: IExcelApplication)```
 
 ```fsharp
 [<EntryPoint>]
@@ -159,7 +176,7 @@ let main argv =
   let book = excel |> workbook(1)
 ```
 
-### Excelワークシートオブジェクトを取得する / ```worksheet (index: int | string) (workbook: IWrokbook)```
+### ◼◻ Excelワークシートオブジェクトを取得する / ```worksheet (index: int | string) (workbook: IWrokbook)```
 
 ```fsharp
 [<EntryPoint>]
@@ -174,7 +191,7 @@ let main argv =
   let sheet = excel |> workbook(1) |> worksheet("Sheet1")
 ```
 
-### Excel Cellオブジェクトを取得 / ```sheet.[address]```
+### ◼◻ Excel Cellオブジェクトを取得 / ```sheet.[address]```
 
 ```fsharp
 [<EntryPoint>]
@@ -188,7 +205,7 @@ let main argv =
   let cell = sheet.[1, 1]
 ```
 
-### Excel Rangeオブジェクトを取得 / ```sheet.[address]```
+### ◼◻ Excel Rangeオブジェクトを取得 / ```sheet.[address]```
 
 ```fsharp
 [<EntryPoint>]
@@ -202,7 +219,7 @@ let main argv =
   let cell = sheet.["A1", "B3"]
 ```
 
-### Excel Rangeを行ごとに列挙する / ```rows (range: IExcelRange)```
+### ◼◻ Excel Rangeを行ごとに列挙する / ```rows (range: IExcelRange)```
 
 ```fsharp
 [<EntryPoint>]
@@ -217,7 +234,7 @@ let main argv =
       // do somethings
 ```
 
-### Excel Rangeを列ごとに列挙する / ```columns (range: IExcelRange)```
+### ◼◻ Excel Rangeを列ごとに列挙する / ```columns (range: IExcelRange)```
 
 ```fsharp
 [<EntryPoint>]
@@ -232,7 +249,7 @@ let main argv =
       // do somethings
 ```
 
-###  Excel Cellオブジェクトから値を取得する / ```get (cell: IExcelRange) / get<'T> (cell: IExcelRange)```
+### ◼◻ Excel Cellオブジェクトから値を取得する / ```get (cell: IExcelRange) / get<'T> (cell: IExcelRange)```
 
 ```fsharp
 [<EntryPoint>]
@@ -257,7 +274,7 @@ let main argv =
   let v: int = sheet.["A1:B3"] |> get<int>
 ```
 
-###  Excel Rangeオブジェクトから値を取得する / ```gets (range: IExcelRange) / gets<'T> (range: IExcelRange)```
+### ◼◻ Excel Rangeオブジェクトから値を取得する / ```gets (range: IExcelRange) / gets<'T> (range: IExcelRange)```
 
 ```fsharp
 [<EntryPoint>]
@@ -291,7 +308,7 @@ let main argv =
   let v: int = sheet.["A1:B3"] |> gets<int> |> last
 ```
 
-###  Excel Cellオブジェクトから関数を取得する / ```getfx (cell: IExcelRange)```
+### ◼◻ Excel Cellオブジェクトから関数を取得する / ```getfx (cell: IExcelRange)```
 
 ```fsharp
 [<EntryPoint>]
@@ -303,7 +320,7 @@ let main argv =
   let fn: string = sheet.["A1"] |> getfx
 ```
 
-###  Excel Rnageオブジェクトから関数を取得する / ```getsfx (range: IExcelRange)```
+### ◼◻ Excel Rnageオブジェクトから関数を取得する / ```getsfx (range: IExcelRange)```
 
 ```fsharp
 [<EntryPoint>]
@@ -315,7 +332,7 @@ let main argv =
   let fns: string [,] = sheet.["A1:A3"] |> getsfx
 ```
 
-###  Excel Cell / Rangeオブジェクトに値を設定する / ```set (value: obj) (target: IExcelRange)```
+### ◼◻ Excel Cell / Rangeオブジェクトに値を設定する / ```set (value: obj) (target: IExcelRange)```
 
 ```fsharp
 [<EntryPoint>]
@@ -328,7 +345,7 @@ let main argv =
   sheet.["A1:B3"] |> set 100
 ```
 
-###  Excel Cell / Rangeオブジェクトに関数を設定する / ```fx (func: string) (target: IExcelRange)```
+### ◼◻ Excel Cell / Rangeオブジェクトに関数を設定する / ```fx (func: string) (target: IExcelRange)```
 
 ```fsharp
 [<EntryPoint>]
