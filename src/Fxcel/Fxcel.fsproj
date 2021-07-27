@@ -27,7 +27,7 @@
   </ItemGroup>
  
   <ItemGroup>
-    <PackageReference Include="Midoliy.Office.Interop.Excel" Version="0.0.6.15" />
+    <PackageReference Include="Midoliy.Office.Interop.Excel" Version="0.0.6.16" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
   </ItemGroup>
 
