@@ -27,11 +27,27 @@ type Excel () =
     | t when t = typeof<obj> -> value :?> 'T
     | _ -> value :?> 'T
     
+  static member private getExcelPath (path: string) =
+    let extension = Path.GetExtension path
+    match extension with
+    | ".xls" | ".xlsx" | ".xlsm" -> path
+    | _ -> $"{path}.xlsx"
+
   static member head (range: 'T[,]) = range.[0, 0]
+
   static member last (range: 'T[,]) =
     let x = Array2D.length1 range
     let y = Array2D.length2 range
     range.[x - 1, y - 1]
+    
+  /// <summary>空のワークブックを新規作成する.</summary>
+  static member create () = Excel.BlankWorkbook()
+
+  /// <summary>テンプレートファイルからワークブックを新規作成する.</summary>
+  static member create (template: string) = Excel.CreateFrom(getExcelPath template)
+
+  /// <summary>既存のワークブックを開く.</summary>
+  static member open' (filepath: string) = Excel.Open(getExcelPath filepath)
 
   /// <summary>
   /// Cellなどから値を取得する.
@@ -122,12 +138,6 @@ module Function =
   type Handle = { Name: string; Hwnd: int }
 
   let private isNullOrEmpty value = System.String.IsNullOrEmpty(value)
-  
-  let private getExcelPath (path: string) =
-    let extension = Path.GetExtension path
-    match extension with
-    | ".xls" | ".xlsx" | ".xlsm" -> path
-    | _ -> $"{path}.xlsx"
 
   /// <summary>起動しているExcelプロセスを列挙する.</summary>
   let enumerate () = 
@@ -149,15 +159,6 @@ module Function =
   
   /// <summary>プログラムをExcelからデタッチする.</summary>
   let detach (excel: IExcelApplication) = excel.Dispose()
-  
-  /// <summary>空のワークブックを新規作成する.</summary>
-  let create () = Excel.BlankWorkbook()
-
-  /// <summary>テンプレートファイルからワークブックを新規作成する.</summary>
-  let createFrom (template: string) = Excel.CreateFrom(getExcelPath template)
-
-  /// <summary>既存のワークブックを開く.</summary>
-  let open' (filepath: string) = Excel.Open(getExcelPath filepath)
   
   /// <summary>ドキュメントを上書き保存する.</summary>
   let inline save (doc: ^Doc) = (^Doc: (member Save: unit -> unit) doc)

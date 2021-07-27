@@ -60,7 +60,15 @@ dotnet add package Fxcel
 ```fsharp
 [<EntryPoint>]
 let main argv =
-  use excel = create()
+  use excel = create ()
+```
+
+### 既存のExcelワークブックをテンプレートとして新規Excelワークブックを作成する / ```create (filepath: string)```
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = create "C:/work/sample.xlsx"
 ```
 
 ### 既存のExcelワークブックを開く / ```open' (filepath: string)```
@@ -69,7 +77,6 @@ let main argv =
 [<EntryPoint>]
 let main argv =
   use excel = open' "C:/work/sample.xlsx"
-  excel |> workbook(1) |> saveAs "C:/work/sample.xlsx"
 ```
 
 ### Excelワークブックを名前を付けて保存する / ```saveAs (filepath: string) excelObject```
