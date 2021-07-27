@@ -125,10 +125,22 @@ module Function =
 
   /// <summary>Cellなどから値を取得する</summary>
   let inline value (cell: ^Cell) = (^Cell: (member get_Value: unit -> obj) cell)
+
+  /// <summary>Cellなどから関数を取得する</summary>
+  let inline getfx (cell: ^Cell) = (^Cell: (member get_Formula: unit -> obj) cell)
   
   /// <summary>Rangeなどの範囲選択したCellから値を取得し配列情報に変換する.</summary>
   let inline values (range: ^Range) = 
     let vs = value range
+    if vs.GetType() = typeof<obj[,]> then
+      let xs = vs :?> obj[,]
+      xs.[*,*]
+    else
+      Array2D.init 1 1 (fun i j -> vs)
+      
+  /// <summary>Rangeなどの範囲選択したCellから関数を取得し配列情報に変換する.</summary>
+  let inline getfxs (range: ^Range) =
+    let vs = getfx range
     if vs.GetType() = typeof<obj[,]> then
       let xs = vs :?> obj[,]
       xs.[*,*]

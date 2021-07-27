@@ -8,21 +8,32 @@ type kg
 
 [<EntryPoint>]
 let main argv =
-  //use excel = create()
-  //excel.Visibility <- AppVisibility.Visible
+  use excel = create()
+  excel.Visibility <- AppVisibility.Visible
 
-  //let sheet = excel |> workbook(1) |> worksheet(1)
-  //sheet.["A1:A3"] |> set 100
+  let sheet = excel |> workbook(1) |> worksheet(1)
+  sheet.["A1:A3"] |> set 100 
+  sheet.["B1:B3"] |> set 200
+  sheet.["C1"] |> fx "SUM(A1:B1)"
+  
+  sheet.["A1:B3"] |> fx "COUNT(A1:B3)"
+
+  // columns関数を利用して, 1行ずつ取得する
+  for column in sheet.["A1:B3"] |> columns do
+    // 各cell毎に何か処理をする
+    for cell in column do
+      printf $"{cell |> value} "
+    printfn ""
 
   //sheet |> saveAs @"D:\OneDrive\デスクトップ\foo.xlsx"
 
 
-  use excel = open' @"D:\OneDrive\デスクトップ\foo.xlsx"
-  excel.Visibility <- AppVisibility.Visible
+  //use excel = open' @"D:\OneDrive\デスクトップ\foo.xlsx"
+  //excel.Visibility <- AppVisibility.Visible
 
-  let sheet = excel |> workbook(1) |> worksheet(1)
-  sheet.["B1:B3"] |> set 200
-  sheet |> save
+  //let sheet = excel |> workbook(1) |> worksheet(1)
+  //sheet.["B1:B3"] |> set 200
+  //sheet |> save
 
   0
 

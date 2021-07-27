@@ -55,7 +55,7 @@ dotnet add package Fxcel
 
 ## Reference  
 
-### Excelワークブックを新規作成する
+### Excelワークブックを新規作成する / ```create ()```
 
 ```fsharp
 [<EntryPoint>]
@@ -63,7 +63,7 @@ let main argv =
   use excel = create()
 ```
 
-### 既存のExcelワークブックを開く
+### 既存のExcelワークブックを開く / ```open' (filepath: string)```
 
 ```fsharp
 [<EntryPoint>]
@@ -72,7 +72,7 @@ let main argv =
   excel |> workbook(1) |> saveAs "C:/work/sample.xlsx"
 ```
 
-### Excelワークブックを名前を付けて保存する
+### Excelワークブックを名前を付けて保存する / ```saveAs (filepath: string) excelObject```
 
 ```fsharp
 [<EntryPoint>]
@@ -88,7 +88,7 @@ let main argv =
   book |> saveAs "C:/work/sample.xlsx"
 ```
 
-### Excelワークブックを上書き保存する
+### Excelワークブックを上書き保存する / ```save excelObject```
 
 ```fsharp
 [<EntryPoint>]
@@ -104,7 +104,7 @@ let main argv =
   book |> save
 ```
 
-### Excelワークブックオブジェクトを取得する
+### Excelワークブックオブジェクトを取得する / ```workbook (index: int) (excel: IExcelApplication)```
 
 ```fsharp
 [<EntryPoint>]
@@ -116,7 +116,7 @@ let main argv =
   let book = excel |> workbook(1)
 ```
 
-### Excelワークシートオブジェクトを取得する
+### Excelワークシートオブジェクトを取得する / ```worksheet (index: int | string) (workbook: IWrokbook)```
 
 ```fsharp
 [<EntryPoint>]
@@ -129,4 +129,136 @@ let main argv =
 
   // シート名を指定して取得することもできる
   let sheet = excel |> workbook(1) |> worksheet("Sheet1")
+```
+
+### Excel Cellオブジェクトを取得 / ```sheet.[address]```
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> worksheet(1)
+
+  // Cellオブジェクトをアドレス形式で取得
+  let cell = sheet.["A1"]
+  // CellオブジェクトをR1C1形式で取得
+  let cell = sheet.[1, 1]
+```
+
+### Excel Rangeオブジェクトを取得 / ```sheet.[address]```
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> worksheet(1)
+
+  // Rangeオブジェクトをアドレス形式で取得
+  let cell = sheet.["A1:B3"]
+  // Cellオブジェクトを2つのアドレスを指定して取得
+  let cell = sheet.["A1", "B3"]
+```
+
+### Excel Rangeを行ごとに列挙する / ```rows (range: IExcelRange)```
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> worksheet(1)
+
+  // rows関数を利用して, 1行ずつ取得する
+  for row in sheet.["A1:B3"] |> rows do
+    // 各Cell毎に何か処理をする
+    for cell in row do
+      // do somethings
+```
+
+### Excel Rangeを列ごとに列挙する / ```columns (range: IExcelRange)```
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> worksheet(1)
+
+  // columns関数を利用して, 1行ずつ取得する
+  for column in sheet.["A1:B3"] |> columns do
+    // 各Cell毎に何か処理をする
+    for cell in column do
+      // do somethings
+```
+
+###  Excel Cellオブジェクトから値を取得する / ```value (cell: ^Cell)```
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> worksheet(1)
+
+  // Cellオブジェクトから値を取得する
+  let v: obj = sheet.["A1"] |> value
+```
+
+###  Excel Rangeオブジェクトから値を取得する / ```values (range: ^Range)```
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> worksheet(1)
+
+  // Rangeオブジェクトから値を取得する
+  let vs: obj [,]  = sheet.["A1:A3"] |> values
+```
+
+###  Excel Cellオブジェクトから関数を取得する / ```getfx (cell: ^Cell)```
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> worksheet(1)
+
+  // Cellオブジェクトから関数を取得する
+  let fn: obj = sheet.["A1"] |> getfx
+```
+
+###  Excel Rnageオブジェクトから関数を取得する / ```getfxs (range: ^Range)```
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> worksheet(1)
+
+  // Rangeオブジェクトから関数を取得する
+  let fns: obj [,] = sheet.["A1:A3"] |> getfxs
+```
+
+###  Excel Cell / Rangeオブジェクトに値を設定する / ```set (value: obj) (target: ^T)```
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> worksheet(1)
+
+  // 対象オブジェクトに値を設定する
+  sheet.["A1"] |> set 100
+  sheet.["A1:B3"] |> set 100
+```
+
+###  Excel Cell / Rangeオブジェクトに関数を設定する / ```fx (func: string) (target: ^T)```
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> worksheet(1)
+
+  // 対象オブジェクトに値を設定する
+  sheet.["A1"] |> fx "SUM(A2:A5)"
+  sheet.["A1:B3"] |> fx "COUNT(A1:B3)"
 ```
