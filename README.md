@@ -76,7 +76,7 @@ let processList = enumerate ();;
 let excel = processList.[0] |> attach;;
 ```
 
-### アタッチ済みのExcelプロセスをデタッチする / ```detach (excel: Handle)```
+### アタッチ済みのExcelプロセスをデタッチする / ```detach (excel: IExcelApplication)```
 
 ```fsharp
 let processList = enumerate ();;
