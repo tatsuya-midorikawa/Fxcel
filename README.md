@@ -11,6 +11,7 @@
 - 主に F# Script や F# Interactive での利用を想定して設計をしていますが、Console アプリや Desktop アプリでも問題なく利用可能です。  
 - COM を利用するため Excel のインストールが必要です。  
 
+---
 
 ## Get started  
 
@@ -52,6 +53,8 @@ cd D:/work/FxcelSample
 dotnet add package Fxcel
 ``` 
 
+---
+
 ## Reference for F# Interactive
 
 ### 起動中のExcelプロセス一覧をターミナルに表示しつつ取得する / ```show ()```
@@ -83,6 +86,8 @@ let excel = processList.[0] |> attach;;
 
 excel |> detach;;
 ```
+
+---
 
 ## Reference  
 
