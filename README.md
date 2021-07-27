@@ -52,6 +52,38 @@ cd D:/work/FxcelSample
 dotnet add package Fxcel
 ``` 
 
+## Reference for F# Interactive
+
+## 起動中のExcelプロセス一覧をターミナルに表示しつつ取得する / ```show ()```
+
+```fsharp
+let processList = show ();;
+```
+
+## 起動中のExcelプロセス一覧を取得する / ```enumerate ()```
+
+```fsharp
+let processList = enumerate ();;
+```
+
+## 起動中のExcelプロセスにアタッチする / ```attach (excel: Handle)```
+
+```fsharp
+let processList = enumerate ();;
+let excel = processList.[0] |> attach;;
+```
+
+## アタッチ済みのExcelプロセスをデタッチする / ```detach (excel: Handle)```
+
+```fsharp
+let processList = enumerate ();;
+let excel = processList.[0] |> attach;;
+
+// do somethings
+
+excel |> detach;;
+```
+
 ## Reference  
 
 ### Excelワークブックを新規作成する / ```create ()```
