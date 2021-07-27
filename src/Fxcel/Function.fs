@@ -1,11 +1,84 @@
 ﻿namespace Fxcel
 
 open System.IO
+open System.Linq
 open System.Collections.Generic
 open Midoliy.Office.Interop
 
 [<AutoOpen>]
 type Excel () =
+  static member private cast<'T> (value: obj) =
+    match typeof<'T> with
+    | t when t = typeof<bool> -> System.Convert.ToBoolean value |> box :?> 'T
+    | t when t = typeof<int8> -> System.Convert.ToSByte value |> box :?> 'T
+    | t when t = typeof<int16> -> System.Convert.ToInt16 value |> box :?> 'T
+    | t when t = typeof<int> -> System.Convert.ToInt32 value |> box :?> 'T
+    | t when t = typeof<int64> -> System.Convert.ToInt64 value |> box :?> 'T
+    | t when t = typeof<uint8> -> System.Convert.ToByte value |> box :?> 'T
+    | t when t = typeof<uint16> -> System.Convert.ToUInt16 value |> box :?> 'T
+    | t when t = typeof<uint> -> System.Convert.ToUInt32 value |> box :?> 'T
+    | t when t = typeof<uint64> -> System.Convert.ToUInt64 value |> box :?> 'T
+    | t when t = typeof<float> -> System.Convert.ToDouble value |> box :?> 'T
+    | t when t = typeof<float32> -> System.Convert.ToSingle value |> box :?> 'T
+    | t when t = typeof<decimal> -> System.Convert.ToDecimal value |> box :?> 'T
+    | t when t = typeof<System.DateTime> -> System.Convert.ToDateTime value |> box :?> 'T
+    | t when t = typeof<string> -> System.Convert.ToString value |> box :?> 'T
+
+    | t when t = typeof<obj> -> value :?> 'T
+    | _ -> value :?> 'T
+    
+  static member head (range: 'T[,]) = range.[0, 0]
+  static member last (range: 'T[,]) =
+    let x = Array2D.length1 range
+    let y = Array2D.length2 range
+    range.[x - 1, y - 1]
+
+  /// <summary>
+  /// Cellなどから値を取得する.
+  /// 複数要素がある場合, 先頭要素のみ取得.
+  /// </summary>
+  static member get (cell: IExcelRange) = 
+    match cell.Value.GetType() with
+    | t when t = typeof<obj[,]> -> (cell.Value :?> obj[,]).[1, 1]
+    | _ -> cell.Value
+
+  /// <summary>
+  /// Cellなどから値を指定した型で取得する.
+  /// 複数要素がある場合, 先頭要素のみ取得.
+  /// </summary>
+  /// <exception cref="System.InvalidCastException">指定した型と互換性がない場合</exception>
+  static member get<'T> (cell: IExcelRange) =  cell |> get |> cast<'T>
+  
+  /// <summary>Rangeなどの範囲選択したCellから値を取得し配列情報に変換する.</summary>
+  static member gets (range: IExcelRange) = 
+    match range.Value.GetType() with
+    | t when t = typeof<obj[,]> -> (range.Value :?> obj[,]).[*,*]
+    | _ -> Array2D.init 1 1 (fun i j -> range.Value )
+  
+  /// <summary>Rangeなどの範囲選択したCellから値を取得し指定した型の配列情報に変換する.</summary>
+  /// <exception cref="System.InvalidCastException">指定した型と互換性がない場合</exception>
+  static member gets<'T> (range: IExcelRange) = 
+    match range.Value.GetType() with
+    | t when t = typeof<obj[,]> -> (range.Value :?> obj[,]).[*,*]|> Array2D.map (fun v -> v |> cast<'T>)
+    | _ -> Array2D.init 1 1 (fun i j -> range.Value |> cast<'T>)
+
+  /// <summary>
+  /// Cellなどから関数を取得する.
+  /// 複数要素がある場合, 先頭要素のみ取得.
+  /// </summary>
+  static member getfx (cell: IExcelRange) = 
+    match cell.Formula.GetType() with
+    | t when t = typeof<string> -> cell.Formula |> cast<string>
+    | t when t = typeof<obj[,]> -> (cell.Formula :?> obj[,]).[1, 1] |> cast<string>
+    | _ -> ""
+            
+  /// <summary>Rangeなどの範囲選択したCellから関数を取得し配列情報に変換する.</summary>
+  static member getsfx (range: IExcelRange) =
+    match range.Formula.GetType() with
+    | t when t = typeof<string> -> range.Formula |> cast<string>
+    | t when t = typeof<obj[,]> -> (range.Formula :?> obj[,]).[1, 1] |> cast<string>
+    | _ -> ""
+
   static member cells (row: IExcelRow) : seq<IExcelRange> =
     let enumerator = row.GetEnumerator()
     seq {
@@ -122,30 +195,6 @@ module Function =
   
   /// <summary>Cellなどからアドレス文字列を取得する</summary>
   let inline address (cell: ^Cell) = (^Cell: (member get_Address: unit -> string) cell)
-
-  /// <summary>Cellなどから値を取得する</summary>
-  let inline value (cell: ^Cell) = (^Cell: (member get_Value: unit -> obj) cell)
-
-  /// <summary>Cellなどから関数を取得する</summary>
-  let inline getfx (cell: ^Cell) = (^Cell: (member get_Formula: unit -> obj) cell)
-  
-  /// <summary>Rangeなどの範囲選択したCellから値を取得し配列情報に変換する.</summary>
-  let inline values (range: ^Range) = 
-    let vs = value range
-    if vs.GetType() = typeof<obj[,]> then
-      let xs = vs :?> obj[,]
-      xs.[*,*]
-    else
-      Array2D.init 1 1 (fun i j -> vs)
-      
-  /// <summary>Rangeなどの範囲選択したCellから関数を取得し配列情報に変換する.</summary>
-  let inline getfxs (range: ^Range) =
-    let vs = getfx range
-    if vs.GetType() = typeof<obj[,]> then
-      let xs = vs :?> obj[,]
-      xs.[*,*]
-    else
-      Array2D.init 1 1 (fun i j -> vs)
       
   /// <summary>Rangeなどの範囲選択した場所から行単位で列挙する.</summary>
   let inline rows (range: IExcelRange) : seq<IExcelRow> =
@@ -196,56 +245,7 @@ module Function =
     for x in source do
       action i x
       i <- i + 1
-  
-  let inline cast<'T> (value: obj) =
-    match typeof<'T> with
-    | t when t = typeof<bool> -> System.Convert.ToBoolean value |> box :?> 'T
-    | t when t = typeof<int8> -> System.Convert.ToSByte value |> box :?> 'T
-    | t when t = typeof<int16> -> System.Convert.ToInt16 value |> box :?> 'T
-    | t when t = typeof<int> -> System.Convert.ToInt32 value |> box :?> 'T
-    | t when t = typeof<int64> -> System.Convert.ToInt64 value |> box :?> 'T
-    | t when t = typeof<uint8> -> System.Convert.ToByte value |> box :?> 'T
-    | t when t = typeof<uint16> -> System.Convert.ToUInt16 value |> box :?> 'T
-    | t when t = typeof<uint> -> System.Convert.ToUInt32 value |> box :?> 'T
-    | t when t = typeof<uint64> -> System.Convert.ToUInt64 value |> box :?> 'T
-    | t when t = typeof<float> -> System.Convert.ToDouble value |> box :?> 'T
-    | t when t = typeof<float32> -> System.Convert.ToSingle value |> box :?> 'T
-    | t when t = typeof<decimal> -> System.Convert.ToDecimal value |> box :?> 'T
-    | t when t = typeof<System.DateTime> -> System.Convert.ToDateTime value |> box :?> 'T
-    | t when t = typeof<string> -> System.Convert.ToString value |> box :?> 'T
-    | t when t = typeof<obj> -> value :?> 'T
-    | _ -> value :?> 'T
     
-  /// <summary>
-  /// Cellなどから値を取得する.
-  /// int型と互換性がない値の場合, 例外が発生する.
-  /// </summary>
-  let inline integer (cell: ^Cell) = value cell |> System.Convert.ToInt32
-
-  /// <summary>
-  /// Cellなどから値を取得する.
-  /// float型と互換性がない値の場合, 例外が発生する.
-  /// </summary>
-  let inline number (cell: ^Cell) = value cell |> System.Convert.ToDouble
-
-  /// <summary>
-  /// Cellなどから値を取得する.
-  /// decimal型と互換性がない値の場合, 例外が発生する.
-  /// </summary>
-  let inline money (cell: ^Cell) = value cell |> System.Convert.ToDecimal
-
-  /// <summary>
-  /// Cellなどから値を取得する.
-  /// string型と互換性がない値の場合, 例外が発生する.
-  /// </summary>
-  let inline str (cell: ^Cell) = value cell |> System.Convert.ToString
-  
-  /// <summary>
-  /// Cellなどから値を取得する.
-  /// DateTime型と互換性がない値の場合, 例外が発生する.
-  /// </summary>
-  let inline date (cell: ^Cell) = value cell |> System.Convert.ToDateTime
-
   /// <summary>Cellなどに値を設定する.</summary>
   let inline set value (cell: ^Cell) = (^Cell: (member set_Value: obj -> unit) cell, value)
 
@@ -257,5 +257,4 @@ module Function =
 
   /// <summary>Cellなどに背景色パターンを設定する.</summary>
   let inline bgpattern (pattern: Pattern) (cell: IExcelRange) = cell.Interior.Pattern <- pattern
-
 

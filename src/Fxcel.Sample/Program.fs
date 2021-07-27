@@ -1,4 +1,5 @@
 ﻿open Fxcel
+open System
 
 let (| Even | Odd |) value = 
   if value % 2 = 0 then Even else Odd
@@ -17,12 +18,21 @@ let main argv =
   sheet.["C1"] |> fx "SUM(A1:B1)"
   
   sheet.["A1:B3"] |> fx "COUNT(A1:B3)"
+  sheet.["C2"] |> set 200
+  let a = sheet.["C2"] |> getfx
+  let ax = sheet.["A1:B3"] |> gets
+  let h = ax |> head
+  let l = ax |> last
+  let orig = sheet.["A1:B3"] 
+  let v: obj = sheet.["A1:B3"] |> get
+  let v': obj = sheet.["A1:B3"] |> gets |> head
+  let v'': int = sheet.["A1:B3"] |> gets<int> |> head
 
   // columns関数を利用して, 1行ずつ取得する
   for column in sheet.["A1:B3"] |> columns do
     // 各cell毎に何か処理をする
     for cell in column do
-      printf $"{cell |> value} "
+      printf $"{cell |> get} "
     printfn ""
 
   //sheet |> saveAs @"D:\OneDrive\デスクトップ\foo.xlsx"

@@ -189,7 +189,7 @@ let main argv =
       // do somethings
 ```
 
-###  Excel Cellオブジェクトから値を取得する / ```value (cell: ^Cell)```
+###  Excel Cellオブジェクトから値を取得する / ```get (cell: IExcelRange) / get<'T> (cell: IExcelRange)```
 
 ```fsharp
 [<EntryPoint>]
@@ -198,10 +198,23 @@ let main argv =
   let sheet = excel |> workbook(1) |> worksheet(1)
 
   // Cellオブジェクトから値を取得する
-  let v: obj = sheet.["A1"] |> value
+  let v: obj = sheet.["A1"] |> get
+
+  // Cellオブジェクトから値を指定した型で取得する
+  //   -> 指定した型と互換性がない場合, System.InvalidCastException
+  let v: int = sheet.["A1"] |> get<int>
+
+  // 複数要素がある場合は先頭要素の値を取得する.
+  //   -> 以下の場合 sheet.["A1"] の値が得られる.
+  let v: obj = sheet.["A1:B3"] |> get
+
+  // 複数要素がある場合は先頭要素の値を指定した型で取得する.
+  //   -> 以下の場合 sheet.["A1"] の値が得られる.
+  //   -> 指定した型と互換性がない場合, System.InvalidCastException
+  let v: int = sheet.["A1:B3"] |> get<int>
 ```
 
-###  Excel Rangeオブジェクトから値を取得する / ```values (range: ^Range)```
+###  Excel Rangeオブジェクトから値を取得する / ```gets (range: IExcelRange) / gets<'T> (range: IExcelRange)```
 
 ```fsharp
 [<EntryPoint>]
@@ -210,7 +223,29 @@ let main argv =
   let sheet = excel |> workbook(1) |> worksheet(1)
 
   // Rangeオブジェクトから値を取得する
-  let vs: obj [,]  = sheet.["A1:A3"] |> values
+  let vs: obj [,]  = sheet.["A1:A3"] |> gets
+
+  // Rangeオブジェクトから値を指定した型で取得する
+  //   -> 指定した型と互換性がない場合, System.InvalidCastException
+  let vs: int [,]  = sheet.["A1:A3"] |> gets<int>
+
+  // Rangeオブジェクトから先頭要素の値を取得する
+  //   -> 以下の場合 sheet.["A1"] の値が得られる.
+  let v: obj = sheet.["A1:B3"] |> gets |> head
+
+  // Rangeオブジェクトから先頭要素の値を指定した型で取得する
+  //   -> 以下の場合 sheet.["A1"] の値が得られる.
+  //   -> 指定した型と互換性がない場合, System.InvalidCastException
+  let v: int = sheet.["A1:B3"] |> gets<int> |> head
+
+  // 複数要素がある場合は最終要素の値を取得する.
+  //   -> 以下の場合 sheet.["B3"] の値が得られる.
+  let v: obj = sheet.["A1:B3"] |> gets |> last
+
+  // 複数要素がある場合は最終要素の値を指定した型で取得する.
+  //   -> 以下の場合 sheet.["B3"] の値が得られる.
+  //   -> 指定した型と互換性がない場合, System.InvalidCastException
+  let v: int = sheet.["A1:B3"] |> gets<int> |> last
 ```
 
 ###  Excel Cellオブジェクトから関数を取得する / ```getfx (cell: ^Cell)```
@@ -222,10 +257,10 @@ let main argv =
   let sheet = excel |> workbook(1) |> worksheet(1)
 
   // Cellオブジェクトから関数を取得する
-  let fn: obj = sheet.["A1"] |> getfx
+  let fn: string = sheet.["A1"] |> getfx
 ```
 
-###  Excel Rnageオブジェクトから関数を取得する / ```getfxs (range: ^Range)```
+###  Excel Rnageオブジェクトから関数を取得する / ```getsfx (range: ^Range)```
 
 ```fsharp
 [<EntryPoint>]
@@ -234,7 +269,7 @@ let main argv =
   let sheet = excel |> workbook(1) |> worksheet(1)
 
   // Rangeオブジェクトから関数を取得する
-  let fns: obj [,] = sheet.["A1:A3"] |> getfxs
+  let fns: string [,] = sheet.["A1:A3"] |> getsfx
 ```
 
 ###  Excel Cell / Rangeオブジェクトに値を設定する / ```set (value: obj) (target: ^T)```
