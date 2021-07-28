@@ -55,3 +55,6 @@ module Constant =
   let ul'doubleAccounting = Underline.DoubleAccounting
   let ul'single = Underline.Single
   let ul'singleAccounting = Underline.SingleAccounting
+
+  let dd'left = DeleteShiftDirection.Left
+  let dd'up = DeleteShiftDirection.Up

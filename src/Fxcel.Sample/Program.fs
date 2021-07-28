@@ -12,6 +12,8 @@ try
   excel.Visibility <- AppVisibility.Visible
 
   let sheet = excel |> workbook(1) |> worksheet(1)
+  excel |> workbook(1) |> newsheet |> ignore
+  excel |> workbook(1) |> newsheet |> ignore
   sheet.["A1:A3"] |> set 100 
   sheet.["B1:B3"] |> set 200
   sheet.["C2"] |> set 200
@@ -23,7 +25,8 @@ try
   let v: obj = sheet.["A1:B3"] |> get
   let v': obj = sheet.["A1:B3"] |> gets |> head
   let v'': int = sheet.["A1:B3"] |> gets<int> |> head
-
+  excel |> workbook(1) |> worksheet(1) |> select
+  sheet.["A2,B4"] |> activate
   //ruledline sheet.["B2:C5"] {
   //  top (border { color Color.Red })
   //  left (border { color Color.Red; weight thick })
@@ -77,18 +80,25 @@ try
   }
   |> ignore
 
+  sheet.["A1:B3"] |> address |> printfn "%s"
+  10 |> colname |> printfn "%s"
+  128 |> colname |> printfn "%s"
 
-  // columns関数を利用して, 1行ずつ取得する
-  for (index, column) in sheet.["A1:B3"] |> columnsi do
-    //if index % 2 = 0 then
-    //  column |> bgpattern Pattern.Checker
-    //else
-    //  column |> bgpattern Pattern.CrissCross
 
-    // 各cell毎に何か処理をする
-    for cell in column do
-      printf $"{cell |> get} "
-    printfn ""
+  //sheet.["A1"].Rows |> delete dd'up
+
+
+  //// columns関数を利用して, 1行ずつ取得する
+  //for (index, column) in sheet.["A1:B3"] |> columnsi do
+  //  //if index % 2 = 0 then
+  //  //  column |> bgpattern Pattern.Checker
+  //  //else
+  //  //  column |> bgpattern Pattern.CrissCross
+
+  //  // 各cell毎に何か処理をする
+  //  for cell in column do
+  //    printf $"{cell |> get} "
+  //  printfn ""
 finally
   ()
 

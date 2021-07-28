@@ -28,7 +28,7 @@ dotnet fsi
 Fxcel を nuget から読み込みます。
 
 ```fsharp
-#r "nuget: Fxcel, 0.0.11";;
+#r "nuget: Fxcel, 0.0.12";;
 open Fxcel;;
 ```  
 
@@ -189,6 +189,15 @@ let main argv =
 
   // シート名を指定して取得することもできる
   let sheet = excel |> workbook(1) |> worksheet("Sheet1")
+```
+
+### ◼◻ Excelワークシートを新規追加する / `newsheet (book: IWorkbook)`
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> newsheet
 ```
 
 ### ◼◻ Excel Cellオブジェクトを取得 / `sheet.[address]`
@@ -402,7 +411,7 @@ let main argv =
 
 ### ◼◻ 罫線を設定する / `ruledline (target: IExcelRange)` コンピュテーション式
 
-#### `ruledline` で利用できるカスタムオペレーション
+#### 📑 `ruledline` で利用できるカスタムオペレーション
 
 | operation name | description |
 | --- | --- |
@@ -415,7 +424,7 @@ let main argv =
 | `growing (border)` | 左下から右上に向けての罫線. 色や太さの設定は `falling` と共有. |
 | `falling (border)` | 左上から右下に向けての罫線. 色や太さの設定は `growing` と共有. |
 
-#### `border` で利用できるカスタムオペレーション
+#### 📑 `border` で利用できるカスタムオペレーション
 
 | operation name | description | values |
 | --- | --- | --- |
@@ -448,7 +457,7 @@ let main argv =
 
 ### ◼◻ フォントを設定する / `font (target: IExcelRange)` コンピュテーション式
 
-#### `font` で利用できるカスタムオペレーション
+#### 📑 `font` で利用できるカスタムオペレーション
 
 | operation name | description | values |
 | --- | --- | --- |
@@ -500,6 +509,70 @@ let main argv =
     superscript true
   }
   |> ignore
+```
+
+### ◼◻ Excel Cell / Range オブジェクトなどを削除する / `delete (direction: DeleteShiftDirection) (target: ^Range)`
+
+#### 📑 `DeleteShiftDirection`
+
+| value | description |
+| --- | --- |
+| dd'left | 削除後, 左方向へシフト. |
+| dd'up | 削除後, 上方向へシフト. |
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> worksheet(1)
+  
+  // 対象を削除する
+  sheet.["A1"] |> delete dd'up
+  sheet.["A1:A3"] |> delete dd'left
+```
+
+---
+
+## 🔷 Utility  
+
+### ◼◻ 数値をカラム名に変換する / `colname (index: int)`
+
+```fsharp
+let name = 1 |> colname     // A
+let name = 10 |> colname    // J
+let name = 128 |> colname   // DX
+```
+
+### ◼◻ 対象の Range オブジェクトからアドレスを取得する / `address (target: IExcelRange)`
+
+```fsharp
+let adds = sheet.["A1"] |> address      // $A$1
+let adds = sheet.["A1:B3"] |> address   // $A$1:$B$3
+```
+
+### ◼◻ 対象の Excel オブジェクトを選択する / `activate (target: ^T)`
+
+```fsharp
+// Workbookを選択状態にする
+excel |> workbook(1) |> activate
+
+// Worksheetを選択状態にする
+excel |> workbook(1) |> worksheet(1) |> activate
+
+// Cellを選択状態にする
+sheet.["B1"] |> activate
+sheet.["A1:B3"] |> activate
+```
+
+### ◼◻ 対象の Excel オブジェクトを選択する / `select (target: ^T)`
+
+```fsharp
+// Worksheet(1)を選択状態にする
+excel |> workbook(1) |> worksheet(1) |> select
+
+// Cellを選択状態にする
+sheet.["B1"] |> select
+sheet.["D1:E3"] |> select
 ```
 
 ---
