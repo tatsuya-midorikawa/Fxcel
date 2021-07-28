@@ -652,9 +652,7 @@ sheet.["D1:E3"] |> select
 
 ## 🔷 TIPS  
 
-### ◼◻ オススメのコーディング方法
-
-#### :one: `try-finally` の利用  
+### ◼◻ `try-finally` の利用  
 
 例外処理を施していない場合 Excel COM オブジェクトが適切に解放されず, プロセス上に残ってしまう恐れがあります.  
 `try-finally` (または `try-with`) と `use` を併用することで Excel COM オブジェクトの解放漏れを防げます.  
