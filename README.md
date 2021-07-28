@@ -28,7 +28,7 @@ dotnet fsi
 Fxcel を nuget から読み込みます。
 
 ```fsharp
-#r "nuget: Fxcel, 0.0.14";;
+#r "nuget: Fxcel, 0.0.15";;
 open Fxcel;;
 ```  
 
@@ -74,26 +74,26 @@ dotnet add package Fxcel
 
 ## 🔷 Reference for F# Interactive
 
-### ◼◻ 起動中のExcelプロセス一覧をターミナルに表示しつつ取得する / `show ()`
+### ◼◻ 起動中のExcelプロセス一覧をターミナルに表示しつつ取得する<br>`show ()`
 
 ```fsharp
 let processList = show ();;
 ```
 
-### ◼◻ 起動中のExcelプロセス一覧を取得する / `enumerate ()`
+### ◼◻ 起動中のExcelプロセス一覧を取得する<br>`enumerate ()`
 
 ```fsharp
 let processList = enumerate ();;
 ```
 
-### ◼◻ 起動中のExcelプロセスにアタッチする / `attach (excel: Handle)`
+### ◼◻ 起動中のExcelプロセスにアタッチする<br>`attach (excel: Handle)`
 
 ```fsharp
 let processList = enumerate ();;
 let excel = processList.[0] |> attach;;
 ```
 
-### ◼◻ アタッチ済みのExcelプロセスをデタッチする / `detach (excel: IExcelApplication)`
+### ◼◻ アタッチ済みのExcelプロセスをデタッチする<br>`detach (excel: IExcelApplication)`
 
 ```fsharp
 let processList = enumerate ();;
@@ -458,12 +458,12 @@ let main argv =
 
 | operation name | description | values |
 | --- | --- | --- |
-| `name (name: string)` | フォント名. | `游ゴシック`<br>`メイリオ`<br>`consolas`<br>and more... |
-| `size (size: float)` | フォントサイズ. | `8.0`<br>`10.5`<br>`24.0`<br>and more... |
-| `style (style: FontStyle)` | フォントスタイル. `Flags` なので複数まとめて指定可能. | `style'normal`<br>`style'bold`<br>`style'italic'`<br>`style'shadow`<br>`style'strikethrough`<br>`style'subscript`<br>`style'superscript`<br>`style'singleUnderline`<br>`style'doubleUnderline` |
-| `color (value: Color)` | フォント色. | `Color.Red`<br>`Color.Orange`<br>`Color.Blue`<br>and more... |
-| `color (value: RGB)` | フォント色. | `{ r= 0; g= 128; b= 255; }` |
-| `underline (style: Underline)` | 下線. | `underline'none`<br>`underline'double`<br>`underline'doubleAccounting`<br>`underline'single`<br>`underline'singleAccounting` |
+| `set (fontName: string)`<br>`name (fontName: string)` | フォント名. | `游ゴシック`<br>`メイリオ`<br>`consolas`<br>and more... |
+| `set (size: float)`<br>`size (size: float)` | フォントサイズ. | `8.0`<br>`10.5`<br>`24.0`<br>and more... |
+| `set (style: FontStyle)` | フォントスタイル. `Flags` なので複数まとめて指定可能. | `style'normal`<br>`style'bold`<br>`style'italic'`<br>`style'shadow`<br>`style'strikethrough`<br>`style'subscript`<br>`style'superscript`<br>`style'singleUnderline`<br>`style'doubleUnderline` |
+| `set (value: Color)` | フォント色. | `Color.Red`<br>`Color.Orange`<br>`Color.Blue`<br>and more... |
+| `set (value: RGB)` | フォント色. | `rgb(r: int, g: int, b: int)`<br>`{ r= 0; g= 128; b= 255; }` |
+| `set (style: Underline)` | 下線. | `underline'none`<br>`underline'double`<br>`underline'doubleAccounting`<br>`underline'single`<br>`underline'singleAccounting` |
 | `bold (on: bool)` | 太字. | `true` or `false` |
 | `italic (on: bool)` | イタリック体. | `true` or `false` |
 | `shadow (on: bool)` | フォント影. | `true` or `false` |
@@ -481,24 +481,24 @@ let main argv =
   // フォントを設定.
   font sheet.["A1:A3"] {
     // フォントの指定.
+    set "メイリオ"  // or
     name "メイリオ"
     // フォントサイズの設定.
+    set 16.0  // or
     size 16.0
     // 下線の設定.
-    underline underline'double
+    set underline'double
 
     // フォント色の設定.
-    color Color.Orange
-    // or
-    color ( rgb(0, 128, 255) )
-    // or
-    color { r= 0; g= 128; b= 255; }
+    set Color.Orange          // or
+    set ( rgb(0, 128, 255) )  // or
+    set { r= 0; g= 128; b= 255; }
 
     // フォントスタイルの設定.
-    style style'normal
+    set style'normal
     // スタイルを複数選択する場合は以下のように指定.
-    style (style'normal ||| style'strikethrough ||| style'shadow)
-    // style を利用しなくとも各種スタイルをひとつずつ ON/OFF 可能.
+    set (style'normal ||| style'strikethrough ||| style'shadow)
+    // style を直接指定しなくとも各種スタイルをひとつずつ ON/OFF 可能.
     bold true
     italic true
     shadow true
@@ -521,6 +521,8 @@ let main argv =
 | `paste (target: IExcelRange, pasteMode: PasteMode)` | 対象にクリップボードの値を貼り付ける. |
 | `insert (target: IExcelRange, insertMode: InsertMode)` | 対象にクリップボードの値を挿入する. |
 | `delete (target: IExcelRange, deleteMode: DeleteMode)` | 対象を削除する. |
+| `set (target: IExcelRange, value: obj)` | 対象に値を設定する. |
+| `fx (target: IExcelRange, formula: string)` | 対象に関数を設定する. |
 
 #### 📑 `PasteMode` の要素
 
@@ -578,6 +580,14 @@ let main argv =
     delete sheet.["A1"] { delete'mode with Shift= shift'up }
     // 範囲削除も可能.
     delete sheet.["A1:A3"] delete'mode
+
+    // A1 に値を設定
+    set sheet.["A1"] 100
+    set sheet.["A1"] sheet.["B1"]
+
+    // A1 に関数を設定
+    fx sheet.["A1"] "SUM(A1:B3)"
+    fx sheet.["A1"] sheet.["B1"]
   }
 ```
 
@@ -674,4 +684,21 @@ let excel = ps.[0] |> attach;;
 # do somethings
 
 excel |> detach;;
+```
+
+### ◼◻ `LangVersion` の指定  
+
+**.NET 5** を利用している場合, うまくコンピュテーション式が動作しない可能性があります.  
+その場合は `LangVersion` に **preview** を指定するようにしてください.
+
+```xml
+<!-- .fsproj を書き換える場合 -->
+<PropertyGroup>
+  <LangVersion>preview</LangVersion>
+</PropertyGroup>
+```
+
+```powershell
+# dotnet fsi コマンドにオプションを指定する場合
+dotnet fsi --langversion:preview
 ```

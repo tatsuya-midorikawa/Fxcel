@@ -20,6 +20,14 @@ module CellOp =
     member __.Insert(_: unit, target: IExcelRange, insertMode: InsertMode) = target.Insert(insertMode.Shift, insertMode.Origin) |> ignore
     [<CustomOperation("delete")>]
     member __.Delete(_: unit, target: IExcelRange, deleteMode: DeleteMode) = target.Delete(deleteMode.Shift) |> ignore
+    [<CustomOperation("set")>]
+    member __.Set(_: unit, target: IExcelRange, value: IExcelRange) = target.Value <- value.Value
+    [<CustomOperation("set")>]
+    member __.Set(_: unit, target: IExcelRange, value: obj) = target.Value <- value
+    [<CustomOperation("fx")>]
+    member __.Fx(_: unit, target: IExcelRange, value: IExcelRange) = target.Formula <- value.Formula
+    [<CustomOperation("fx")>]
+    member __.Fx(_: unit, target: IExcelRange, value: string) = target.Formula <- if (string value).StartsWith("=") then value else $"={value}"
 
   let op = CellOpBuilder ()
   let paste'mode = { Paste= PasteType.All; Op= PasteOperation.None; SkipBlanks= false; Transpose= false; }

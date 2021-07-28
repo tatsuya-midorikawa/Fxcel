@@ -1,5 +1,6 @@
 ﻿namespace Fxcel
 
+open System
 open System.Drawing
 open Midoliy.Office.Interop
 
@@ -14,13 +15,13 @@ module Font =
     member __.SetName(current: IRangeFont, name: string) = current.Name <- name; current
     [<CustomOperation("size")>]
     member __.SetSize(current: IRangeFont, size: float) = current.Size <- size; current
-    [<CustomOperation("style")>]
+    [<CustomOperation("style");Obsolete("'style' は将来的に削除されます. 代わりに 'set' を使ってください.")>]
     member __.SetStyle(current: IRangeFont, style: FontStyle) = current.Style <- style; current
-    [<CustomOperation("color")>]
+    [<CustomOperation("color");Obsolete("'color' は将来的に削除されます. 代わりに 'set' を使ってください.")>]
     member __.SetColor(current: IRangeFont, color: Color) = current.Color <- color; current
-    [<CustomOperation("color")>]
+    [<CustomOperation("color");Obsolete("'color' は将来的に削除されます. 代わりに 'set' を使ってください.")>]
     member __.SetColor(current: IRangeFont, color: RGB) = current.Color <- Color.FromArgb(color.r, color.g, color.b); current
-    [<CustomOperation("underline")>]
+    [<CustomOperation("underline");Obsolete("'underline' は将来的に削除されます. 代わりに 'set' を使ってください.")>]
     member __.SetUnderline(current: IRangeFont, underline: Underline) = current.Underline <- underline; current
     [<CustomOperation("bold")>]
     member __.SetBold(current: IRangeFont, on: bool) = current.Bold <- on; current
@@ -36,5 +37,18 @@ module Font =
     member __.SetSubscript(current: IRangeFont, on: bool) = current.Subscript <- on; current
     [<CustomOperation("superscript")>]
     member __.SetSuperscript(current: IRangeFont, on: bool) = current.Superscript <- on; current
+    
+    [<CustomOperation("set")>]
+    member __.Set(current: IRangeFont, name: string) = current.Name <- name; current
+    [<CustomOperation("set")>]
+    member __.Set(current: IRangeFont, size: float) = current.Size <- size; current
+    [<CustomOperation("set")>]
+    member __.Set(current: IRangeFont, style: FontStyle) = current.Style <- style; current
+    [<CustomOperation("set")>]
+    member __.Set(current: IRangeFont, underline: Underline) = current.Underline <- underline; current
+    [<CustomOperation("set")>]
+    member __.Set(current: IRangeFont, color: Color) = current.Color <- color; current
+    [<CustomOperation("set")>]
+    member __.Set(current: IRangeFont, color: RGB) = current.Color <- Color.FromArgb(color.r, color.g, color.b); current
 
   let font x = FontBuilder x
