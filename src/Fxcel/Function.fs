@@ -50,7 +50,7 @@ type Excel () =
   static member open' (filepath: string) = Excel.Open(getExcelPath filepath)
 
   /// <summary>
-  /// Cellなどから値を取得する.
+  /// Cell などから値を取得する.
   /// 複数要素がある場合, 先頭要素のみ取得.
   /// </summary>
   static member get (cell: IExcelRange) = 
@@ -59,19 +59,19 @@ type Excel () =
     | _ -> cell.Value
 
   /// <summary>
-  /// Cellなどから値を指定した型で取得する.
+  /// Cell などから値を指定した型で取得する.
   /// 複数要素がある場合, 先頭要素のみ取得.
   /// </summary>
   /// <exception cref="System.InvalidCastException">指定した型と互換性がない場合</exception>
   static member get<'T> (cell: IExcelRange) =  cell |> get |> cast<'T>
   
-  /// <summary>Rangeなどの範囲選択したCellから値を取得し配列情報に変換する.</summary>
+  /// <summary>Range などの範囲選択した Cell から値を取得し配列情報に変換する.</summary>
   static member gets (range: IExcelRange) = 
     match range.Value.GetType() with
     | t when t = typeof<obj[,]> -> (range.Value :?> obj[,]).[*,*]
     | _ -> Array2D.init 1 1 (fun i j -> range.Value )
   
-  /// <summary>Rangeなどの範囲選択したCellから値を取得し指定した型の配列情報に変換する.</summary>
+  /// <summary>Range などの範囲選択した Cell から値を取得し指定した型の配列情報に変換する.</summary>
   /// <exception cref="System.InvalidCastException">指定した型と互換性がない場合</exception>
   static member gets<'T> (range: IExcelRange) = 
     match range.Value.GetType() with
@@ -79,7 +79,7 @@ type Excel () =
     | _ -> Array2D.init 1 1 (fun i j -> range.Value |> cast<'T>)
 
   /// <summary>
-  /// Cellなどから関数を取得する.
+  /// Cell などから関数を取得する.
   /// 複数要素がある場合, 先頭要素のみ取得.
   /// </summary>
   static member getfx (cell: IExcelRange) = 
@@ -88,12 +88,22 @@ type Excel () =
     | t when t = typeof<obj[,]> -> (cell.Formula :?> obj[,]).[1, 1] |> cast<string>
     | _ -> ""
             
-  /// <summary>Rangeなどの範囲選択したCellから関数を取得し配列情報に変換する.</summary>
+  /// <summary>Range などの範囲選択した Cell から関数を取得し配列情報に変換する.</summary>
   static member getsfx (range: IExcelRange) =
     match range.Formula.GetType() with
     | t when t = typeof<string> -> range.Formula |> cast<string>
     | t when t = typeof<obj[,]> -> (range.Formula :?> obj[,]).[1, 1] |> cast<string>
     | _ -> ""
+    
+  /// <summary>index を Column name に変換する.</summary>
+  /// <example>
+  /// <code>
+  ///   let index = 1
+  ///   let name = index |> colname   // name is \"A\"
+  /// </code>
+  /// </example>
+  /// <exception cref="System.ArgumentOutOfRangeException">0以下の数値を指定した場合</exception>
+  static member colname (index: int) = index.ToColumnName()
 
   static member cells (row: IExcelRow) : seq<IExcelRange> =
     let enumerator = row.GetEnumerator()
@@ -141,12 +151,12 @@ module Function =
 
   let private isNullOrEmpty value = System.String.IsNullOrEmpty(value)
 
-  /// <summary>起動しているExcelプロセスを列挙する.</summary>
+  /// <summary>起動している Excel プロセスを列挙する.</summary>
   let enumerate () = 
     Excel.EnumerateProcess()
     |> Array.map (fun p -> { Name = p.MainWindowTitle; Hwnd = int p.MainWindowHandle })
     
-  /// <summary>起動しているExcelプロセスを表示する.</summary>
+  /// <summary>起動している Excel プロセスを表示する.</summary>
   let show () =
     let ps = enumerate()
     ps 
@@ -156,10 +166,10 @@ module Function =
       excel |> Seq.iteri (fun j wb -> printfn $"  workbook({j+1})= {wb.Name}"))
     ps
 
-  /// <summary>handleがExcelの場合アタッチする.</summary>
+  /// <summary>handle が Excel の場合アタッチする.</summary>
   let attach (handle: Handle) = Excel.Attach handle.Hwnd
   
-  /// <summary>プログラムをExcelからデタッチする.</summary>
+  /// <summary>プログラムを Excel からデタッチする.</summary>
   let detach (excel: IExcelApplication) = excel.Dispose()
   
   /// <summary>ドキュメントを上書き保存する.</summary>
@@ -168,12 +178,21 @@ module Function =
   /// <summary>ドキュメントを名前を付けて保存する.</summary>
   let inline saveAs filepath (doc: ^Doc) = (^Doc: (member SaveAs: string -> unit) doc, filepath)
 
-  /// <summary>指定したindexの位置にあるWorkbookを取得する.</summary>
+  /// <summary>指定した index の位置にある Workbook を取得する.</summary>
   let workbook (index: int) (excel: IExcelApplication) =
     if index <= 0 then raise (exn "index は 1 以上で指定してください")
     else excel.[index]
     
-  /// <summary>指定したindexの位置にあるWorksheetを取得する.</summary>
+  /// <summary>指定した index の位置にある Worksheet を取得する.</summary>
+  /// <param name="target">specify int or string value.</param>
+  /// <param name="book">target workbook instance.</param>
+  /// <example>
+  /// <code>
+  ///   let sheet = book |> worksheet(1)
+  ///   // or
+  ///   let sheet = book |> worksheet("Sheet1")
+  /// </code>
+  /// </example>
   let worksheet (target: obj) (book: IWorkbook) =
     match target with
     | :? string as name -> if isNullOrEmpty name then book.[1] else book.[name]
@@ -249,15 +268,15 @@ module Function =
       action i x
       i <- i + 1
     
-  /// <summary>Cellなどに値を設定する.</summary>
+  /// <summary>Cell などに値を設定する.</summary>
   let inline set value (cell: ^Cell) = (^Cell: (member set_Value: obj -> unit) cell, value)
 
-  /// <summary>Cellなどに関数を設定する.</summary>
+  /// <summary>Cell などに関数を設定する.</summary>
   let inline fx value (cell: ^Cell) = (^Cell: (member set_Formula: obj -> unit) cell, if (string value).StartsWith("=") then value else $"={value}")
   
-  /// <summary>Cellなどに背景色を設定する.</summary>
+  /// <summary>Cell などに背景色を設定する.</summary>
   let inline bgcolor (color: Color) (cell: IExcelRange) = cell.Interior.Color <- color
 
-  /// <summary>Cellなどに背景色パターンを設定する.</summary>
+  /// <summary>Cell などに背景色パターンを設定する.</summary>
   let inline bgpattern (pattern: Pattern) (cell: IExcelRange) = cell.Interior.Pattern <- pattern
 

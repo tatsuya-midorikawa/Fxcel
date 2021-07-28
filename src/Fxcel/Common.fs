@@ -40,13 +40,18 @@ module Constant =
   let light60 = Tint.Light60
   let light80 = Tint.Light80
   
-  let normal = FontStyle.None
-  let bold = FontStyle.Bold
-  let italic = FontStyle.Italic
-  let shadow = FontStyle.Shadow
-  let strikethrough = FontStyle.Strikethrough
-  let subscript = FontStyle.Subscript
-  let superscript = FontStyle.Superscript
-  let singleUnderline = FontStyle.SingleUnderline
-  let doubleUnderline = FontStyle.DoubleUnderline
+  let fs'normal = FontStyle.None
+  let fs'bold = FontStyle.Bold
+  let fs'italic = FontStyle.Italic
+  let fs'shadow = FontStyle.Shadow
+  let fs'strikethrough = FontStyle.Strikethrough
+  let fs'subscript = FontStyle.Subscript
+  let fs'superscript = FontStyle.Superscript
+  let fs'singleUnderline = FontStyle.SingleUnderline
+  let fs'doubleUnderline = FontStyle.DoubleUnderline
 
+  let ul'none = Underline.None
+  let ul'double = Underline.Double
+  let ul'doubleAccounting = Underline.DoubleAccounting
+  let ul'single = Underline.Single
+  let ul'singleAccounting = Underline.SingleAccounting

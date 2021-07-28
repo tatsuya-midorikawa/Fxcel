@@ -219,7 +219,7 @@ let main argv =
   let cell = sheet.["A1", "B3"]
 ```
 
-### ◼◻ Excel Rangeを行ごとに列挙する / `rows (range: IExcelRange)`
+### ◼◻ Excel Rangeを行ごとに列挙する / `rows (range: IExcelRange) / rowsi (range: IExcelRange)`
 
 ```fsharp
 [<EntryPoint>]
@@ -229,6 +229,14 @@ let main argv =
 
   // rows関数を利用して, 1行ずつ取得する
   for row in sheet.["A1:B3"] |> rows do
+    // 各Cell毎に何か処理をする
+    for cell in row do
+      // do somethings
+
+
+  // rowsi関数を利用して, インデックス付きで1行ずつ取得する
+  //   -> index は 1 始まりであることに注意する
+  for (index, row) in sheet.["A1:B3"] |> rowsi do
     // 各Cell毎に何か処理をする
     for cell in row do
       // do somethings
@@ -243,6 +251,14 @@ let main argv =
   let sheet = excel |> workbook(1) |> worksheet(1)
 
   // columns関数を利用して, 1行ずつ取得する
+  for column in sheet.["A1:B3"] |> columns do
+    // 各Cell毎に何か処理をする
+    for cell in column do
+      // do somethings
+
+
+  // columnsi関数を利用して, インデックス付きで1行ずつ取得する
+  //   -> index は 1 始まりであることに注意する
   for column in sheet.["A1:B3"] |> columns do
     // 各Cell毎に何か処理をする
     for cell in column do
@@ -356,6 +372,134 @@ let main argv =
   // 対象オブジェクトに値を設定する
   sheet.["A1"] |> fx "SUM(A2:A5)"
   sheet.["A1:B3"] |> fx "COUNT(A1:B3)"
+```
+
+### ◼◻ Excel Cell / Rangeオブジェクトなどに背景色を設定する / `bgcolor (color: Color) (target: IExcelRange)`
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> worksheet(1)
+
+  // 対象オブジェクトの背景色を設定する
+  sheet.["A1"] |> bgcolor Color.Red
+  sheet.["B1:B3"] |> bgcolor Color.Blue
+```
+
+### ◼◻ Excel Cell / Rangeオブジェクトなどに背景パターンを設定する / `bgpattern (pattern: Pattern) (target: IExcelRange)`
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> worksheet(1)
+
+  // 対象オブジェクトの背景パターンを設定する
+  sheet.["A1"] |> bgpattern Pattern.Checker
+  sheet.["B1:B3"] |> bgpattern Pattern.CrissCross
+```
+
+### ◼◻ 罫線を設定する / `ruledline (target: IExcelRange)` コンピュテーション式
+
+#### `ruledline` で利用できるカスタムオペレーション
+
+| operation name | description |
+| --- | --- |
+| `top (border)` | 最上部の横罫線. |
+| `bottom (border)` | 最下部の横罫線. |
+| `left (border)` | 最左部の縦罫線. |
+| `right (border)` | 最右部の縦罫線. |
+| `horizontal (border)` | 中間部の横罫線. |
+| `vertical (border)` | 中間部の縦罫線. |
+| `growing (border)` | 左下から右上に向けての罫線. 色や太さの設定は `falling` と共有. |
+| `falling (border)` | 左上から右下に向けての罫線. 色や太さの設定は `growing` と共有. |
+
+#### `border` で利用できるカスタムオペレーション
+
+| operation name | description | values |
+| --- | --- | --- |
+| `style (lineStyle)` | 罫線のスタイル. | `lineNone` / `dot` / `double` / `dash` / `continuous` / `dashdot` / `dashdotdot` / `slant`|
+| `weight (borderWeight)` | 罫線の太さ. | `medium` / `hairline` / `thin` / `thick` |
+| `color (colorValue)` | 罫線の色. | `Color.Red` / `Color.Orange` / `Color.Blue` and more... |
+| `rgb (rgbValue))` | 罫線の色. | `{ r= 0; g= 128; b= 255; }` |
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> worksheet(1)
+
+  // 罫線を設定する
+  ruledline sheet.["B2:C5"] {
+    top (border { color Color.Red })
+    left (border { color Color.Red; weight thick })
+    right (border { style dashdot })
+    bottom (border { weight medium })
+    horizontal (border { color Color.Blue; weight thick })
+    vertical (border { rgb { r= 0; g= 0; b= 255; }; weight thick })
+
+    // growing と falling は値がExcel内部で共有されているため、設定値は後勝ちする。
+    growing (border { color Color.Red })
+    falling (border { color Color.Orange })
+  }
+  |> ignore
+```
+
+### ◼◻ フォントを設定する / `font (target: IExcelRange)` コンピュテーション式
+
+#### `font` で利用できるカスタムオペレーション
+
+| operation name | description | values |
+| --- | --- | --- |
+| `name (name: string)` | フォント名. | `游ゴシック` / `メイリオ` / `consolas` and more... |
+| `size (size: float)` | フォントサイズ. | `8.0` / `10.5` / `24.0` and more... |
+| `style (style: FontStyle)` | フォントスタイル. `Flags` なので複数まとめて指定可能. | `fs'normal` / `fs'bold` / `fs'italic'` / `fs'shadow` / `fs'strikethrough` / `fs'subscript` / `fs'superscript` / `fs'singleUnderline` / `fs'doubleUnderline` |
+| `color (value: Color)` | フォント色. | `Color.Red` / `Color.Orange` / `Color.Blue` and more... |
+| `rgb (value: RGB)` | フォント色. | `{ r= 0; g= 128; b= 255; }` |
+| `underline (style: Underline)` | 下線. | `ul'none` / `ul'double` / `ul'doubleAccounting` / `ul'single` / `ul'singleAccounting` |
+| `bold (on: bool)` | 太字. | `true` or `false` |
+| `italic (on: bool)` | イタリック体. | `true` or `false` |
+| `shadow (on: bool)` | フォント影. | `true` or `false` |
+| `outline (on: bool)` | アウトラインフォント. | `true` or `false` |
+| `strikethrough (on: bool)` | 打ち消し線. | `true` or `false` |
+| `subscript (on: bool)` | 下付き文字にする. | `true` or `false` |
+| `superscript (on: bool)` | 上付き文字にする. | `true` or `false` |
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> worksheet(1)
+
+  // フォントを設定する
+  font sheet.["A1:A3"] {
+    // フォントの指定
+    name "メイリオ"
+    // フォントサイズの設定
+    size 16.0
+    // 下線の設定
+    underline ul'double
+
+    // フォント色の設定
+    color Color.Orange
+    // or
+    rgb { r= 0; g= 128; b= 255; }
+
+    // フォントスタイルの設定
+    style fs'normal
+    // スタイルを複数選択する場合は以下のように指定する.
+    style (fs'normal ||| fs'strikethrough ||| fs'shadow)
+    // style を利用しなくとも各種スタイルをひとつずつ ON/OFF 可能
+    bold true
+    italic true
+    shadow true
+    outline true
+    strikethrough true
+    subscript true
+    superscript true
+  }
+  |> ignore
 ```
 
 ---
