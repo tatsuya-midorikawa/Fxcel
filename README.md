@@ -685,3 +685,20 @@ let excel = ps.[0] |> attach;;
 
 excel |> detach;;
 ```
+
+### ◼◻ `LangVersion` の指定  
+
+**.NET 5** を利用している場合, うまくコンピュテーション式が動作しない可能性があります.  
+その場合は `LangVersion` に **preview** を指定するようにしてください.
+
+```xml
+<!-- .fsproj を書き換える場合 -->
+<PropertyGroup>
+  <LangVersion>preview</LangVersion>
+</PropertyGroup>
+```
+
+```powershell
+# dotnet fsi コマンドにオプションを指定する場合
+dotnet fsi --langversion:preview
+```
