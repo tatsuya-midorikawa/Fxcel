@@ -91,9 +91,8 @@ type Excel () =
   /// <summary>Range などの範囲選択した Cell から関数を取得し配列情報に変換する.</summary>
   static member getsfx (range: IExcelRange) =
     match range.Formula.GetType() with
-    | t when t = typeof<string> -> range.Formula |> cast<string>
-    | t when t = typeof<obj[,]> -> (range.Formula :?> obj[,]).[1, 1] |> cast<string>
-    | _ -> ""
+    | t when t = typeof<obj[,]> -> (range.Formula :?> obj[,]).[*,*]|> Array2D.map (fun v -> v |> cast<string>)
+    | _ -> Array2D.init 1 1 (fun i j -> range.Formula |> cast<string>)
     
   /// <summary>index を Column name に変換する.</summary>
   /// <example>

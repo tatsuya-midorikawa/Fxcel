@@ -12,8 +12,12 @@ try
   excel.Visibility <- AppVisibility.Visible
 
   let sheet = excel |> workbook(1) |> worksheet(1)
-
+  excel |> workbook(1) |> save
   sheet.["A1:A3"] |> set 100 
+  sheet.["B1:B3"] |> fx "SUM(A1:A3)"
+  let a = sheet.["A1:A3"] |> getsfx
+  let b = sheet.["B1:B3"] |> getsfx
+  ()
   //sheet.["B1:B3"] |> set 200
   //sheet.["C2"] |> set 200
   //let a = sheet.["C2"] |> getfx
@@ -27,17 +31,17 @@ try
   //excel |> workbook(1) |> worksheet(1) |> select
   //sheet.["A2,B4"] |> activate
 
-  op {
-    //copy sheet.["A1:A3"]
-    paste sheet.["B1"] paste'mode
-    //delete sheet.["A1:A3"] delete'mode
+  //op {
+  //  //copy sheet.["A1:A3"]
+  //  paste sheet.["B1"] paste'mode
+  //  //delete sheet.["A1:A3"] delete'mode
 
-    //paste sheet.["B1"] { paste'mode with Paste = paste'values; SkipBlanks = true }
-    //insert sheet.["B1"] insert'mode
-    //insert sheet.["B1"] { insert'mode with Shift = shift'down; Origin= origin'below }
-    //delete sheet.["A1"] delete'mode
-    //delete sheet.["A1"] { delete'mode with Shift= shift'up }
-  }
+  //  //paste sheet.["B1"] { paste'mode with Paste = paste'values; SkipBlanks = true }
+  //  //insert sheet.["B1"] insert'mode
+  //  //insert sheet.["B1"] { insert'mode with Shift = shift'down; Origin= origin'below }
+  //  //delete sheet.["A1"] delete'mode
+  //  //delete sheet.["A1"] { delete'mode with Shift= shift'up }
+  //}
 
   //ruledline sheet.["B2:C5"] {
   //  top { border with Color= Color.Red }
