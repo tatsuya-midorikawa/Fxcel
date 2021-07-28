@@ -8,11 +8,11 @@ module Interior =
 
   type RuledLineBuilder (range: IExcelRange) =
     member private __.Update(target: IBorders, index: BordersIndex, border: Border) =
-      match border.Style with
+      match border.LineStyle with
       | LineStyle.None ->
-        target.[index].LineStyle <- border.Style
+        target.[index].LineStyle <- border.LineStyle
       | _ ->
-        target.[index].LineStyle <- border.Style
+        target.[index].LineStyle <- border.LineStyle
         target.[index].Weight <- border.Weight
         target.[index].Color <- border.Color
       target

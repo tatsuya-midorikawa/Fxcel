@@ -18,8 +18,8 @@ module Font =
     member __.SetStyle(current: IRangeFont, style: FontStyle) = current.Style <- style; current
     [<CustomOperation("color")>]
     member __.SetColor(current: IRangeFont, color: Color) = current.Color <- color; current
-    [<CustomOperation("rgb")>]
-    member __.SetRGB(current: IRangeFont, color: RGB) = current.Color <- Color.FromArgb(color.r, color.g, color.b); current
+    [<CustomOperation("color")>]
+    member __.SetColor(current: IRangeFont, color: RGB) = current.Color <- Color.FromArgb(color.r, color.g, color.b); current
     [<CustomOperation("underline")>]
     member __.SetUnderline(current: IRangeFont, underline: Underline) = current.Underline <- underline; current
     [<CustomOperation("bold")>]
