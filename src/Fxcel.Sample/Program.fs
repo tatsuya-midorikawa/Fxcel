@@ -28,9 +28,9 @@ try
   //sheet.["A2,B4"] |> activate
 
   op {
-    copy sheet.["A1:A3"]
-    paste sheet.["B1:B3"] paste'mode
-    delete sheet.["A1:A3"] delete'mode
+    //copy sheet.["A1:A3"]
+    paste sheet.["B1"] paste'mode
+    //delete sheet.["A1:A3"] delete'mode
 
     //paste sheet.["B1"] { paste'mode with Paste = paste'values; SkipBlanks = true }
     //insert sheet.["B1"] insert'mode
@@ -113,8 +113,8 @@ try
   //  for cell in column do
   //    printf $"{cell |> get} "
   //  printfn ""
-finally
-  ()
+with
+  _ -> ()
 
 //[<EntryPoint>]
 //let main argv =
