@@ -28,7 +28,7 @@ dotnet fsi
 Fxcel を nuget から読み込みます。
 
 ```fsharp
-#r "nuget: Fxcel, 0.0.13";;
+#r "nuget: Fxcel, 0.0.14";;
 open Fxcel;;
 ```  
 
