@@ -634,7 +634,7 @@ sheet.["B1"] |> activate
 sheet.["A1:B3"] |> activate
 ```
 
-### ◼◻ ExcelObjectを選択する / `select (target: ^T): unit`
+### ◼◻ ExcelObjectを選択する<br>`select (target: ^T): unit`
 
 ```fsharp
 // Worksheet(1)を選択状態にする.
