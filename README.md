@@ -652,10 +652,10 @@ sheet.["D1:E3"] |> select
 
 ## 🔷 TIPS  
 
-### ◼◻ `try-finally` の利用  
+### ◼◻ `try-with` の利用  
 
 例外処理を施していない場合 Excel COM オブジェクトが適切に解放されず, プロセス上に残ってしまう恐れがあります.  
-`try-finally` (または `try-with`) と `use` を併用することで Excel COM オブジェクトの解放漏れを防げます.  
+`try-with` (または `try-with-finally`) と `use` を併用することで Excel COM オブジェクトの解放漏れを防げます.  
 
 ```fsharp
 try
@@ -664,8 +664,8 @@ try
 
   // do somethings
 
-finally
-  ()
+with
+  _ -> ()
 ```  
 
 また, F# Interactive で利用する場合, `attach` したあとは必ず `detach` する必要があります.  
