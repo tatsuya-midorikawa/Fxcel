@@ -8,50 +8,81 @@ type ThemeColor = { theme: Midoliy.Office.Interop.ThemeColor; tint: Tint }
 
 [<AutoOpen>]
 module Constant =
-  let medium = BorderWeight.Medium
-  let hairline = BorderWeight.Hairline
-  let thin = BorderWeight.Thin
-  let thick = BorderWeight.Thick
+  let rgb (r, g, b) = Color.FromArgb(r, g, b)
+
+  let weight'medium = BorderWeight.Medium
+  let weight'hairline = BorderWeight.Hairline
+  let weight'thin = BorderWeight.Thin
+  let weight'thick = BorderWeight.Thick
   
-  let lineNone = LineStyle.None
-  let dot = LineStyle.Dot
-  let double = LineStyle.Double
-  let dash = LineStyle.Dash
-  let continuous = LineStyle.Continuous
-  let dashdot = LineStyle.DashDot
-  let dashdotdot = LineStyle.DashDotDot
-  let slant = LineStyle.SlantDashDot
+  let linestyle'none = LineStyle.None
+  let linestyle'dot = LineStyle.Dot
+  let linestyle'double = LineStyle.Double
+  let linestyle'dash = LineStyle.Dash
+  let linestyle'continuous = LineStyle.Continuous
+  let linestyle'dashdot = LineStyle.DashDot
+  let linestyle'dashdotdot = LineStyle.DashDotDot
+  let linestyle'slant = LineStyle.SlantDashDot
 
-  let bg1 = Midoliy.Office.Interop.ThemeColor.Background1
-  let bg2 = Midoliy.Office.Interop.ThemeColor.Background2
-  let fg1 = Midoliy.Office.Interop.ThemeColor.Foreground1
-  let fg2 = Midoliy.Office.Interop.ThemeColor.Foreground2
-  let accent1 = Midoliy.Office.Interop.ThemeColor.Accent1
-  let accent2 = Midoliy.Office.Interop.ThemeColor.Accent2
-  let accent3 = Midoliy.Office.Interop.ThemeColor.Accent3
-  let accent4 = Midoliy.Office.Interop.ThemeColor.Accent4
-  let accent5 = Midoliy.Office.Interop.ThemeColor.Accent5
-  let accent6 = Midoliy.Office.Interop.ThemeColor.Accent6
+  let theme'bg1 = Midoliy.Office.Interop.ThemeColor.Background1
+  let theme'bg2 = Midoliy.Office.Interop.ThemeColor.Background2
+  let theme'fg1 = Midoliy.Office.Interop.ThemeColor.Foreground1
+  let theme'fg2 = Midoliy.Office.Interop.ThemeColor.Foreground2
+  let theme'accent1 = Midoliy.Office.Interop.ThemeColor.Accent1
+  let theme'accent2 = Midoliy.Office.Interop.ThemeColor.Accent2
+  let theme'accent3 = Midoliy.Office.Interop.ThemeColor.Accent3
+  let theme'accent4 = Midoliy.Office.Interop.ThemeColor.Accent4
+  let theme'accent5 = Midoliy.Office.Interop.ThemeColor.Accent5
+  let theme'accent6 = Midoliy.Office.Interop.ThemeColor.Accent6
 
-  let dark50 = Tint.Dark50
-  let dark25 = Tint.Dark25
-  let defultTint = Tint.Default
-  let light40 = Tint.Light40
-  let light60 = Tint.Light60
-  let light80 = Tint.Light80
+  let tint'dark50 = Tint.Dark50
+  let tint'dark25 = Tint.Dark25
+  let tint'defultTint = Tint.Default
+  let tint'light40 = Tint.Light40
+  let tint'light60 = Tint.Light60
+  let tint'light80 = Tint.Light80
   
-  let fs'normal = FontStyle.None
-  let fs'bold = FontStyle.Bold
-  let fs'italic = FontStyle.Italic
-  let fs'shadow = FontStyle.Shadow
-  let fs'strikethrough = FontStyle.Strikethrough
-  let fs'subscript = FontStyle.Subscript
-  let fs'superscript = FontStyle.Superscript
-  let fs'singleUnderline = FontStyle.SingleUnderline
-  let fs'doubleUnderline = FontStyle.DoubleUnderline
+  let style'normal = FontStyle.None
+  let style'bold = FontStyle.Bold
+  let style'italic = FontStyle.Italic
+  let style'shadow = FontStyle.Shadow
+  let style'strikethrough = FontStyle.Strikethrough
+  let style'subscript = FontStyle.Subscript
+  let style'superscript = FontStyle.Superscript
+  let style'singleUnderline = FontStyle.SingleUnderline
+  let style'doubleUnderline = FontStyle.DoubleUnderline
 
-  let ul'none = Underline.None
-  let ul'double = Underline.Double
-  let ul'doubleAccounting = Underline.DoubleAccounting
-  let ul'single = Underline.Single
-  let ul'singleAccounting = Underline.SingleAccounting
+  let underline'none = Underline.None
+  let underline'double = Underline.Double
+  let underline'doubleAccounting = Underline.DoubleAccounting
+  let underline'single = Underline.Single
+  let underline'singleAccounting = Underline.SingleAccounting
+
+  let shift'left = DeleteShiftDirection.Left
+  let shift'up = DeleteShiftDirection.Up
+  let shift'right = InsertShiftDirection.Right
+  let shift'down = InsertShiftDirection.Down
+
+  let paste'values = PasteType.Values
+  let paste'comments = PasteType.Comments
+  let paste'formulas = PasteType.Formulas
+  let paste'formats = PasteType.Formats
+  let paste'all = PasteType.All
+  let paste'validation = PasteType.Validation
+  let paste'exceptBorders = PasteType.AllExceptBorders
+  let paste'colmnWidths = PasteType.ColumnWidths
+  let paste'formulasAndNumberFormats = PasteType.FormulasAndNumberFormats
+  let paste'valuesAndNumberFormats = PasteType.ValuesAndNumberFormats
+  let paste'allUsingSourceTheme = PasteType.AllUsingSourceTheme
+  let paste'allMergingConditionalFormats = PasteType.AllMergingConditionalFormats
+  
+  let op'none = PasteOperation.None
+  let op'add = PasteOperation.Add
+  let op'sub = PasteOperation.Subtract
+  let op'mul = PasteOperation.Multiply
+  let op'div = PasteOperation.Divide
+
+  let origin'left = InsertFormatOrigin.FromLeftOrAbove
+  let origin'above = InsertFormatOrigin.FromLeftOrAbove
+  let origin'right = InsertFormatOrigin.FromRightOrBelow
+  let origin'below = InsertFormatOrigin.FromRightOrBelow

@@ -199,6 +199,9 @@ module Function =
     | :? int as index -> if index <= 0 then book.[1] else book.[index]
     | _ -> book.[1]
   
+  /// <summary>新しい Worksheet を追加する</summary>
+  let newsheet (book: IWorkbook) = book.NewSheet()
+
   /// <summary>
   /// WorkbookやWorksheet, Cellなどを選択する.
   /// activate関数で選択した場合, 単一選択となる.
@@ -213,7 +216,7 @@ module Function =
   let inline select (target: ^T) = (^T: (member Select: unit -> unit) target)
 
   /// <summary>対象のセル, 行, 列などを削除する</summary>
-  let inline delete (direction: DeleteShiftDirection) (range: ^Range) = (^Range: (member Delete: DeleteShiftDirection -> bool) range, direction)
+  let inline delete (direction: DeleteShiftDirection) (range: ^Range) = (^Range: (member Delete: DeleteShiftDirection -> bool) range, direction) |> ignore
   
   /// <summary>Cellなどからアドレス文字列を取得する</summary>
   let inline address (cell: ^Cell) = (^Cell: (member get_Address: unit -> string) cell)

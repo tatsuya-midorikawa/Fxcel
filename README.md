@@ -28,7 +28,7 @@ dotnet fsi
 Fxcel を nuget から読み込みます。
 
 ```fsharp
-#r "nuget: Fxcel, 0.0.11";;
+#r "nuget: Fxcel, 0.0.12";;
 open Fxcel;;
 ```  
 
@@ -189,6 +189,15 @@ let main argv =
 
   // シート名を指定して取得することもできる
   let sheet = excel |> workbook(1) |> worksheet("Sheet1")
+```
+
+### ◼◻ Excelワークシートを新規追加する / `newsheet (book: IWorkbook)`
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> newsheet
 ```
 
 ### ◼◻ Excel Cellオブジェクトを取得 / `sheet.[address]`
@@ -402,7 +411,7 @@ let main argv =
 
 ### ◼◻ 罫線を設定する / `ruledline (target: IExcelRange)` コンピュテーション式
 
-#### `ruledline` で利用できるカスタムオペレーション
+#### 📑 `ruledline` で利用できるカスタムオペレーション
 
 | operation name | description |
 | --- | --- |
@@ -415,14 +424,13 @@ let main argv =
 | `growing (border)` | 左下から右上に向けての罫線. 色や太さの設定は `falling` と共有. |
 | `falling (border)` | 左上から右下に向けての罫線. 色や太さの設定は `growing` と共有. |
 
-#### `border` で利用できるカスタムオペレーション
+#### 📑 `Border` に設定できる値
 
 | operation name | description | values |
 | --- | --- | --- |
-| `style (lineStyle)` | 罫線のスタイル. | `lineNone` / `dot` / `double` / `dash` / `continuous` / `dashdot` / `dashdotdot` / `slant`|
-| `weight (borderWeight)` | 罫線の太さ. | `medium` / `hairline` / `thin` / `thick` |
-| `color (colorValue)` | 罫線の色. | `Color.Red` / `Color.Orange` / `Color.Blue` and more... |
-| `rgb (rgbValue))` | 罫線の色. | `{ r= 0; g= 128; b= 255; }` |
+| `LineStyle` | 罫線のスタイル. | `linestyle'none` / `linestyle'dot` / `linestyle'double` / `linestyle'dash` / `linestyle'continuous` / `linestyle'dashdot` / `linestyle'dashdotdot` / `linestyle'slant`|
+| `Weight` | 罫線の太さ. | `weight'medium` / `weight'hairline` / `weight'thin` / `weight'thick` |
+| `Color` | 罫線の色. | `Color.Red` / `Color.Orange` / `Color.Blue` / `rgb(r, g, b)` and more... |
 
 ```fsharp
 [<EntryPoint>]
@@ -432,32 +440,33 @@ let main argv =
 
   // 罫線を設定する
   ruledline sheet.["B2:C5"] {
-    top (border { color Color.Red })
-    left (border { color Color.Red; weight thick })
-    right (border { style dashdot })
-    bottom (border { weight medium })
-    horizontal (border { color Color.Blue; weight thick })
-    vertical (border { rgb { r= 0; g= 0; b= 255; }; weight thick })
+    // 各 Border の値は with を利用して指定する.
+    top { border with Color= Color.Red }
+    left { border with Color= Color.Orange; Weight= weight'thick }
+    right { border with LineStyle= linestyle'dashdot }
+    bottom { border with Weight= weight'medium }
+    horizontal { border with Color= Color.Blue; Weight= weight'medium }
+    vertical { border with Color= rgb (0, 128, 255); Weight= weight'thin }
 
-    // growing と falling は値がExcel内部で共有されているため、設定値は後勝ちする。
-    growing (border { color Color.Red })
-    falling (border { color Color.Orange })
+    // growing と falling は値がExcel内部で共有されているため、設定値は後勝ちする.
+    growing { border with Weight= weight'hairline }
+    falling { border with Weight= weight'thick }
   }
   |> ignore
 ```
 
 ### ◼◻ フォントを設定する / `font (target: IExcelRange)` コンピュテーション式
 
-#### `font` で利用できるカスタムオペレーション
+#### 📑 `font` で利用できるカスタムオペレーション
 
 | operation name | description | values |
 | --- | --- | --- |
 | `name (name: string)` | フォント名. | `游ゴシック` / `メイリオ` / `consolas` and more... |
 | `size (size: float)` | フォントサイズ. | `8.0` / `10.5` / `24.0` and more... |
-| `style (style: FontStyle)` | フォントスタイル. `Flags` なので複数まとめて指定可能. | `fs'normal` / `fs'bold` / `fs'italic'` / `fs'shadow` / `fs'strikethrough` / `fs'subscript` / `fs'superscript` / `fs'singleUnderline` / `fs'doubleUnderline` |
+| `style (style: FontStyle)` | フォントスタイル. `Flags` なので複数まとめて指定可能. | `style'normal` / `style'bold` / `style'italic'` / `style'shadow` / `style'strikethrough` / `style'subscript` / `style'superscript` / `style'singleUnderline` / `style'doubleUnderline` |
 | `color (value: Color)` | フォント色. | `Color.Red` / `Color.Orange` / `Color.Blue` and more... |
-| `rgb (value: RGB)` | フォント色. | `{ r= 0; g= 128; b= 255; }` |
-| `underline (style: Underline)` | 下線. | `ul'none` / `ul'double` / `ul'doubleAccounting` / `ul'single` / `ul'singleAccounting` |
+| `color (value: RGB)` | フォント色. | `{ r= 0; g= 128; b= 255; }` |
+| `underline (style: Underline)` | 下線. | `underline'none` / `underline'double` / `underline'doubleAccounting` / `underline'single` / `underline'singleAccounting` |
 | `bold (on: bool)` | 太字. | `true` or `false` |
 | `italic (on: bool)` | イタリック体. | `true` or `false` |
 | `shadow (on: bool)` | フォント影. | `true` or `false` |
@@ -479,17 +488,19 @@ let main argv =
     // フォントサイズの設定
     size 16.0
     // 下線の設定
-    underline ul'double
+    underline underline'double
 
     // フォント色の設定
     color Color.Orange
     // or
-    rgb { r= 0; g= 128; b= 255; }
+    color ( rgb(0, 128, 255) )
+    // or
+    color { r= 0; g= 128; b= 255; }
 
     // フォントスタイルの設定
-    style fs'normal
+    style style'normal
     // スタイルを複数選択する場合は以下のように指定する.
-    style (fs'normal ||| fs'strikethrough ||| fs'shadow)
+    style (style'normal ||| style'strikethrough ||| style'shadow)
     // style を利用しなくとも各種スタイルをひとつずつ ON/OFF 可能
     bold true
     italic true
@@ -500,6 +511,141 @@ let main argv =
     superscript true
   }
   |> ignore
+```
+
+### ◼◻ Excel Cell / Range オブジェクトなどを操作する（コピー・ペースト・挿入・削除） / `op ()` コンピュテーション式
+
+
+#### 📑 `op` で利用できるカスタムオペレーション
+
+| operation name | description |
+| --- | --- |
+| `copy (target: IExcelRange)` | 対象をクリップボードにコピーする. |
+| `paste (target: IExcelRange, pasteMode: PasteMode)` | 対象にクリップボードの値を貼り付ける. |
+| `insert (target: IExcelRange, insertMode: InsertMode)` | 対象にクリップボードの値を挿入する. |
+| `delete (target: IExcelRange, deleteMode: DeleteMode)` | 対象を削除する. |
+
+#### 📑 `PasteMode` の要素
+
+| name | description | values |
+| --- | --- | --- |
+| `Paste` | 貼り付け方式. / `default: paste'all` | `paste'values` / `paste'comments` / `paste'formulas` / `paste'formats` / `paste'all` / `paste'validation` / `paste'exceptBorders` / `paste'colmnWidths` / `paste'formulasAndNumberFormats` / `paste'valuesAndNumberFormats` / `paste'allUsingSourceTheme` / `paste'allMergingConditionalFormats` |
+| `Op` | 貼り付け時の演算方法. / `default: op'none`| `op'none` / `op'add` / `op'sub` / `op'mul` / `op'div` |
+| `SkipBlanks` | 空白セルを無視するか. / `default: false` | `true` or `false` |
+| `SkipBlanks` | 行列を入れ替えるか. / `default: false` | `true` or `false` |
+
+#### 📑 `InsertMode` の要素
+
+| name | description | values |
+| --- | --- | --- |
+| `Shift` | 挿入後に他のセルをどうシフト移動するか. / `default: shift'down` | `shift'right` / `shift'down` |
+| `Origin` | 書式をコピーしてくる方向. / `default: origin'right / origin'below` | `origin'left` / `origin'above` / `origin'right` / `origin'below` |
+
+#### 📑 `DeleteMode` の要素
+
+| name | description | values |
+| --- | --- | --- |
+| `Shift` | 削除後に他のセルをどうシフト移動するか. | `shift'left` / `shift'up` |
+
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> worksheet(1)
+  
+  op {
+    // A1 をクリップボードにコピー
+    copy sheet.["A1"]
+    // 範囲コピーも可能
+    copy sheet.["A1:A3"]
+
+    // クリップボードのデータを B1 に貼り付け
+    paste sheet.["B1"] paste'mode
+    paste sheet.["B1"] { paste'mode with Paste= paste'values }
+    paste sheet.["B1"] { paste'mode with SkipBlanks= true }
+    paste sheet.["B1"] { paste'mode with Paste= paste'values; SkipBlanks= true }
+    // 範囲貼り付けも可能
+    paste sheet.["B1:B3"] paste'mode
+
+    // クリップボードのデータを C1 に挿入
+    insert sheet.["C1"] insert'mode
+    insert sheet.["C1"] { insert'mode with Shift= shift'down }
+    insert sheet.["C1"] { insert'mode with Origin= origin'below }
+    insert sheet.["C1"] { insert'mode with Shift= shift'right; Origin= origin'below }
+    // 範囲挿入も可能
+    insert sheet.["C1:C3"] insert'mode
+
+    // A1 のデータを削除する
+    delete sheet.["A1"] delete'mode
+    delete sheet.["A1"] { delete'mode with Shift= shift'up }
+    // 範囲削除も可能
+    delete sheet.["A1:A3"] delete'mode
+  }
+```
+
+### ◼◻ Excel Cell / Range オブジェクトなどを削除する / `delete (direction: DeleteShiftDirection) (target: ^Range)`
+
+#### 📑 `DeleteShiftDirection`
+
+| value | description |
+| --- | --- |
+| `shift'left` | 削除後, 左方向へシフト. |
+| `shift'up` | 削除後, 上方向へシフト. |
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> worksheet(1)
+  
+  // 対象を削除する
+  sheet.["A1"] |> delete shift'up
+  sheet.["A1:A3"] |> delete shift'left
+```
+
+---
+
+## 🔷 Utility  
+
+### ◼◻ 数値をカラム名に変換する / `colname (index: int)`
+
+```fsharp
+let name = 1 |> colname     // A
+let name = 10 |> colname    // J
+let name = 128 |> colname   // DX
+```
+
+### ◼◻ 対象の Range オブジェクトからアドレスを取得する / `address (target: IExcelRange)`
+
+```fsharp
+let adds = sheet.["A1"] |> address      // $A$1
+let adds = sheet.["A1:B3"] |> address   // $A$1:$B$3
+```
+
+### ◼◻ 対象の Excel オブジェクトを選択する / `activate (target: ^T)`
+
+```fsharp
+// Workbookを選択状態にする
+excel |> workbook(1) |> activate
+
+// Worksheetを選択状態にする
+excel |> workbook(1) |> worksheet(1) |> activate
+
+// Cellを選択状態にする
+sheet.["B1"] |> activate
+sheet.["A1:B3"] |> activate
+```
+
+### ◼◻ 対象の Excel オブジェクトを選択する / `select (target: ^T)`
+
+```fsharp
+// Worksheet(1)を選択状態にする
+excel |> workbook(1) |> worksheet(1) |> select
+
+// Cellを選択状態にする
+sheet.["B1"] |> select
+sheet.["D1:E3"] |> select
 ```
 
 ---
