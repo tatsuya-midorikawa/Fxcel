@@ -28,7 +28,7 @@ dotnet fsi
 Fxcel を nuget から読み込みます。
 
 ```fsharp
-#r "nuget: Fxcel, 0.0.13";;
+#r "nuget: Fxcel, 0.0.14";;
 open Fxcel;;
 ```  
 
@@ -108,7 +108,7 @@ excel |> detach;;
 
 ## 🔷 Reference  
 
-### ◼◻ Excelワークブックを新規作成する / `create ()`
+### ◼◻ Workbookを新規作成する<br>`create (): IExcelApplication`
 
 ```fsharp
 [<EntryPoint>]
@@ -116,7 +116,7 @@ let main argv =
   use excel = create ()
 ```
 
-### ◼◻ 既存のExcelワークブックをテンプレートとして新規Excelワークブックを作成する / `create (template: string)`
+### ◼◻ 既存Workbookをテンプレートとして新規Workbookを作成する<br>`create (template: string): IExcelApplication`
 
 ```fsharp
 [<EntryPoint>]
@@ -124,7 +124,7 @@ let main argv =
   use excel = create "C:/work/sample.xlsx"
 ```
 
-### ◼◻ 既存のExcelワークブックを開く / `open' (filepath: string)`
+### ◼◻ 既存Workbookを開く<br>`open' (filepath: string): IExcelApplication`
 
 ```fsharp
 [<EntryPoint>]
@@ -132,66 +132,72 @@ let main argv =
   use excel = open' "C:/work/sample.xlsx"
 ```
 
-### ◼◻ Excelワークブックを名前を付けて保存する / `saveAs (filepath: string) excelObject`
+### ◼◻ Workbookを名前を付けて保存する<br>`saveAs (filepath: string) (excelObject: ^ExcelObject): unit`
 
 ```fsharp
 [<EntryPoint>]
 let main argv =
-  // Excelワークブックを新規作成
+  // Workbookを新規作成し, ExcelApplicationを取得.
   use excel = create()
-  // 先頭のワークブックを取得する
-  let book = excel |> workbook(1)
-  
-  // do somethings
 
-  // 名前を付けて保存
+  // (1) Workbookを利用して, 名前を付けて保存.
+  let book = excel |> workbook(1)
+  // do somethings
   book |> saveAs "C:/work/sample.xlsx"
-```
 
-### ◼◻ Excelワークブックを上書き保存する / `save excelObject`
-
-```fsharp
-[<EntryPoint>]
-let main argv =
-  // 既存のExcelワークブックを開く
-  use excel = open' "C:/work/sample.xlsx"
-  // 先頭のワークブックを取得する
-  let book = excel |> workbook(1)
-
+  // (2) Worksheetを利用して, 名前を付けて保存.
+  let sheet = excel |> workbook(1) |> worksheet(1)
   // do somethings
-
-  // 上書き保存する
-  book |> save
+  sheet |> saveAs "C:/work/sample.xlsx"
 ```
 
-### ◼◻ Excelワークブックオブジェクトを取得する / `workbook (index: int) (excel: IExcelApplication)`
+### ◼◻ Workbookを上書き保存する<br>`save (excelObject: ^ExcelObject): unit`
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  // 既存のExcelワークブックを開く.
+  use excel = open' "C:/work/sample.xlsx"
+
+  // (1) Workbookを利用して, 上書き保存.
+  let book = excel |> workbook(1)
+  // do somethings
+  book |> save
+
+  // (2) Worksheetを利用して, 上書き保存.
+  let sheet = excel |> workbook(1) |> worksheet(1)
+  // do somethings
+  sheet |> save
+```
+
+### ◼◻ Workbookを取得する<br>`workbook (index: int) (excel: IExcelApplication): IWorkbook`
 
 ```fsharp
 [<EntryPoint>]
 let main argv =
   use excel = open' "C:/work/sample.xlsx"
 
-  // ワークブックオブジェクトを取得する
-  //   -> index は 1 始まりであることに注意する
+  // indexを指定してWorkbookを取得.
+  //   -> index は 1 始まりであることに注意する.
   let book = excel |> workbook(1)
 ```
 
-### ◼◻ Excelワークシートオブジェクトを取得する / `worksheet (index: int | string) (workbook: IWrokbook)`
+### ◼◻ Worksheetを取得する<br>`worksheet (index: int | string) (workbook: IWrokbook): IWorksheet`
 
 ```fsharp
 [<EntryPoint>]
 let main argv =
   use excel = open' "C:/work/sample.xlsx"
 
-  // ワークシートオブジェクトを取得する
-  //   -> index は 1 始まりであることに注意する
+  // (1) indexを指定してWorksheetを取得.
+  //   -> index は 1 始まりであることに注意する.
   let sheet = excel |> workbook(1) |> worksheet(1)
 
-  // シート名を指定して取得することもできる
+  // (2) sheet nameを指定して取得.
   let sheet = excel |> workbook(1) |> worksheet("Sheet1")
 ```
 
-### ◼◻ Excelワークシートを新規追加する / `newsheet (book: IWorkbook)`
+### ◼◻ Worksheetを新規追加する<br>`newsheet (book: IWorkbook): IWorksheet`
 
 ```fsharp
 [<EntryPoint>]
@@ -200,7 +206,7 @@ let main argv =
   let sheet = excel |> workbook(1) |> newsheet
 ```
 
-### ◼◻ Excel Cellオブジェクトを取得 / `sheet.[address]`
+### ◼◻ IExcelRangeオブジェクトを取得する<br>`sheet.[address]: IExcelRange`
 
 ```fsharp
 [<EntryPoint>]
@@ -208,13 +214,17 @@ let main argv =
   use excel = open' "C:/work/sample.xlsx"
   let sheet = excel |> workbook(1) |> worksheet(1)
 
-  // Cellオブジェクトをアドレス形式で取得
+  // (1) アドレス形式で取得.
   let cell = sheet.["A1"]
-  // CellオブジェクトをR1C1形式で取得
+  // (2) R1C1形式で取得.
   let cell = sheet.[1, 1]
+  // (3) 範囲をアドレス形式で取得.
+  let range = sheet.["A1:B3"]
+  // (4) 範囲を始点セルアドレスと終点セルアドレスを指定して取得.
+  let range = sheet.["A1", "B3"]
 ```
 
-### ◼◻ Excel Rangeオブジェクトを取得 / `sheet.[address]`
+### ◼◻ 範囲データを行ごとに列挙する<br>`rows (range: IExcelRange): seq<IExcelRow>` `rowsi (range: IExcelRange): seq<int * IExcelRow>`
 
 ```fsharp
 [<EntryPoint>]
@@ -222,36 +232,22 @@ let main argv =
   use excel = open' "C:/work/sample.xlsx"
   let sheet = excel |> workbook(1) |> worksheet(1)
 
-  // Rangeオブジェクトをアドレス形式で取得
-  let cell = sheet.["A1:B3"]
-  // Cellオブジェクトを2つのアドレスを指定して取得
-  let cell = sheet.["A1", "B3"]
-```
-
-### ◼◻ Excel Rangeを行ごとに列挙する / `rows (range: IExcelRange) / rowsi (range: IExcelRange)`
-
-```fsharp
-[<EntryPoint>]
-let main argv =
-  use excel = open' "C:/work/sample.xlsx"
-  let sheet = excel |> workbook(1) |> worksheet(1)
-
-  // rows関数を利用して, 1行ずつ取得する
+  // rows関数を利用して, 1行ずつ取得.
   for row in sheet.["A1:B3"] |> rows do
-    // 各Cell毎に何か処理をする
+    // 各Cell毎に何か処理.
     for cell in row do
       // do somethings
 
 
-  // rowsi関数を利用して, インデックス付きで1行ずつ取得する
-  //   -> index は 1 始まりであることに注意する
+  // rowsi関数を利用して, インデックス付きで1行ずつ取得.
+  //   -> index は 1 始まりであることに注意.
   for (index, row) in sheet.["A1:B3"] |> rowsi do
-    // 各Cell毎に何か処理をする
+    // 各Cell毎に何か処理.
     for cell in row do
       // do somethings
 ```
 
-### ◼◻ Excel Rangeを列ごとに列挙する / `columns (range: IExcelRange)`
+### ◼◻ 範囲データを列ごとに列挙する<br>`columns (range: IExcelRange): seq<IExcelColumn>` `columnsi (range: IExcelRange): seq<int * IExcelColumn>`
 
 ```fsharp
 [<EntryPoint>]
@@ -259,22 +255,22 @@ let main argv =
   use excel = open' "C:/work/sample.xlsx"
   let sheet = excel |> workbook(1) |> worksheet(1)
 
-  // columns関数を利用して, 1行ずつ取得する
+  // columns関数を利用して, 1行ずつ取得.
   for column in sheet.["A1:B3"] |> columns do
-    // 各Cell毎に何か処理をする
+    // 各Cell毎に何か処理.
     for cell in column do
       // do somethings
 
 
-  // columnsi関数を利用して, インデックス付きで1行ずつ取得する
-  //   -> index は 1 始まりであることに注意する
-  for column in sheet.["A1:B3"] |> columns do
-    // 各Cell毎に何か処理をする
+  // columnsi関数を利用して, インデックス付きで1行ずつ取得.
+  //   -> index は 1 始まりであることに注意.
+  for (index, column) in sheet.["A1:B3"] |> columnsi do
+    // 各Cell毎に何か処理.
     for cell in column do
       // do somethings
 ```
 
-### ◼◻ Excel Cellオブジェクトから値を取得する / `get (cell: IExcelRange) / get<'T> (cell: IExcelRange)`
+### ◼◻ 値を取得する<br>`get (cell: IExcelRange): obj` `get<'T> (cell: IExcelRange): 'T`
 
 ```fsharp
 [<EntryPoint>]
@@ -282,24 +278,24 @@ let main argv =
   use excel = open' "C:/work/sample.xlsx"
   let sheet = excel |> workbook(1) |> worksheet(1)
 
-  // Cellオブジェクトから値を取得する
+  // 値を取得.
   let v: obj = sheet.["A1"] |> get
 
-  // Cellオブジェクトから値を指定した型で取得する
-  //   -> 指定した型と互換性がない場合, System.InvalidCastException
+  // 値を型付きで取得.
+  //   -> 指定した型と互換性がない場合, System.InvalidCastException.
   let v: int = sheet.["A1"] |> get<int>
 
-  // 複数要素がある場合は先頭要素の値を取得する.
+  // 複数要素がある場合は先頭要素の値のみ取得.
   //   -> 以下の場合 sheet.["A1"] の値が得られる.
   let v: obj = sheet.["A1:B3"] |> get
 
-  // 複数要素がある場合は先頭要素の値を指定した型で取得する.
+  // 複数要素がある場合は先頭要素の型付きの値のみ取得.
   //   -> 以下の場合 sheet.["A1"] の値が得られる.
-  //   -> 指定した型と互換性がない場合, System.InvalidCastException
+  //   -> 指定した型と互換性がない場合, System.InvalidCastException.
   let v: int = sheet.["A1:B3"] |> get<int>
 ```
 
-### ◼◻ Excel Rangeオブジェクトから値を取得する / `gets (range: IExcelRange) / gets<'T> (range: IExcelRange)`
+### ◼◻ 値を配列データで取得する<br>`gets (range: IExcelRange): obj [,]` `gets<'T> (range: IExcelRange): 'T [,]`
 
 ```fsharp
 [<EntryPoint>]
@@ -307,33 +303,33 @@ let main argv =
   use excel = open' "C:/work/sample.xlsx"
   let sheet = excel |> workbook(1) |> worksheet(1)
 
-  // Rangeオブジェクトから値を取得する
+  // 値を配列データとして取得.
   let vs: obj [,]  = sheet.["A1:A3"] |> gets
 
-  // Rangeオブジェクトから値を指定した型で取得する
-  //   -> 指定した型と互換性がない場合, System.InvalidCastException
+  // 値を型付きの配列データとして取得.
+  //   -> 指定した型と互換性がない場合, System.InvalidCastException.
   let vs: int [,]  = sheet.["A1:A3"] |> gets<int>
 
-  // Rangeオブジェクトから先頭要素の値を取得する
+  // 取得した配列データから先頭要素の値を取得.
   //   -> 以下の場合 sheet.["A1"] の値が得られる.
   let v: obj = sheet.["A1:B3"] |> gets |> head
 
-  // Rangeオブジェクトから先頭要素の値を指定した型で取得する
+  // 取得した型付きの配列データから先頭要素の値を取得.
   //   -> 以下の場合 sheet.["A1"] の値が得られる.
-  //   -> 指定した型と互換性がない場合, System.InvalidCastException
+  //   -> 指定した型と互換性がない場合, System.InvalidCastException.
   let v: int = sheet.["A1:B3"] |> gets<int> |> head
 
-  // 複数要素がある場合は最終要素の値を取得する.
+  // 取得した配列データから末尾要素の値を取得.
   //   -> 以下の場合 sheet.["B3"] の値が得られる.
   let v: obj = sheet.["A1:B3"] |> gets |> last
 
-  // 複数要素がある場合は最終要素の値を指定した型で取得する.
+  // 取得した型付きの配列データから末尾要素の値を取得.
   //   -> 以下の場合 sheet.["B3"] の値が得られる.
-  //   -> 指定した型と互換性がない場合, System.InvalidCastException
+  //   -> 指定した型と互換性がない場合, System.InvalidCastException.
   let v: int = sheet.["A1:B3"] |> gets<int> |> last
 ```
 
-### ◼◻ Excel Cellオブジェクトから関数を取得する / `getfx (cell: IExcelRange)`
+### ◼◻ 関数を取得する<br>`getfx (cell: IExcelRange): string`
 
 ```fsharp
 [<EntryPoint>]
@@ -341,11 +337,11 @@ let main argv =
   use excel = open' "C:/work/sample.xlsx"
   let sheet = excel |> workbook(1) |> worksheet(1)
 
-  // Cellオブジェクトから関数を取得する
+  // 関数を取得.
   let fn: string = sheet.["A1"] |> getfx
 ```
 
-### ◼◻ Excel Rnageオブジェクトから関数を取得する / `getsfx (range: IExcelRange)`
+### ◼◻ 関数を配列データで取得する<br>`getsfx (range: IExcelRange): string [,]`
 
 ```fsharp
 [<EntryPoint>]
@@ -353,11 +349,11 @@ let main argv =
   use excel = open' "C:/work/sample.xlsx"
   let sheet = excel |> workbook(1) |> worksheet(1)
 
-  // Rangeオブジェクトから関数を取得する
+  // 関数を配列データで取得.
   let fns: string [,] = sheet.["A1:A3"] |> getsfx
 ```
 
-### ◼◻ Excel Cell / Rangeオブジェクトに値を設定する / `set (value: obj) (target: IExcelRange)`
+### ◼◻ 値を設定する<br>`set (value: obj) (target: IExcelRange): unit`
 
 ```fsharp
 [<EntryPoint>]
@@ -365,12 +361,12 @@ let main argv =
   use excel = open' "C:/work/sample.xlsx"
   let sheet = excel |> workbook(1) |> worksheet(1)
 
-  // 対象オブジェクトに値を設定する
+  // 値を設定.
   sheet.["A1"] |> set 100
   sheet.["A1:B3"] |> set 100
 ```
 
-### ◼◻ Excel Cell / Rangeオブジェクトに関数を設定する / `fx (func: string) (target: IExcelRange)`
+### ◼◻ 関数を設定する<br>`fx (func: string) (target: IExcelRange): unit`
 
 ```fsharp
 [<EntryPoint>]
@@ -378,12 +374,12 @@ let main argv =
   use excel = open' "C:/work/sample.xlsx"
   let sheet = excel |> workbook(1) |> worksheet(1)
 
-  // 対象オブジェクトに値を設定する
+  // 関数を設定.
   sheet.["A1"] |> fx "SUM(A2:A5)"
   sheet.["A1:B3"] |> fx "COUNT(A1:B3)"
 ```
 
-### ◼◻ Excel Cell / Rangeオブジェクトなどに背景色を設定する / `bgcolor (color: Color) (target: IExcelRange)`
+### ◼◻ 背景色を設定する<br>`bgcolor (color: Color) (target: IExcelRange): unit`
 
 ```fsharp
 [<EntryPoint>]
@@ -391,12 +387,13 @@ let main argv =
   use excel = open' "C:/work/sample.xlsx"
   let sheet = excel |> workbook(1) |> worksheet(1)
 
-  // 対象オブジェクトの背景色を設定する
+  // 背景色を設定.
   sheet.["A1"] |> bgcolor Color.Red
   sheet.["B1:B3"] |> bgcolor Color.Blue
+  sheet.["C1"] |> bgcolor (rgb(0, 128, 255))
 ```
 
-### ◼◻ Excel Cell / Rangeオブジェクトなどに背景パターンを設定する / `bgpattern (pattern: Pattern) (target: IExcelRange)`
+### ◼◻ 背景パターンを設定する<br>`bgpattern (pattern: Pattern) (target: IExcelRange): unit`
 
 ```fsharp
 [<EntryPoint>]
@@ -404,12 +401,12 @@ let main argv =
   use excel = open' "C:/work/sample.xlsx"
   let sheet = excel |> workbook(1) |> worksheet(1)
 
-  // 対象オブジェクトの背景パターンを設定する
+  // 背景パターンを設定.
   sheet.["A1"] |> bgpattern Pattern.Checker
   sheet.["B1:B3"] |> bgpattern Pattern.CrissCross
 ```
 
-### ◼◻ 罫線を設定する / `ruledline (target: IExcelRange)` コンピュテーション式
+### ◼◻ 罫線を設定する<br>`ruledline (target: IExcelRange): IBorders` コンピュテーション式
 
 #### 📑 `ruledline` で利用できるカスタムオペレーション
 
@@ -428,9 +425,9 @@ let main argv =
 
 | operation name | description | values |
 | --- | --- | --- |
-| `LineStyle` | 罫線のスタイル. | `linestyle'none` / `linestyle'dot` / `linestyle'double` / `linestyle'dash` / `linestyle'continuous` / `linestyle'dashdot` / `linestyle'dashdotdot` / `linestyle'slant`|
-| `Weight` | 罫線の太さ. | `weight'medium` / `weight'hairline` / `weight'thin` / `weight'thick` |
-| `Color` | 罫線の色. | `Color.Red` / `Color.Orange` / `Color.Blue` / `rgb(r, g, b)` and more... |
+| `LineStyle` | 罫線のスタイル.<br>default: `linestyle'continuous` | `linestyle'none`<br>`linestyle'dot`<br>`linestyle'double`<br>`linestyle'dash`<br>`linestyle'continuous`<br>`linestyle'dashdot`<br>`linestyle'dashdotdot`<br>`linestyle'slant`|
+| `Weight` | 罫線の太さ.<br>default: `weight'medium` | `weight'medium`<br>`weight'hairline`<br>`weight'thin`<br>`weight'thick` |
+| `Color` | 罫線の色.<br>default: `Color.Black` | `Color.Red`<br>`Color.Orange`<br>`Color.Blue`<br>`rgb(r, g, b)`<br>and more... |
 
 ```fsharp
 [<EntryPoint>]
@@ -438,9 +435,9 @@ let main argv =
   use excel = open' "C:/work/sample.xlsx"
   let sheet = excel |> workbook(1) |> worksheet(1)
 
-  // 罫線を設定する
+  // 罫線を設定.
   ruledline sheet.["B2:C5"] {
-    // 各 Border の値は with を利用して指定する.
+    // 各 Border の値は with を利用して指定.
     top { border with Color= Color.Red }
     left { border with Color= Color.Orange; Weight= weight'thick }
     right { border with LineStyle= linestyle'dashdot }
@@ -455,18 +452,18 @@ let main argv =
   |> ignore
 ```
 
-### ◼◻ フォントを設定する / `font (target: IExcelRange)` コンピュテーション式
+### ◼◻ フォントを設定する / `font (target: IExcelRange): IRangeFont` コンピュテーション式
 
 #### 📑 `font` で利用できるカスタムオペレーション
 
 | operation name | description | values |
 | --- | --- | --- |
-| `name (name: string)` | フォント名. | `游ゴシック` / `メイリオ` / `consolas` and more... |
-| `size (size: float)` | フォントサイズ. | `8.0` / `10.5` / `24.0` and more... |
-| `style (style: FontStyle)` | フォントスタイル. `Flags` なので複数まとめて指定可能. | `style'normal` / `style'bold` / `style'italic'` / `style'shadow` / `style'strikethrough` / `style'subscript` / `style'superscript` / `style'singleUnderline` / `style'doubleUnderline` |
-| `color (value: Color)` | フォント色. | `Color.Red` / `Color.Orange` / `Color.Blue` and more... |
+| `name (name: string)` | フォント名. | `游ゴシック`<br>`メイリオ`<br>`consolas`<br>and more... |
+| `size (size: float)` | フォントサイズ. | `8.0`<br>`10.5`<br>`24.0`<br>and more... |
+| `style (style: FontStyle)` | フォントスタイル. `Flags` なので複数まとめて指定可能. | `style'normal`<br>`style'bold`<br>`style'italic'`<br>`style'shadow`<br>`style'strikethrough`<br>`style'subscript`<br>`style'superscript`<br>`style'singleUnderline`<br>`style'doubleUnderline` |
+| `color (value: Color)` | フォント色. | `Color.Red`<br>`Color.Orange`<br>`Color.Blue`<br>and more... |
 | `color (value: RGB)` | フォント色. | `{ r= 0; g= 128; b= 255; }` |
-| `underline (style: Underline)` | 下線. | `underline'none` / `underline'double` / `underline'doubleAccounting` / `underline'single` / `underline'singleAccounting` |
+| `underline (style: Underline)` | 下線. | `underline'none`<br>`underline'double`<br>`underline'doubleAccounting`<br>`underline'single`<br>`underline'singleAccounting` |
 | `bold (on: bool)` | 太字. | `true` or `false` |
 | `italic (on: bool)` | イタリック体. | `true` or `false` |
 | `shadow (on: bool)` | フォント影. | `true` or `false` |
@@ -481,27 +478,27 @@ let main argv =
   use excel = open' "C:/work/sample.xlsx"
   let sheet = excel |> workbook(1) |> worksheet(1)
 
-  // フォントを設定する
+  // フォントを設定.
   font sheet.["A1:A3"] {
-    // フォントの指定
+    // フォントの指定.
     name "メイリオ"
-    // フォントサイズの設定
+    // フォントサイズの設定.
     size 16.0
-    // 下線の設定
+    // 下線の設定.
     underline underline'double
 
-    // フォント色の設定
+    // フォント色の設定.
     color Color.Orange
     // or
     color ( rgb(0, 128, 255) )
     // or
     color { r= 0; g= 128; b= 255; }
 
-    // フォントスタイルの設定
+    // フォントスタイルの設定.
     style style'normal
-    // スタイルを複数選択する場合は以下のように指定する.
+    // スタイルを複数選択する場合は以下のように指定.
     style (style'normal ||| style'strikethrough ||| style'shadow)
-    // style を利用しなくとも各種スタイルをひとつずつ ON/OFF 可能
+    // style を利用しなくとも各種スタイルをひとつずつ ON/OFF 可能.
     bold true
     italic true
     shadow true
@@ -513,7 +510,7 @@ let main argv =
   |> ignore
 ```
 
-### ◼◻ Excel Cell / Range オブジェクトなどを操作する（コピー・ペースト・挿入・削除） / `op ()` コンピュテーション式
+### ◼◻ IExcelRangeオブジェクトを操作する（コピー・ペースト・挿入・削除）<br>`op` コンピュテーション式
 
 
 #### 📑 `op` で利用できるカスタムオペレーション
@@ -529,23 +526,23 @@ let main argv =
 
 | name | description | values |
 | --- | --- | --- |
-| `Paste` | 貼り付け方式. / `default: paste'all` | `paste'values` / `paste'comments` / `paste'formulas` / `paste'formats` / `paste'all` / `paste'validation` / `paste'exceptBorders` / `paste'colmnWidths` / `paste'formulasAndNumberFormats` / `paste'valuesAndNumberFormats` / `paste'allUsingSourceTheme` / `paste'allMergingConditionalFormats` |
-| `Op` | 貼り付け時の演算方法. / `default: op'none`| `op'none` / `op'add` / `op'sub` / `op'mul` / `op'div` |
-| `SkipBlanks` | 空白セルを無視するか. / `default: false` | `true` or `false` |
-| `SkipBlanks` | 行列を入れ替えるか. / `default: false` | `true` or `false` |
+| `Paste` | 貼り付け方式.<br>default: `paste'all` | `paste'values`<br>`paste'comments`<br>`paste'formulas`<br>`paste'formats`<br>`paste'all`<br>`paste'validation`<br>`paste'exceptBorders`<br>`paste'colmnWidths`<br>`paste'formulasAndNumberFormats`<br> `paste'valuesAndNumberFormats`<br>`paste'allUsingSourceTheme`<br>`paste'allMergingConditionalFormats` |
+| `Op` | 貼り付け時の演算方法.<br>default: `op'none` | `op'none`<br>`op'add`<br>`op'sub`<br>`op'mul`<br>`op'div` |
+| `SkipBlanks` | 空白セルを無視するか.<br>default: `false` | `true` or `false` |
+| `SkipBlanks` | 行列を入れ替えるか.<br>default: `false` | `true` or `false` |
 
 #### 📑 `InsertMode` の要素
 
 | name | description | values |
 | --- | --- | --- |
-| `Shift` | 挿入後に他のセルをどうシフト移動するか. / `default: shift'down` | `shift'right` / `shift'down` |
-| `Origin` | 書式をコピーしてくる方向. / `default: origin'right / origin'below` | `origin'left` / `origin'above` / `origin'right` / `origin'below` |
+| `Shift` | 挿入後に他のセルをどうシフト移動するか.<br>default: `shift'down` | `shift'right`<br>`shift'down` |
+| `Origin` | 書式をコピーしてくる方向.<br>default: `origin'right` `origin'below` | `origin'left`<br>`origin'above`<br>`origin'right`<br>`origin'below` |
 
 #### 📑 `DeleteMode` の要素
 
 | name | description | values |
 | --- | --- | --- |
-| `Shift` | 削除後に他のセルをどうシフト移動するか. | `shift'left` / `shift'up` |
+| `Shift` | 削除後に他のセルをどうシフト移動するか. | `shift'left`<br>`shift'up` |
 
 
 ```fsharp
@@ -555,36 +552,36 @@ let main argv =
   let sheet = excel |> workbook(1) |> worksheet(1)
   
   op {
-    // A1 をクリップボードにコピー
+    // A1 をクリップボードにコピー.
     copy sheet.["A1"]
-    // 範囲コピーも可能
+    // 範囲コピーも可能.
     copy sheet.["A1:A3"]
 
-    // クリップボードのデータを B1 に貼り付け
+    // クリップボードのデータを B1 に貼り付け.
     paste sheet.["B1"] paste'mode
     paste sheet.["B1"] { paste'mode with Paste= paste'values }
     paste sheet.["B1"] { paste'mode with SkipBlanks= true }
     paste sheet.["B1"] { paste'mode with Paste= paste'values; SkipBlanks= true }
-    // 範囲貼り付けも可能
+    // 範囲貼り付けも可能.
     paste sheet.["B1:B3"] paste'mode
 
-    // クリップボードのデータを C1 に挿入
+    // クリップボードのデータを C1 に挿入.
     insert sheet.["C1"] insert'mode
     insert sheet.["C1"] { insert'mode with Shift= shift'down }
     insert sheet.["C1"] { insert'mode with Origin= origin'below }
     insert sheet.["C1"] { insert'mode with Shift= shift'right; Origin= origin'below }
-    // 範囲挿入も可能
+    // 範囲挿入も可能.
     insert sheet.["C1:C3"] insert'mode
 
-    // A1 のデータを削除する
+    // A1 のデータを削除する.
     delete sheet.["A1"] delete'mode
     delete sheet.["A1"] { delete'mode with Shift= shift'up }
-    // 範囲削除も可能
+    // 範囲削除も可能.
     delete sheet.["A1:A3"] delete'mode
   }
 ```
 
-### ◼◻ Excel Cell / Range オブジェクトなどを削除する / `delete (direction: DeleteShiftDirection) (target: ^Range)`
+### ◼◻ IExcelRangeを削除する<br>`delete (direction: DeleteShiftDirection) (target: IExcelRange): unit`
 
 #### 📑 `DeleteShiftDirection`
 
@@ -599,7 +596,7 @@ let main argv =
   use excel = open' "C:/work/sample.xlsx"
   let sheet = excel |> workbook(1) |> worksheet(1)
   
-  // 対象を削除する
+  // 対象を削除.
   sheet.["A1"] |> delete shift'up
   sheet.["A1:A3"] |> delete shift'left
 ```
@@ -608,7 +605,7 @@ let main argv =
 
 ## 🔷 Utility  
 
-### ◼◻ 数値をカラム名に変換する / `colname (index: int)`
+### ◼◻ 数値をカラム名に変換する<br>`colname (index: int): string`
 
 ```fsharp
 let name = 1 |> colname     // A
@@ -616,34 +613,34 @@ let name = 10 |> colname    // J
 let name = 128 |> colname   // DX
 ```
 
-### ◼◻ 対象の Range オブジェクトからアドレスを取得する / `address (target: IExcelRange)`
+### ◼◻ IExcelRangeからアドレスを取得する<br>`address (target: IExcelRange): string`
 
 ```fsharp
 let adds = sheet.["A1"] |> address      // $A$1
 let adds = sheet.["A1:B3"] |> address   // $A$1:$B$3
 ```
 
-### ◼◻ 対象の Excel オブジェクトを選択する / `activate (target: ^T)`
+### ◼◻ ExcelObjectを選択する<br>`activate (target: ^T): unit`
 
 ```fsharp
-// Workbookを選択状態にする
+// Workbookを選択状態にする.
 excel |> workbook(1) |> activate
 
-// Worksheetを選択状態にする
+// Worksheetを選択状態にする.
 excel |> workbook(1) |> worksheet(1) |> activate
 
-// Cellを選択状態にする
+// Cellを選択状態にする.
 sheet.["B1"] |> activate
 sheet.["A1:B3"] |> activate
 ```
 
-### ◼◻ 対象の Excel オブジェクトを選択する / `select (target: ^T)`
+### ◼◻ ExcelObjectを選択する / `select (target: ^T): unit`
 
 ```fsharp
-// Worksheet(1)を選択状態にする
+// Worksheet(1)を選択状態にする.
 excel |> workbook(1) |> worksheet(1) |> select
 
-// Cellを選択状態にする
+// Cellを選択状態にする.
 sheet.["B1"] |> select
 sheet.["D1:E3"] |> select
 ```
@@ -652,10 +649,10 @@ sheet.["D1:E3"] |> select
 
 ## 🔷 TIPS  
 
-### ◼◻ `try-finally` の利用  
+### ◼◻ `try-with` の利用  
 
 例外処理を施していない場合 Excel COM オブジェクトが適切に解放されず, プロセス上に残ってしまう恐れがあります.  
-`try-finally` (または `try-with`) と `use` を併用することで Excel COM オブジェクトの解放漏れを防げます.  
+`try-with` (または `try-with-finally`) と `use` を併用することで Excel COM オブジェクトの解放漏れを防げます.  
 
 ```fsharp
 try
@@ -664,8 +661,8 @@ try
 
   // do somethings
 
-finally
-  ()
+with
+  _ -> ()
 ```  
 
 また, F# Interactive で利用する場合, `attach` したあとは必ず `detach` する必要があります.  
