@@ -31,31 +31,36 @@ try
   //excel |> workbook(1) |> worksheet(1) |> select
   //sheet.["A2,B4"] |> activate
 
-  //op {
-  //  //copy sheet.["A1:A3"]
-  //  paste sheet.["B1"] paste'mode
-  //  //delete sheet.["A1:A3"] delete'mode
+  op {
+    copy sheet.["A1:A3"]
+    paste sheet.["B1"] paste'mode
+    delete sheet.["A1:A3"] delete'mode
 
-  //  //paste sheet.["B1"] { paste'mode with Paste = paste'values; SkipBlanks = true }
-  //  //insert sheet.["B1"] insert'mode
-  //  //insert sheet.["B1"] { insert'mode with Shift = shift'down; Origin= origin'below }
-  //  //delete sheet.["A1"] delete'mode
-  //  //delete sheet.["A1"] { delete'mode with Shift= shift'up }
-  //}
+    paste sheet.["B1"] { paste'mode with Paste = paste'values; SkipBlanks = true }
+    insert sheet.["B1"] insert'mode
+    insert sheet.["B1"] { insert'mode with Shift = shift'down; Origin= origin'below }
+    delete sheet.["A1"] delete'mode
+    delete sheet.["A1"] { delete'mode with Shift= shift'up }
 
-  //ruledline sheet.["B2:C5"] {
-  //  top { border with Color= Color.Red }
-  //  left { border with Color= Color.Orange; Weight= weight'thick }
-  //  right { border with LineStyle= linestyle'dashdot }
-  //  bottom { border with Weight= weight'medium }
-  //  horizontal { border with Color= Color.Blue; Weight= weight'medium }
-  //  vertical { border with Color= rgb (0, 128, 255); Weight= weight'thin }
+    set sheet.["A1"] sheet.["B1"]
+    set sheet.["A1"] 100
+    fx sheet.["A1"] sheet.["B1"]
+    fx sheet.["A1"] "SUM(A1:B3)"
+  }
 
-  //  // growing と falling は値がExcel内部で共有されているため、設定値は後勝ちする。
-  //  growing { border with Weight= weight'hairline }
-  //  falling { border with Weight= weight'thick }
-  //}
-  //|> ignore
+  ruledline sheet.["B2:C5"] {
+    top { border with Color= Color.Red }
+    left { border with Color= Color.Orange; Weight= weight'thick }
+    right { border with LineStyle= linestyle'dashdot }
+    bottom { border with Weight= weight'medium }
+    horizontal { border with Color= Color.Blue; Weight= weight'medium }
+    vertical { border with Color= rgb (0, 128, 255); Weight= weight'thin }
+
+    // growing と falling は値がExcel内部で共有されているため、設定値は後勝ちする。
+    growing { border with Weight= weight'hairline }
+    falling { border with Weight= weight'thick }
+  }
+  |> ignore
   
   ////sheet.["A1"] |> set "サンプルテキスト"
   ////font sheet.["A1"] {
@@ -68,10 +73,17 @@ try
   ////|> ignore
 
   //font sheet.["A1:A3"] {
+  //  set Color.Orange
+  //  set ( rgb(0, 128, 255) )
+  //  set { r= 0; g= 128; b= 255; }
+  //  set underline'double
+  //  set style'normal
+  //  set (style'normal ||| style'strikethrough ||| style'shadow)
+
   //  // フォントの指定
-  //  name "メイリオ"
+  //  set "メイリオ"
   //  // フォントサイズの設定
-  //  size 16.0
+  //  set 16.0
   //  // 下線の設定
   //  underline underline'double
 
@@ -95,6 +107,7 @@ try
   //  strikethrough true
   //  subscript true
   //  superscript true
+
   //}
   //|> ignore
 
