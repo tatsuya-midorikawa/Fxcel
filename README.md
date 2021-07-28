@@ -28,7 +28,7 @@ dotnet fsi
 Fxcel を nuget から読み込みます。
 
 ```fsharp
-#r "nuget: Fxcel, 0.0.14";;
+#r "nuget: Fxcel, 0.0.15";;
 open Fxcel;;
 ```  
 
@@ -74,26 +74,26 @@ dotnet add package Fxcel
 
 ## 🔷 Reference for F# Interactive
 
-### ◼◻ 起動中のExcelプロセス一覧をターミナルに表示しつつ取得する / `show ()`
+### ◼◻ 起動中のExcelプロセス一覧をターミナルに表示しつつ取得する<br>`show ()`
 
 ```fsharp
 let processList = show ();;
 ```
 
-### ◼◻ 起動中のExcelプロセス一覧を取得する / `enumerate ()`
+### ◼◻ 起動中のExcelプロセス一覧を取得する<br>`enumerate ()`
 
 ```fsharp
 let processList = enumerate ();;
 ```
 
-### ◼◻ 起動中のExcelプロセスにアタッチする / `attach (excel: Handle)`
+### ◼◻ 起動中のExcelプロセスにアタッチする<br>`attach (excel: Handle)`
 
 ```fsharp
 let processList = enumerate ();;
 let excel = processList.[0] |> attach;;
 ```
 
-### ◼◻ アタッチ済みのExcelプロセスをデタッチする / `detach (excel: IExcelApplication)`
+### ◼◻ アタッチ済みのExcelプロセスをデタッチする<br>`detach (excel: IExcelApplication)`
 
 ```fsharp
 let processList = enumerate ();;
