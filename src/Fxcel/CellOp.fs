@@ -42,6 +42,16 @@ module CellOp =
     member __.FitWidth(_: unit, target: IExcelRange) = target.EntireColumn.AutoFit()
     [<CustomOperation("fit'height")>]
     member __.FitHeight(_: unit, target: IExcelRange) = target.EntireRow.AutoFit()
+    [<CustomOperation("wrap")>]
+    member __.WrapText(_: unit, target: IExcelRange) = target.WrapText <- true
+    [<CustomOperation("unwrap")>]
+    member __.UnWrapText(_: unit, target: IExcelRange) = target.WrapText <- false
+    [<CustomOperation("shrink")>]
+    member __.ShrinkToFit(_: unit, target: IExcelRange) = target.ShrinkToFit <- true
+    [<CustomOperation("unshrink")>]
+    member __.UnShrinkToFit(_: unit, target: IExcelRange) = target.ShrinkToFit <- false
+    [<CustomOperation("orientation")>]
+    member __.Orientation(_: unit, target: IExcelRange, angle: int) = target.Orientation <- angle
 
   let cell'op = CellOpBuilder ()
   let paste'mode = { Paste= PasteType.All; Op= PasteOperation.None; SkipBlanks= false; Transpose= false; }

@@ -73,6 +73,8 @@ try
     //fit'height sheet.["A1"]
     //fit'width sheet.["A1"]
     set sheet.["A1"] theme'accent1
+    set sheet.["A1"] "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    orientation sheet.["A1"] 90
   }
 
   //ruledline sheet.["B2:C5"] {

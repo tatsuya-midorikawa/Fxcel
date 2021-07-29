@@ -607,6 +607,11 @@ let main argv =
 | `height (target: IExcelRange, length: int)` | 対象の行高をpt単位で設定する. | - |
 | `fit'width (target: IExcelRange)` | 対象の列幅を自動調整する. | - |
 | `fit'height (target: IExcelRange)` | 対象の行高を自動調整する. | - |
+| `wrap (target: IExcelRange)` | 折り返して全体を表示する. | - |
+| `unwrap (target: IExcelRange)` | 折り返して全体を表示を解除する. | - |
+| `shrink (target: IExcelRange)` | 縮小して全体を表示する. | - |
+| `unshrink (target: IExcelRange)` | 縮小して全体を表示を解除する. | - |
+| `orientation (target: IExcelRange, angle: int)` | 文字の方向を設定する. | -90° ~ 90° |
 
 #### 📑 `PasteMode` の要素
 
@@ -696,6 +701,21 @@ let main argv =
     set sheet.["A1"] theme'accent1
     // 背景パターンを設定
     set sheet.["A1"] pattern'horizontal
+
+    // 折り返して全体を表示する
+    wrap sheet.["A1"]
+    // 折り返して全体を表示を解除する
+    unwrap sheet.["A1"]
+
+    // 縮小して全体を表示する
+    shrink sheet.["A1"]
+    // 縮小して全体を表示を解除する
+    unshrink sheet.["A1"]
+
+    // 文字の方向を設定する
+    orientation sheet.["A1"] -90
+    orientation sheet.["A1"] 0
+    orientation sheet.["A1"] 90
   }
 ```
 
