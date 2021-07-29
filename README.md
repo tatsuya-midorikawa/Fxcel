@@ -224,6 +224,60 @@ let main argv =
   let range = sheet.["A1", "B3"]
 ```
 
+### ◼◻ IWorksheetから行を取得する<br>`get'row (index: int) (sheet: IWorksheet): IExcelRow` `get'rows (begin': int, end': int) (sheet: IWorksheet): IExcelRows`
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> worksheet(1)
+
+  // 1行取得.
+  let r = sheet |> get'row(1)       // $1:$1
+  // 複数行取得.
+  let r = sheet |> get'rows(1, 3)   // $1:$3
+```
+
+### ◼◻ IWorksheetから列を取得する<br>`get'column (index: int) (sheet: IWorksheet): IExcelRow` `get'columns (begin': int, end': int) (sheet: IWorksheet): IExcelRows`
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> worksheet(1)
+
+  // 1列取得.
+  let c = sheet |> get'column(1)       // $A:$A
+  // 複数列取得.
+  let c = sheet |> get'columns(1, 3)   // $A:$C
+```
+
+### ◼◻ IExcelRangeの行全体を取得する<br>`current'rows (range: IExcelRange): IExcelRows`
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> worksheet(1)
+
+  // 行全体を取得.
+  let r = sheet.["A1"] |> current'rows      // $1:$1
+  let r = sheet.["A1:B3"] |> current'rows   // $1:$3
+```
+
+### ◼◻ IExcelRangeの列全体を取得する<br>`current'columns (range: IExcelRange): IExcelColumns`
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> worksheet(1)
+
+  // 列全体を取得.
+  let r = sheet.["A1"] |> current'columns      // $A:$A
+  let r = sheet.["A1:B3"] |> current'columns   // $A:$B
+```
+
 ### ◼◻ 範囲データを行ごとに列挙する<br>`rows (range: IExcelRange): seq<IExcelRow>` `rowsi (range: IExcelRange): seq<int * IExcelRow>`
 
 ```fsharp
@@ -615,12 +669,20 @@ let main argv =
 
 ## 🔷 Utility  
 
-### ◼◻ 数値をカラム名に変換する<br>`colname (index: int): string`
+### ◼◻ 数値をカラム名に変換する<br>`column'name (index: int): string`
 
 ```fsharp
-let name = 1 |> colname     // A
-let name = 10 |> colname    // J
-let name = 128 |> colname   // DX
+let name = 1 |> column'name     // A
+let name = 10 |> column'name    // J
+let name = 128 |> column'name   // DX
+```
+
+### ◼◻ カラム名をインデックスに変換する<br>`column'number (column: string): int`
+
+```fsharp
+let number = "A" |> column'number     // 1
+let number = "J" |> column'number     // 10
+let number = "DX" |> column'number    // 128
 ```
 
 ### ◼◻ IExcelRangeからアドレスを取得する<br>`address (target: IExcelRange): string`

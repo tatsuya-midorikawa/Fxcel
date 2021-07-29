@@ -17,6 +17,20 @@ try
   sheet.["B1:B3"] |> fx "SUM(A1:A3)"
   let a = sheet.["A1:A3"] |> getsfx
   let b = sheet.["B1:B3"] |> getsfx
+  
+  sheet |> get'column(1) |> address |> printfn "%s"
+  sheet |> get'columns(1, 3) |> address |> printfn "%s"
+  sheet |> get'row(1) |> address |> printfn "%s"
+  sheet |> get'rows(1, 3) |> address |> printfn "%s"
+
+  "A" |> column'number |> printfn "%i"     // 1
+  "J" |> column'number |> printfn "%i"     // 10
+  "DX" |> column'number |> printfn "%i"   // 128
+
+  //sheet.["A1"] |> current'columns |> address |> printfn "%s"
+  //sheet.["A1:B3"] |> current'columns |> address |> printfn "%s"
+  //sheet.["A1"] |> current'rows |> address |> printfn "%s"
+  //sheet.["A1:B3"] |> current'rows |> address |> printfn "%s"
   ()
   //sheet.["B1:B3"] |> set 200
   //sheet.["C2"] |> set 200
@@ -31,36 +45,36 @@ try
   //excel |> workbook(1) |> worksheet(1) |> select
   //sheet.["A2,B4"] |> activate
 
-  op {
-    copy sheet.["A1:A3"]
-    paste sheet.["B1"] paste'mode
-    delete sheet.["A1:A3"] delete'mode
+  //op {
+  //  copy sheet.["A1:A3"]
+  //  paste sheet.["B1"] paste'mode
+  //  delete sheet.["A1:A3"] delete'mode
 
-    paste sheet.["B1"] { paste'mode with Paste = paste'values; SkipBlanks = true }
-    insert sheet.["B1"] insert'mode
-    insert sheet.["B1"] { insert'mode with Shift = shift'down; Origin= origin'below }
-    delete sheet.["A1"] delete'mode
-    delete sheet.["A1"] { delete'mode with Shift= shift'up }
+  //  paste sheet.["B1"] { paste'mode with Paste = paste'values; SkipBlanks = true }
+  //  insert sheet.["B1"] insert'mode
+  //  insert sheet.["B1"] { insert'mode with Shift = shift'down; Origin= origin'below }
+  //  delete sheet.["A1"] delete'mode
+  //  delete sheet.["A1"] { delete'mode with Shift= shift'up }
 
-    set sheet.["A1"] sheet.["B1"]
-    set sheet.["A1"] 100
-    fx sheet.["A1"] sheet.["B1"]
-    fx sheet.["A1"] "SUM(A1:B3)"
-  }
+  //  set sheet.["A1"] sheet.["B1"]
+  //  set sheet.["A1"] 100
+  //  fx sheet.["A1"] sheet.["B1"]
+  //  fx sheet.["A1"] "SUM(A1:B3)"
+  //}
 
-  ruledline sheet.["B2:C5"] {
-    top { border with Color= Color.Red }
-    left { border with Color= Color.Orange; Weight= weight'thick }
-    right { border with LineStyle= linestyle'dashdot }
-    bottom { border with Weight= weight'medium }
-    horizontal { border with Color= Color.Blue; Weight= weight'medium }
-    vertical { border with Color= rgb (0, 128, 255); Weight= weight'thin }
+  //ruledline sheet.["B2:C5"] {
+  //  top { border with Color= Color.Red }
+  //  left { border with Color= Color.Orange; Weight= weight'thick }
+  //  right { border with LineStyle= linestyle'dashdot }
+  //  bottom { border with Weight= weight'medium }
+  //  horizontal { border with Color= Color.Blue; Weight= weight'medium }
+  //  vertical { border with Color= rgb (0, 128, 255); Weight= weight'thin }
 
-    // growing と falling は値がExcel内部で共有されているため、設定値は後勝ちする。
-    growing { border with Weight= weight'hairline }
-    falling { border with Weight= weight'thick }
-  }
-  |> ignore
+  //  // growing と falling は値がExcel内部で共有されているため、設定値は後勝ちする。
+  //  growing { border with Weight= weight'hairline }
+  //  falling { border with Weight= weight'thick }
+  //}
+  //|> ignore
   
   ////sheet.["A1"] |> set "サンプルテキスト"
   ////font sheet.["A1"] {
@@ -118,18 +132,29 @@ try
 
   //sheet.["A1"].Rows |> delete dd'up
 
+  // rows関数を利用して, 1行ずつ取得する
+  for (index, row) in sheet.["A1:B3"] |> rowsi do
+    //if index % 2 = 0 then
+    //  column |> bgpattern Pattern.Checker
+    //else
+    //  column |> bgpattern Pattern.CrissCross
 
-  //// columns関数を利用して, 1行ずつ取得する
-  //for (index, column) in sheet.["A1:B3"] |> columnsi do
-  //  //if index % 2 = 0 then
-  //  //  column |> bgpattern Pattern.Checker
-  //  //else
-  //  //  column |> bgpattern Pattern.CrissCross
+    // 各cell毎に何か処理をする
+    for cell in row do
+      printf $"{cell |> get} "
+    printfn ""
 
-  //  // 各cell毎に何か処理をする
-  //  for cell in column do
-  //    printf $"{cell |> get} "
-  //  printfn ""
+  // columns関数を利用して, 1行ずつ取得する
+  for (index, column) in sheet.["A1:B3"] |> columnsi do
+    //if index % 2 = 0 then
+    //  column |> bgpattern Pattern.Checker
+    //else
+    //  column |> bgpattern Pattern.CrissCross
+
+    // 各cell毎に何か処理をする
+    for cell in column do
+      printf $"{cell |> get} "
+    printfn ""
 with
   _ -> ()
 
