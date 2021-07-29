@@ -30,6 +30,10 @@ module CellOp =
     member __.Set(_: unit, target: IExcelRange, theme: ThemeColor) = target.Interior.ThemeColor <- theme
     [<CustomOperation("set")>]
     member __.Set(_: unit, target: IExcelRange, pattern: Pattern) = target.Interior.Pattern <- pattern
+    [<CustomOperation("set")>]
+    member __.Set(_: unit, target: IExcelRange, halign: HorizontalAlignment) = target.HorizontalAlignment <- halign
+    [<CustomOperation("set")>]
+    member __.Set(_: unit, target: IExcelRange, valign: VerticalAlignment) = target.VerticalAlignment <- valign
     [<CustomOperation("fx")>]
     member __.Fx(_: unit, target: IExcelRange, value: IExcelRange) = target.Formula <- value.Formula
     [<CustomOperation("fx")>]

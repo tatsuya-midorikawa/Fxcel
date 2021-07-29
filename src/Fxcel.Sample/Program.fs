@@ -67,14 +67,15 @@ try
 
     //fx sheet.["A1"] sheet.["B1"]
     //fx sheet.["A1"] "SUM(A1:B3)"
-    //width sheet.["A1"] 100
-    //height sheet.["A1"] 100
+    width sheet.["A1"] 100
+    height sheet.["A1"] 100
 
     //fit'height sheet.["A1"]
     //fit'width sheet.["A1"]
     set sheet.["A1"] theme'accent1
-    set sheet.["A1"] "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-    orientation sheet.["A1"] 90
+    set sheet.["A1"] "a"
+    set sheet.["A1"] v'center
+    set sheet.["A1"] h'center
   }
 
   //ruledline sheet.["B2:C5"] {
