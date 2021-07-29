@@ -52,27 +52,27 @@ try
   |> ignore
 
   cell'op {
-    copy sheet.["A1:A3"]
-    paste sheet.["B1"] paste'mode
-    //delete sheet.["A1:A3"] delete'mode
+    //copy sheet.["A1:A3"]
+    //paste sheet.["B1"] paste'mode
+    ////delete sheet.["A1:A3"] delete'mode
 
-    paste sheet.["B1"] { paste'mode with Paste = paste'values; SkipBlanks = true }
-    insert sheet.["B1"] insert'mode
-    insert sheet.["B1"] { insert'mode with Shift = shift'down; Origin= origin'below }
-    //delete sheet.["A1"] delete'mode
-    //delete sheet.["A1"] { delete'mode with Shift= shift'up }
+    //paste sheet.["B1"] { paste'mode with Paste = paste'values; SkipBlanks = true }
+    //insert sheet.["B1"] insert'mode
+    //insert sheet.["B1"] { insert'mode with Shift = shift'down; Origin= origin'below }
+    ////delete sheet.["A1"] delete'mode
+    ////delete sheet.["A1"] { delete'mode with Shift= shift'up }
 
-    set sheet.["A1"] sheet.["B1"]
-    set sheet.["A1"] 100
+    //set sheet.["A1"] sheet.["B1"]
+    //set sheet.["A1"] 100
 
-    fx sheet.["A1"] sheet.["B1"]
-    fx sheet.["A1"] "SUM(A1:B3)"
-    width sheet.["A1"] 100
-    height sheet.["A1"] 100
+    //fx sheet.["A1"] sheet.["B1"]
+    //fx sheet.["A1"] "SUM(A1:B3)"
+    //width sheet.["A1"] 100
+    //height sheet.["A1"] 100
 
-    fit'height sheet.["A1"]
-    fit'width sheet.["A1"]
-
+    //fit'height sheet.["A1"]
+    //fit'width sheet.["A1"]
+    set sheet.["A1"] Color.Blue
   }
 
   //ruledline sheet.["B2:C5"] {
