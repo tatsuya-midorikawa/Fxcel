@@ -1,6 +1,5 @@
 ﻿namespace Fxcel
 
-open System.Drawing
 open Midoliy.Office.Interop
 
 [<AutoOpen>]
@@ -28,8 +27,16 @@ module CellOp =
     member __.Fx(_: unit, target: IExcelRange, value: IExcelRange) = target.Formula <- value.Formula
     [<CustomOperation("fx")>]
     member __.Fx(_: unit, target: IExcelRange, value: string) = target.Formula <- if (string value).StartsWith("=") then value else $"={value}"
+    [<CustomOperation("width")>]
+    member __.SetWidth(_: unit, target: IExcelRange, length: int) = target.ColumnWidth <- length
+    [<CustomOperation("height")>]
+    member __.SetHeight(_: unit, target: IExcelRange, length: int) = target.RowHeight <- length
+    [<CustomOperation("fit'width")>]
+    member __.FitWidth(_: unit, target: IExcelRange) = target.EntireColumn.AutoFit()
+    [<CustomOperation("fit'height")>]
+    member __.FitHeight(_: unit, target: IExcelRange) = target.EntireRow.AutoFit()
 
-  let op = CellOpBuilder ()
+  let cell'op = CellOpBuilder ()
   let paste'mode = { Paste= PasteType.All; Op= PasteOperation.None; SkipBlanks= false; Transpose= false; }
   let insert'mode = { Shift= InsertShiftDirection.Down; Origin= InsertFormatOrigin.FromRightOrBelow; }
   let delete'mode = { Shift= DeleteShiftDirection.Left; }

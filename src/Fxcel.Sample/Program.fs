@@ -45,22 +45,35 @@ try
   //excel |> workbook(1) |> worksheet(1) |> select
   //sheet.["A2,B4"] |> activate
 
-  //op {
-  //  copy sheet.["A1:A3"]
-  //  paste sheet.["B1"] paste'mode
-  //  delete sheet.["A1:A3"] delete'mode
+  excel'op excel {
+    set calc'auto
+    set visibility'visible
+  }
+  |> ignore
 
-  //  paste sheet.["B1"] { paste'mode with Paste = paste'values; SkipBlanks = true }
-  //  insert sheet.["B1"] insert'mode
-  //  insert sheet.["B1"] { insert'mode with Shift = shift'down; Origin= origin'below }
-  //  delete sheet.["A1"] delete'mode
-  //  delete sheet.["A1"] { delete'mode with Shift= shift'up }
+  cell'op {
+    copy sheet.["A1:A3"]
+    paste sheet.["B1"] paste'mode
+    //delete sheet.["A1:A3"] delete'mode
 
-  //  set sheet.["A1"] sheet.["B1"]
-  //  set sheet.["A1"] 100
-  //  fx sheet.["A1"] sheet.["B1"]
-  //  fx sheet.["A1"] "SUM(A1:B3)"
-  //}
+    paste sheet.["B1"] { paste'mode with Paste = paste'values; SkipBlanks = true }
+    insert sheet.["B1"] insert'mode
+    insert sheet.["B1"] { insert'mode with Shift = shift'down; Origin= origin'below }
+    //delete sheet.["A1"] delete'mode
+    //delete sheet.["A1"] { delete'mode with Shift= shift'up }
+
+    set sheet.["A1"] sheet.["B1"]
+    set sheet.["A1"] 100
+
+    fx sheet.["A1"] sheet.["B1"]
+    fx sheet.["A1"] "SUM(A1:B3)"
+    width sheet.["A1"] 100
+    height sheet.["A1"] 100
+
+    fit'height sheet.["A1"]
+    fit'width sheet.["A1"]
+
+  }
 
   //ruledline sheet.["B2:C5"] {
   //  top { border with Color= Color.Red }
@@ -155,6 +168,7 @@ try
     for cell in column do
       printf $"{cell |> get} "
     printfn ""
+
 with
   _ -> ()
 

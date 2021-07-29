@@ -24,16 +24,16 @@ module Constant =
   let linestyle'dashdotdot = LineStyle.DashDotDot
   let linestyle'slant = LineStyle.SlantDashDot
 
-  let theme'bg1 = Midoliy.Office.Interop.ThemeColor.Background1
-  let theme'bg2 = Midoliy.Office.Interop.ThemeColor.Background2
-  let theme'fg1 = Midoliy.Office.Interop.ThemeColor.Foreground1
-  let theme'fg2 = Midoliy.Office.Interop.ThemeColor.Foreground2
-  let theme'accent1 = Midoliy.Office.Interop.ThemeColor.Accent1
-  let theme'accent2 = Midoliy.Office.Interop.ThemeColor.Accent2
-  let theme'accent3 = Midoliy.Office.Interop.ThemeColor.Accent3
-  let theme'accent4 = Midoliy.Office.Interop.ThemeColor.Accent4
-  let theme'accent5 = Midoliy.Office.Interop.ThemeColor.Accent5
-  let theme'accent6 = Midoliy.Office.Interop.ThemeColor.Accent6
+  let theme'bg1 = ThemeColor.Background1
+  let theme'bg2 = ThemeColor.Background2
+  let theme'fg1 = ThemeColor.Foreground1
+  let theme'fg2 = ThemeColor.Foreground2
+  let theme'accent1 = ThemeColor.Accent1
+  let theme'accent2 = ThemeColor.Accent2
+  let theme'accent3 = ThemeColor.Accent3
+  let theme'accent4 = ThemeColor.Accent4
+  let theme'accent5 = ThemeColor.Accent5
+  let theme'accent6 = ThemeColor.Accent6
 
   let tint'dark50 = Tint.Dark50
   let tint'dark25 = Tint.Dark25
@@ -86,3 +86,10 @@ module Constant =
   let origin'above = InsertFormatOrigin.FromLeftOrAbove
   let origin'right = InsertFormatOrigin.FromRightOrBelow
   let origin'below = InsertFormatOrigin.FromRightOrBelow
+  
+  let calc'auto = Calculation.Auto
+  let calc'manual = Calculation.Manual
+  let calc'semiauto = Calculation.Semiauto
+
+  let visibility'visible = AppVisibility.Visible
+  let visibility'hidden = AppVisibility.Hidden

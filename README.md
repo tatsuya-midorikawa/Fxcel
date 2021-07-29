@@ -479,9 +479,9 @@ let main argv =
 
 | operation name | description | values |
 | --- | --- | --- |
-| `LineStyle` | 罫線のスタイル.<br>default: `linestyle'continuous` | `linestyle'none`<br>`linestyle'dot`<br>`linestyle'double`<br>`linestyle'dash`<br>`linestyle'continuous`<br>`linestyle'dashdot`<br>`linestyle'dashdotdot`<br>`linestyle'slant`|
-| `Weight` | 罫線の太さ.<br>default: `weight'medium` | `weight'medium`<br>`weight'hairline`<br>`weight'thin`<br>`weight'thick` |
-| `Color` | 罫線の色.<br>default: `Color.Black` | `Color.Red`<br>`Color.Orange`<br>`Color.Blue`<br>`rgb(r, g, b)`<br>and more... |
+| `LineStyle` | 罫線のスタイル.<br>**default: `linestyle'continuous`** | `linestyle'none`<br>`linestyle'dot`<br>`linestyle'double`<br>`linestyle'dash`<br>`linestyle'continuous`<br>`linestyle'dashdot`<br>`linestyle'dashdotdot`<br>`linestyle'slant`|
+| `Weight` | 罫線の太さ.<br>**default: `weight'medium`** | `weight'medium`<br>`weight'hairline`<br>`weight'thin`<br>`weight'thick` |
+| `Color` | 罫線の色.<br>**default: `Color.Black`** | `Color.Red`<br>`Color.Orange`<br>`Color.Blue`<br>`rgb(r, g, b)`<br>and more... |
 
 ```fsharp
 [<EntryPoint>]
@@ -564,10 +564,29 @@ let main argv =
   |> ignore
 ```
 
-### ◼◻ IExcelRangeオブジェクトを操作する（コピー・ペースト・挿入・削除）<br>`op` コンピュテーション式
+### ◼◻ IExcelApplicationオブジェクトを操作する<br>`excel'op (excel: IExcelApplication)` コンピュテーション式
 
+#### 📑 `excel'op` で利用できるカスタムオペレーション
 
-#### 📑 `op` で利用できるカスタムオペレーション
+| operation name | description | values |
+| --- | --- | --- |
+| `set (mode: Calculation)` | Excelの再計算制御を設定する.<br>**default: `calc'manual`** | `calc'auto`<br>`calc'manual`<br>`calc'semiauto` |
+| `set (visibility: AppVisibility)` | Excelの表示状態を設定する.<br>**default: `visibility'hidden`** | `visibility'visible`<br>`visibility'hidden` |
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  
+  excel'op excel {
+    set calc'semiauto
+    set visibility'visible
+  }
+```
+
+### ◼◻ IExcelRangeオブジェクトを操作する（コピー・ペースト・挿入・削除）<br>`cell'op` コンピュテーション式
+
+#### 📑 `cell'op` で利用できるカスタムオペレーション
 
 | operation name | description |
 | --- | --- |
@@ -577,22 +596,26 @@ let main argv =
 | `delete (target: IExcelRange, deleteMode: DeleteMode)` | 対象を削除する. |
 | `set (target: IExcelRange, value: obj)` | 対象に値を設定する. |
 | `fx (target: IExcelRange, formula: string)` | 対象に関数を設定する. |
+| `width (target: IExcelRange, length: int)` | 対象の列幅をpt単位で設定する. |
+| `height (target: IExcelRange, length: int)` | 対象の行高をpt単位で設定する. |
+| `fit'width (target: IExcelRange)` | 対象の列幅を自動調整する. |
+| `fit'height (target: IExcelRange)` | 対象の行高を自動調整する. |
 
 #### 📑 `PasteMode` の要素
 
 | name | description | values |
 | --- | --- | --- |
-| `Paste` | 貼り付け方式.<br>default: `paste'all` | `paste'values`<br>`paste'comments`<br>`paste'formulas`<br>`paste'formats`<br>`paste'all`<br>`paste'validation`<br>`paste'exceptBorders`<br>`paste'colmnWidths`<br>`paste'formulasAndNumberFormats`<br> `paste'valuesAndNumberFormats`<br>`paste'allUsingSourceTheme`<br>`paste'allMergingConditionalFormats` |
-| `Op` | 貼り付け時の演算方法.<br>default: `op'none` | `op'none`<br>`op'add`<br>`op'sub`<br>`op'mul`<br>`op'div` |
-| `SkipBlanks` | 空白セルを無視するか.<br>default: `false` | `true` or `false` |
-| `SkipBlanks` | 行列を入れ替えるか.<br>default: `false` | `true` or `false` |
+| `Paste` | 貼り付け方式.<br>**default: `paste'all`** | `paste'values`<br>`paste'comments`<br>`paste'formulas`<br>`paste'formats`<br>`paste'all`<br>`paste'validation`<br>`paste'exceptBorders`<br>`paste'colmnWidths`<br>`paste'formulasAndNumberFormats`<br> `paste'valuesAndNumberFormats`<br>`paste'allUsingSourceTheme`<br>`paste'allMergingConditionalFormats` |
+| `Op` | 貼り付け時の演算方法.<br>**default: `op'none`** | `op'none`<br>`op'add`<br>`op'sub`<br>`op'mul`<br>`op'div` |
+| `SkipBlanks` | 空白セルを無視するか.<br>**default: `false`** | `true` or `false` |
+| `SkipBlanks` | 行列を入れ替えるか.<br>**default: `false`** | `true` or `false` |
 
 #### 📑 `InsertMode` の要素
 
 | name | description | values |
 | --- | --- | --- |
-| `Shift` | 挿入後に他のセルをどうシフト移動するか.<br>default: `shift'down` | `shift'right`<br>`shift'down` |
-| `Origin` | 書式をコピーしてくる方向.<br>default: `origin'right` `origin'below` | `origin'left`<br>`origin'above`<br>`origin'right`<br>`origin'below` |
+| `Shift` | 挿入後に他のセルをどうシフト移動するか.<br>**default: `shift'down`** | `shift'right`<br>`shift'down` |
+| `Origin` | 書式をコピーしてくる方向.<br>**default: `origin'right`, `origin'below`** | `origin'left`<br>`origin'above`<br>`origin'right`<br>`origin'below` |
 
 #### 📑 `DeleteMode` の要素
 
@@ -607,7 +630,7 @@ let main argv =
   use excel = open' "C:/work/sample.xlsx"
   let sheet = excel |> workbook(1) |> worksheet(1)
   
-  op {
+  cell'op {
     // A1 をクリップボードにコピー.
     copy sheet.["A1"]
     // 範囲コピーも可能.
@@ -635,13 +658,27 @@ let main argv =
     // 範囲削除も可能.
     delete sheet.["A1:A3"] delete'mode
 
-    // A1 に値を設定
+    // A1 に値を設定.
     set sheet.["A1"] 100
     set sheet.["A1"] sheet.["B1"]
 
-    // A1 に関数を設定
+    // A1 に関数を設定.
     fx sheet.["A1"] "SUM(A1:B3)"
     fx sheet.["A1"] sheet.["B1"]
+    
+    // 列幅を 100 に設定.
+    width sheet.["A1"] 100
+    width sheet.["A1:B3"] 100
+    // 行高を 100 に設定.
+    height sheet.["A1"] 100
+    height sheet.["A1:B3"] 100
+
+    // 列幅を自動調整.
+    fit'width sheet.["A1"]
+    fit'width sheet.["A1:B3"]
+    // 行高を自動調整.
+    fit'height sheet.["A1"]
+    fit'height sheet.["A1:B3"]
   }
 ```
 

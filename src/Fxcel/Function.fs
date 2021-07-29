@@ -51,12 +51,15 @@ type Excel () =
 
   /// <summary>
   /// Cell などから値を取得する.
-  /// 複数要素がある場合, 先頭要素のみ取得.
+  /// 複数要素がある場合, 先頭要素のみ取得.5
   /// </summary>
   static member get (cell: IExcelRange) = 
-    match cell.Value.GetType() with
-    | t when t = typeof<obj[,]> -> (cell.Value :?> obj[,]).[1, 1]
-    | _ -> cell.Value
+    if cell.Value = null then 
+      obj()
+    else
+      match cell.Value.GetType() with
+      | t when t = typeof<obj[,]> -> (cell.Value :?> obj[,]).[1, 1]
+      | _ -> cell.Value
 
   /// <summary>
   /// Cell などから値を指定した型で取得する.
@@ -166,6 +169,18 @@ module Function =
   
   /// <summary>ドキュメントを名前を付けて保存する.</summary>
   let inline saveAs filepath (doc: ^Doc) = (^Doc: (member SaveAs: string -> unit) doc, filepath)
+  
+  /// <summary>Excelの画面を表示する.</summary>
+  let inline visible (excel: IExcelApplication) = excel.Visibility <- AppVisibility.Visible
+
+  /// <summary>Excelの画面を非表示にする.</summary>
+  let inline hidden (excel: IExcelApplication) = excel.Visibility <- AppVisibility.Hidden
+
+  /// <summary>再計算を自動で行う.</summary>
+  let inline calc'auto (excel: IExcelApplication) = excel.Calculation <- Calculation.Auto
+
+  /// <summary>再計算をマニュアルで行う.</summary>
+  let inline calc'manual (excel: IExcelApplication) = excel.Calculation <- Calculation.Manual
 
   /// <summary>指定した index の位置にある Workbook を取得する.</summary>
   let workbook (index: int) (excel: IExcelApplication) =
@@ -294,6 +309,9 @@ module Function =
   /// <summary>Cell などに関数を設定する.</summary>
   let inline fx value (cell: ^Cell) = (^Cell: (member set_Formula: obj -> unit) cell, if (string value).StartsWith("=") then value else $"={value}")
   
+  /// <summary>Cell などの値をクリアする.</summary>
+  let inline clear (cell: ^Cell) = (^Cell: (member Clear: unit -> unit) cell)
+
   /// <summary>Cell などに背景色を設定する.</summary>
   let inline bgcolor (color: Color) (cell: IExcelRange) = cell.Interior.Color <- color
 
