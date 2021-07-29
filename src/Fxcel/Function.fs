@@ -219,7 +219,29 @@ module Function =
   
   /// <summary>Cellなどからアドレス文字列を取得する</summary>
   let inline address (cell: ^Cell) = (^Cell: (member get_Address: unit -> string) cell)
-      
+  
+  /// <summary>指定したインデックスの行を一行取得する.</summary>
+  /// <param name="index">対象の行番号.</param>
+  /// <param name="sheet">target worksheet instance.</param>
+  let inline get'row (index: int) (sheet: IWorksheet) = sheet.Rows(index)
+  
+  /// <summary>指定した範囲インデックスの行を取得する.</summary>
+  /// <param name="begin'">行範囲の開始位置.</param>
+  /// <param name="end'">行範囲の終了位置.</param>
+  /// <param name="sheet">target worksheet instance.</param>
+  let inline get'rows (begin': int, end': int) (sheet: IWorksheet) = sheet.Rows(begin', end')
+  
+  /// <summary>指定したインデックスの行を一行取得する.</summary>
+  /// <param name="index">対象の行番号.</param>
+  /// <param name="sheet">target worksheet instance.</param>
+  let inline get'column (index: int) (sheet: IWorksheet) = sheet.Columns(index)
+  
+  /// <summary>指定した範囲インデックスの行を取得する.</summary>
+  /// <param name="begin'">行範囲の開始位置.</param>
+  /// <param name="end'">行範囲の終了位置.</param>
+  /// <param name="sheet">target worksheet instance.</param>
+  let inline get'columns (begin': int, end': int) (sheet: IWorksheet) = sheet.Rows(begin', end')
+
   /// <summary>Rangeなどの範囲選択した場所から行単位で列挙する.</summary>
   let inline rows (range: IExcelRange) : seq<IExcelRow> =
     let enumerator = range.Rows.GetEnumerator()
