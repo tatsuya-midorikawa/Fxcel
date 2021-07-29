@@ -609,6 +609,8 @@ let main argv =
 | `height (target: IExcelRange, length: int)` | 対象の行高をpt単位で設定する. | - |
 | `fit'width (target: IExcelRange)` | 対象の列幅を自動調整する. | - |
 | `fit'height (target: IExcelRange)` | 対象の行高を自動調整する. | - |
+| `merge (target: IExcelRange, across: bool)` | セルを結合する. | `true`: 範囲内のセルを行ごとに結合.<br>`false`: 範囲内すべてのセルを1つに結合. |
+| `unmerge (target: IExcelRange)` | セルの結合を解除する. | - |
 | `wrap (target: IExcelRange)` | 折り返して全体を表示する. | - |
 | `unwrap (target: IExcelRange)` | 折り返して全体を表示を解除する. | - |
 | `shrink (target: IExcelRange)` | 縮小して全体を表示する. | - |
@@ -697,24 +699,31 @@ let main argv =
     fit'height sheet.["A1"]
     fit'height sheet.["A1:B3"]
 
-    // 背景色を設定
+    // 背景色を設定.
     set sheet.["A1"] Color.Blue
-    // 背景色をテーマカラーで設定
+    // 背景色をテーマカラーで設定.
     set sheet.["A1"] theme'accent1
-    // 背景パターンを設定
+    // 背景パターンを設定.
     set sheet.["A1"] pattern'horizontal
 
-    // 折り返して全体を表示する
+    // セルを結合する.
+    merge sheet.["C1:D3"] true
+    merge sheet.["E1:F3"] false
+    // セルの結合を解除する.
+    unmerge sheet.["C1:D3"]
+    unmerge sheet.["E1:F3"]
+
+    // 折り返して全体を表示する.
     wrap sheet.["A1"]
-    // 折り返して全体を表示を解除する
+    // 折り返して全体を表示を解除する.
     unwrap sheet.["A1"]
 
-    // 縮小して全体を表示する
+    // 縮小して全体を表示する.
     shrink sheet.["A1"]
-    // 縮小して全体を表示を解除する
+    // 縮小して全体を表示を解除する.
     unshrink sheet.["A1"]
 
-    // 文字の方向を設定する
+    // 文字の方向を設定する.
     orientation sheet.["A1"] -90
     orientation sheet.["A1"] 0
     orientation sheet.["A1"] 90

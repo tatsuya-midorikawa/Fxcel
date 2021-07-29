@@ -46,6 +46,10 @@ module CellOp =
     member __.FitWidth(_: unit, target: IExcelRange) = target.EntireColumn.AutoFit()
     [<CustomOperation("fit'height")>]
     member __.FitHeight(_: unit, target: IExcelRange) = target.EntireRow.AutoFit()
+    [<CustomOperation("merge")>]
+    member __.Merge(_: unit, target: IExcelRange, across: bool) = target.Merge(across)
+    [<CustomOperation("unmerge")>]
+    member __.UnMerge(_: unit, target: IExcelRange) = target.UnMerge()
     [<CustomOperation("wrap")>]
     member __.WrapText(_: unit, target: IExcelRange) = target.WrapText <- true
     [<CustomOperation("unwrap")>]
