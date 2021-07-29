@@ -51,12 +51,15 @@ type Excel () =
 
   /// <summary>
   /// Cell などから値を取得する.
-  /// 複数要素がある場合, 先頭要素のみ取得.
+  /// 複数要素がある場合, 先頭要素のみ取得.5
   /// </summary>
   static member get (cell: IExcelRange) = 
-    match cell.Value.GetType() with
-    | t when t = typeof<obj[,]> -> (cell.Value :?> obj[,]).[1, 1]
-    | _ -> cell.Value
+    if cell.Value = null then 
+      obj()
+    else
+      match cell.Value.GetType() with
+      | t when t = typeof<obj[,]> -> (cell.Value :?> obj[,]).[1, 1]
+      | _ -> cell.Value
 
   /// <summary>
   /// Cell などから値を指定した型で取得する.
@@ -93,16 +96,6 @@ type Excel () =
     match range.Formula.GetType() with
     | t when t = typeof<obj[,]> -> (range.Formula :?> obj[,]).[*,*]|> Array2D.map (fun v -> v |> cast<string>)
     | _ -> Array2D.init 1 1 (fun i j -> range.Formula |> cast<string>)
-    
-  /// <summary>index を Column name に変換する.</summary>
-  /// <example>
-  /// <code>
-  ///   let index = 1
-  ///   let name = index |> colname   // name is \"A\"
-  /// </code>
-  /// </example>
-  /// <exception cref="System.ArgumentOutOfRangeException">0以下の数値を指定した場合</exception>
-  static member colname (index: int) = index.ToColumnName()
 
   static member cells (row: IExcelRow) : seq<IExcelRange> =
     let enumerator = row.GetEnumerator()
@@ -176,6 +169,18 @@ module Function =
   
   /// <summary>ドキュメントを名前を付けて保存する.</summary>
   let inline saveAs filepath (doc: ^Doc) = (^Doc: (member SaveAs: string -> unit) doc, filepath)
+  
+  /// <summary>Excelの画面を表示する.</summary>
+  let inline visible (excel: IExcelApplication) = excel.Visibility <- AppVisibility.Visible
+
+  /// <summary>Excelの画面を非表示にする.</summary>
+  let inline hidden (excel: IExcelApplication) = excel.Visibility <- AppVisibility.Hidden
+
+  /// <summary>再計算を自動で行う.</summary>
+  let inline calc'auto (excel: IExcelApplication) = excel.Calculation <- Calculation.Auto
+
+  /// <summary>再計算をマニュアルで行う.</summary>
+  let inline calc'manual (excel: IExcelApplication) = excel.Calculation <- Calculation.Manual
 
   /// <summary>指定した index の位置にある Workbook を取得する.</summary>
   let workbook (index: int) (excel: IExcelApplication) =
@@ -219,7 +224,35 @@ module Function =
   
   /// <summary>Cellなどからアドレス文字列を取得する</summary>
   let inline address (cell: ^Cell) = (^Cell: (member get_Address: unit -> string) cell)
-      
+  
+  /// <summary>現在のIExcelRangeの行全体を取得.</summary>
+  let inline current'rows (range: IExcelRange) = range.EntireRow
+
+  /// <summary>現在のIExcelRangeの列全体を取得.</summary>
+  let inline current'columns (range: IExcelRange) = range.EntireColumn
+
+  /// <summary>指定したインデックスの行を一行取得する.</summary>
+  /// <param name="index">対象の行番号.</param>
+  /// <param name="sheet">target worksheet instance.</param>
+  let inline get'row (index: int) (sheet: IWorksheet) = sheet.Rows(index)
+  
+  /// <summary>指定した範囲インデックスの行を取得する.</summary>
+  /// <param name="begin'">行範囲の開始位置.</param>
+  /// <param name="end'">行範囲の終了位置.</param>
+  /// <param name="sheet">target worksheet instance.</param>
+  let inline get'rows (begin': int, end': int) (sheet: IWorksheet) = sheet.Rows(begin', end')
+  
+  /// <summary>指定したインデックスの行を一行取得する.</summary>
+  /// <param name="index">対象の行番号.</param>
+  /// <param name="sheet">target worksheet instance.</param>
+  let inline get'column (index: int) (sheet: IWorksheet) = sheet.Columns(index)
+  
+  /// <summary>指定した範囲インデックスの行を取得する.</summary>
+  /// <param name="begin'">行範囲の開始位置.</param>
+  /// <param name="end'">行範囲の終了位置.</param>
+  /// <param name="sheet">target worksheet instance.</param>
+  let inline get'columns (begin': int, end': int) (sheet: IWorksheet) = sheet.Columns(begin', end')
+
   /// <summary>Rangeなどの範囲選択した場所から行単位で列挙する.</summary>
   let inline rows (range: IExcelRange) : seq<IExcelRow> =
     let enumerator = range.Rows.GetEnumerator()
@@ -276,9 +309,31 @@ module Function =
   /// <summary>Cell などに関数を設定する.</summary>
   let inline fx value (cell: ^Cell) = (^Cell: (member set_Formula: obj -> unit) cell, if (string value).StartsWith("=") then value else $"={value}")
   
+  /// <summary>Cell などの値をクリアする.</summary>
+  let inline clear (cell: ^Cell) = (^Cell: (member Clear: unit -> unit) cell)
+
   /// <summary>Cell などに背景色を設定する.</summary>
   let inline bgcolor (color: Color) (cell: IExcelRange) = cell.Interior.Color <- color
 
   /// <summary>Cell などに背景色パターンを設定する.</summary>
   let inline bgpattern (pattern: Pattern) (cell: IExcelRange) = cell.Interior.Pattern <- pattern
 
+  /// <summary>index を Column name に変換する.</summary>
+  /// <example>
+  /// <code>
+  ///   let index = 1
+  ///   let name = index |> column'name   // name is \"A\"
+  /// </code>
+  /// </example>
+  /// <exception cref="System.ArgumentOutOfRangeException">0以下の数値を指定した場合</exception>
+  let inline column'name (index: int) = index.ToColumnName()
+  
+  /// <summary>Column name を index に変換する.</summary>
+  /// <example>
+  /// <code>
+  ///   let name = "A"
+  ///   let index = name |> column'number   // index is 1
+  /// </code>
+  /// </example>
+  /// <exception cref="System.ArgumentOutOfRangeException">0以下の数値を指定した場合</exception>
+  let inline column'number (column: string) = column.ToColumnNumber()

@@ -6,7 +6,7 @@
     <WarnOn>3390;$(WarnOn)</WarnOn>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <LangVersion>preview</LangVersion>
-    <Version>0.0.15</Version>
+    <Version>0.0.17</Version>
     <Authors>midoliy</Authors>
     <Company>midoliy</Company>
     <Copyright>© 2021 Tatsuya Midorikawa. All rights rserved</Copyright>
@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Compile Include="Common.fs" />
+    <Compile Include="ExcelOp.fs" />
     <Compile Include="CellOp.fs" />
     <Compile Include="Font.fs" />
     <Compile Include="Border.fs" />
@@ -29,7 +30,7 @@
   </ItemGroup>
  
   <ItemGroup>
-    <PackageReference Include="Midoliy.Office.Interop.Excel" Version="0.0.6.21" />
+    <PackageReference Include="Midoliy.Office.Interop.Excel" Version="0.0.6.28" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
   </ItemGroup>
 
