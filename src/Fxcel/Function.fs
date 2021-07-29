@@ -170,18 +170,6 @@ module Function =
   /// <summary>ドキュメントを名前を付けて保存する.</summary>
   let inline saveAs filepath (doc: ^Doc) = (^Doc: (member SaveAs: string -> unit) doc, filepath)
   
-  /// <summary>Excelの画面を表示する.</summary>
-  let inline visible (excel: IExcelApplication) = excel.Visibility <- AppVisibility.Visible
-
-  /// <summary>Excelの画面を非表示にする.</summary>
-  let inline hidden (excel: IExcelApplication) = excel.Visibility <- AppVisibility.Hidden
-
-  /// <summary>再計算を自動で行う.</summary>
-  let inline calc'auto (excel: IExcelApplication) = excel.Calculation <- Calculation.Auto
-
-  /// <summary>再計算をマニュアルで行う.</summary>
-  let inline calc'manual (excel: IExcelApplication) = excel.Calculation <- Calculation.Manual
-
   /// <summary>指定した index の位置にある Workbook を取得する.</summary>
   let workbook (index: int) (excel: IExcelApplication) =
     if index <= 0 then raise (exn "index は 1 以上で指定してください")
