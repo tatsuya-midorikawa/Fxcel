@@ -56,7 +56,7 @@ try
     //paste sheet.["B1"] paste'mode
     ////delete sheet.["A1:A3"] delete'mode
 
-    //paste sheet.["B1"] { paste'mode with Paste = paste'values; SkipBlanks = true }
+    paste sheet.["B1"] { paste'mode with Paste = paste'values; SkipBlanks = true }
     //insert sheet.["B1"] insert'mode
     //insert sheet.["B1"] { insert'mode with Shift = shift'down; Origin= origin'below }
     ////delete sheet.["A1"] delete'mode
