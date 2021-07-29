@@ -28,7 +28,7 @@ dotnet fsi
 Fxcel を nuget から読み込みます。
 
 ```fsharp
-#r "nuget: Fxcel, 0.0.18";;
+#r "nuget: Fxcel, 0.0.19";;
 open Fxcel;;
 ```  
 
@@ -449,6 +449,10 @@ let main argv =
 
 ### ◼◻ 背景パターンを設定する<br>`bgpattern (pattern: Pattern) (target: IExcelRange): unit`
 
+| arg name | values |
+| --- | --- |
+| pattern | `pattern'none`<br>`pattern'auto`<br>`pattern'up`<br>`pattern'down`<br>`pattern'vertical`<br>`pattern'horizontal`<br>`pattern'lightUp`<br>`pattern'lightDown`<br>`pattern'lightVertical`<br>`pattern'lightHorizontal`<br>`pattern'gray8`<br>`pattern'gray16`<br>`pattern'gray25`<br>`pattern'gray50`<br>`pattern'gray75`<br>`pattern'semigray75`<br>`pattern'solid`<br>`pattern'checker`<br>`pattern'grid`<br>`pattern'crisscross`<br>`pattern'linearGradient`<br>`pattern'rectangularGradient` |
+
 ```fsharp
 [<EntryPoint>]
 let main argv =
@@ -456,8 +460,8 @@ let main argv =
   let sheet = excel |> workbook(1) |> worksheet(1)
 
   // 背景パターンを設定.
-  sheet.["A1"] |> bgpattern Pattern.Checker
-  sheet.["B1:B3"] |> bgpattern Pattern.CrissCross
+  sheet.["A1"] |> bgpattern pattern'checker
+  sheet.["B1:B3"] |> bgpattern pattern'crisscross
 ```
 
 ### ◼◻ 罫線を設定する<br>`ruledline (target: IExcelRange): IBorders` コンピュテーション式
@@ -588,18 +592,21 @@ let main argv =
 
 #### 📑 `cell'op` で利用できるカスタムオペレーション
 
-| operation name | description |
-| --- | --- |
-| `copy (target: IExcelRange)` | 対象をクリップボードにコピーする. |
-| `paste (target: IExcelRange, pasteMode: PasteMode)` | 対象にクリップボードの値を貼り付ける. |
-| `insert (target: IExcelRange, insertMode: InsertMode)` | 対象にクリップボードの値を挿入する. |
-| `delete (target: IExcelRange, deleteMode: DeleteMode)` | 対象を削除する. |
-| `set (target: IExcelRange, value: obj)` | 対象に値を設定する. |
-| `fx (target: IExcelRange, formula: string)` | 対象に関数を設定する. |
-| `width (target: IExcelRange, length: int)` | 対象の列幅をpt単位で設定する. |
-| `height (target: IExcelRange, length: int)` | 対象の行高をpt単位で設定する. |
-| `fit'width (target: IExcelRange)` | 対象の列幅を自動調整する. |
-| `fit'height (target: IExcelRange)` | 対象の行高を自動調整する. |
+| operation name | description | values |
+| --- | --- | --- |
+| `copy (target: IExcelRange)` | 対象をクリップボードにコピーする. | - |
+| `paste (target: IExcelRange, pasteMode: PasteMode)` | 対象にクリップボードの値を貼り付ける. | - |
+| `insert (target: IExcelRange, insertMode: InsertMode)` | 対象にクリップボードの値を挿入する. | - |
+| `delete (target: IExcelRange, deleteMode: DeleteMode)` | 対象を削除する. | - |
+| `set (target: IExcelRange, value: obj)` | 対象に値を設定する. | - |
+| `set (target: IExcelRange, color: Color)` | 対象の背景色を設定する. | `Color.Red`<br>`Color.Orange`<br>`Color.Blue`<br>and more... |
+| `set (target: IExcelRange, theme: ThemeColor)` | 対象の背景色をテーマカラーで設定する. | `theme'background1`<br>`theme'background2`<br>`theme'foreground1`<br>`theme'foreground2`<br>`theme'accent1`<br>`theme'accent2`<br>`theme'accent3`<br>`theme'accent4`<br>`theme'accent5`<br>`theme'accent6`<br> |
+| `set (target: IExcelRange, pattern: Pattern)` | 対象の背景パターンを設定する. | `pattern'none`<br>`pattern'auto`<br>`pattern'up`<br>`pattern'down`<br>`pattern'vertical`<br>`pattern'horizontal`<br>`pattern'lightUp`<br>`pattern'lightDown`<br>`pattern'lightVertical`<br>`pattern'lightHorizontal`<br>`pattern'gray8`<br>`pattern'gray16`<br>`pattern'gray25`<br>`pattern'gray50`<br>`pattern'gray75`<br>`pattern'semigray75`<br>`pattern'solid`<br>`pattern'checker`<br>`pattern'grid`<br>`pattern'crisscross`<br>`pattern'linearGradient`<br>`pattern'rectangularGradient` |
+| `fx (target: IExcelRange, formula: string)` | 対象に関数を設定する. | - |
+| `width (target: IExcelRange, length: int)` | 対象の列幅をpt単位で設定する. | - |
+| `height (target: IExcelRange, length: int)` | 対象の行高をpt単位で設定する. | - |
+| `fit'width (target: IExcelRange)` | 対象の列幅を自動調整する. | - |
+| `fit'height (target: IExcelRange)` | 対象の行高を自動調整する. | - |
 
 #### 📑 `PasteMode` の要素
 
@@ -608,7 +615,7 @@ let main argv =
 | `Paste` | 貼り付け方式.<br>**default: `paste'all`** | `paste'values`<br>`paste'comments`<br>`paste'formulas`<br>`paste'formats`<br>`paste'all`<br>`paste'validation`<br>`paste'exceptBorders`<br>`paste'colmnWidths`<br>`paste'formulasAndNumberFormats`<br> `paste'valuesAndNumberFormats`<br>`paste'allUsingSourceTheme`<br>`paste'allMergingConditionalFormats` |
 | `Op` | 貼り付け時の演算方法.<br>**default: `op'none`** | `op'none`<br>`op'add`<br>`op'sub`<br>`op'mul`<br>`op'div` |
 | `SkipBlanks` | 空白セルを無視するか.<br>**default: `false`** | `true` or `false` |
-| `SkipBlanks` | 行列を入れ替えるか.<br>**default: `false`** | `true` or `false` |
+| `Transpose` | 行列を入れ替えるか.<br>**default: `false`** | `true` or `false` |
 
 #### 📑 `InsertMode` の要素
 
@@ -639,8 +646,11 @@ let main argv =
     // クリップボードのデータを B1 に貼り付け.
     paste sheet.["B1"] paste'mode
     paste sheet.["B1"] { paste'mode with Paste= paste'values }
+    paste sheet.["B1"] { paste'mode with Op= op'add }
     paste sheet.["B1"] { paste'mode with SkipBlanks= true }
+    paste sheet.["B1"] { paste'mode with Transpose= true }
     paste sheet.["B1"] { paste'mode with Paste= paste'values; SkipBlanks= true }
+    paste sheet.["B1"] { paste'mode with Paste= paste'values; Transpose= true }
     // 範囲貼り付けも可能.
     paste sheet.["B1:B3"] paste'mode
 
@@ -679,6 +689,13 @@ let main argv =
     // 行高を自動調整.
     fit'height sheet.["A1"]
     fit'height sheet.["A1:B3"]
+
+    // 背景色を設定
+    set sheet.["A1"] Color.Blue
+    // 背景色をテーマカラーで設定
+    set sheet.["A1"] theme'accent1
+    // 背景パターンを設定
+    set sheet.["A1"] pattern'horizontal
   }
 ```
 

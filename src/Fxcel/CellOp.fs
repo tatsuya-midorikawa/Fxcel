@@ -1,6 +1,7 @@
 ﻿namespace Fxcel
 
 open Midoliy.Office.Interop
+open System.Drawing
 
 [<AutoOpen>]
 module CellOp =
@@ -23,6 +24,12 @@ module CellOp =
     member __.Set(_: unit, target: IExcelRange, value: IExcelRange) = target.Value <- value.Value
     [<CustomOperation("set")>]
     member __.Set(_: unit, target: IExcelRange, value: obj) = target.Value <- value
+    [<CustomOperation("set")>]
+    member __.Set(_: unit, target: IExcelRange, color: Color) = target.Interior.Color <- color
+    [<CustomOperation("set")>]
+    member __.Set(_: unit, target: IExcelRange, theme: ThemeColor) = target.Interior.ThemeColor <- theme
+    [<CustomOperation("set")>]
+    member __.Set(_: unit, target: IExcelRange, pattern: Pattern) = target.Interior.Pattern <- pattern
     [<CustomOperation("fx")>]
     member __.Fx(_: unit, target: IExcelRange, value: IExcelRange) = target.Formula <- value.Formula
     [<CustomOperation("fx")>]
