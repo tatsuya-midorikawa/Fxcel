@@ -600,6 +600,7 @@ let main argv =
 | `delete (target: IExcelRange, deleteMode: DeleteMode)` | 対象を削除する. | - |
 | `set (target: IExcelRange, value: obj)` | 対象に値を設定する. | - |
 | `set (target: IExcelRange, color: Color)` | 対象の背景色を設定する. | `Color.Red`<br>`Color.Orange`<br>`Color.Blue`<br>and more... |
+| `set (target: IExcelRange, theme: ThemeColor)` | 対象の背景色をテーマカラーで設定する. | `theme'background1`<br>`theme'background2`<br>`theme'foreground1`<br>`theme'foreground2`<br>`theme'accent1`<br>`theme'accent2`<br>`theme'accent3`<br>`theme'accent4`<br>`theme'accent5`<br>`theme'accent6`<br> |
 | `set (target: IExcelRange, pattern: Pattern)` | 対象の背景パターンを設定する. | `pattern'none`<br>`pattern'auto`<br>`pattern'up`<br>`pattern'down`<br>`pattern'vertical`<br>`pattern'horizontal`<br>`pattern'lightUp`<br>`pattern'lightDown`<br>`pattern'lightVertical`<br>`pattern'lightHorizontal`<br>`pattern'gray8`<br>`pattern'gray16`<br>`pattern'gray25`<br>`pattern'gray50`<br>`pattern'gray75`<br>`pattern'semigray75`<br>`pattern'solid`<br>`pattern'checker`<br>`pattern'grid`<br>`pattern'crisscross`<br>`pattern'linearGradient`<br>`pattern'rectangularGradient` |
 | `fx (target: IExcelRange, formula: string)` | 対象に関数を設定する. | - |
 | `width (target: IExcelRange, length: int)` | 対象の列幅をpt単位で設定する. | - |
@@ -691,6 +692,8 @@ let main argv =
 
     // 背景色を設定
     set sheet.["A1"] Color.Blue
+    // 背景色をテーマカラーで設定
+    set sheet.["A1"] theme'accent1
     // 背景パターンを設定
     set sheet.["A1"] pattern'horizontal
   }

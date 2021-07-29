@@ -27,6 +27,8 @@ module CellOp =
     [<CustomOperation("set")>]
     member __.Set(_: unit, target: IExcelRange, color: Color) = target.Interior.Color <- color
     [<CustomOperation("set")>]
+    member __.Set(_: unit, target: IExcelRange, theme: ThemeColor) = target.Interior.ThemeColor <- theme
+    [<CustomOperation("set")>]
     member __.Set(_: unit, target: IExcelRange, pattern: Pattern) = target.Interior.Pattern <- pattern
     [<CustomOperation("fx")>]
     member __.Fx(_: unit, target: IExcelRange, value: IExcelRange) = target.Formula <- value.Formula

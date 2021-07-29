@@ -24,10 +24,10 @@ module Constant =
   let linestyle'dashdotdot = LineStyle.DashDotDot
   let linestyle'slant = LineStyle.SlantDashDot
 
-  let theme'bg1 = ThemeColor.Background1
-  let theme'bg2 = ThemeColor.Background2
-  let theme'fg1 = ThemeColor.Foreground1
-  let theme'fg2 = ThemeColor.Foreground2
+  let theme'background1 = ThemeColor.Background1
+  let theme'background2 = ThemeColor.Background2
+  let theme'foreground1 = ThemeColor.Foreground1
+  let theme'foreground2 = ThemeColor.Foreground2
   let theme'accent1 = ThemeColor.Accent1
   let theme'accent2 = ThemeColor.Accent2
   let theme'accent3 = ThemeColor.Accent3
