@@ -77,10 +77,13 @@ try
     //set sheet.["A1"] v'center
     //set sheet.["A1"] h'center
 
-    merge sheet.["C1:D3"] true
-    merge sheet.["E1:F3"] false
-    unmerge sheet.["C1:D3"]
-    unmerge sheet.["E1:F3"]
+    //merge sheet.["C1:D3"] true
+    //merge sheet.["E1:F3"] false
+    //unmerge sheet.["C1:D3"]
+    //unmerge sheet.["E1:F3"]
+
+    set sheet.["A1"] DateTime.Now
+    format sheet.["A1"] "(日付)yyyy-MM-dd"
 
   }
 
