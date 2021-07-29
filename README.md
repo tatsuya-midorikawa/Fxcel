@@ -224,7 +224,7 @@ let main argv =
   let range = sheet.["A1", "B3"]
 ```
 
-### ◼◻ IWorksheetから行を取得する<br>`get'row (index: int) (sheet: IWorksheet): IExcelRow` `get'rows (begin': int, end': int) (sheet: IWorksheet): IExcelRows`
+### ◼◻ IWorksheetから行を取得する<br>`get'row (index: int) (sheet: IWorksheet): IExcelRow`<br>`get'rows (begin': int, end': int) (sheet: IWorksheet): IExcelRows`
 
 ```fsharp
 [<EntryPoint>]
@@ -238,7 +238,7 @@ let main argv =
   let r = sheet |> get'rows(1, 3)   // $1:$3
 ```
 
-### ◼◻ IWorksheetから列を取得する<br>`get'column (index: int) (sheet: IWorksheet): IExcelRow` `get'columns (begin': int, end': int) (sheet: IWorksheet): IExcelRows`
+### ◼◻ IWorksheetから列を取得する<br>`get'column (index: int) (sheet: IWorksheet): IExcelRow`<br>`get'columns (begin': int, end': int) (sheet: IWorksheet): IExcelRows`
 
 ```fsharp
 [<EntryPoint>]
@@ -278,7 +278,7 @@ let main argv =
   let r = sheet.["A1:B3"] |> current'columns   // $A:$B
 ```
 
-### ◼◻ 範囲データを行ごとに列挙する<br>`rows (range: IExcelRange): seq<IExcelRow>` `rowsi (range: IExcelRange): seq<int * IExcelRow>`
+### ◼◻ 範囲データを行ごとに列挙する<br>`rows (range: IExcelRange): seq<IExcelRow>`<br>`rowsi (range: IExcelRange): seq<int * IExcelRow>`
 
 ```fsharp
 [<EntryPoint>]
@@ -301,7 +301,7 @@ let main argv =
       // do somethings
 ```
 
-### ◼◻ 範囲データを列ごとに列挙する<br>`columns (range: IExcelRange): seq<IExcelColumn>` `columnsi (range: IExcelRange): seq<int * IExcelColumn>`
+### ◼◻ 範囲データを列ごとに列挙する<br>`columns (range: IExcelRange): seq<IExcelColumn>`<br>`columnsi (range: IExcelRange): seq<int * IExcelColumn>`
 
 ```fsharp
 [<EntryPoint>]
@@ -324,7 +324,7 @@ let main argv =
       // do somethings
 ```
 
-### ◼◻ 値を取得する<br>`get (cell: IExcelRange): obj` `get<'T> (cell: IExcelRange): 'T`
+### ◼◻ 値を取得する<br>`get (cell: IExcelRange): obj`<br>`get<'T> (cell: IExcelRange): 'T`
 
 ```fsharp
 [<EntryPoint>]
@@ -349,7 +349,7 @@ let main argv =
   let v: int = sheet.["A1:B3"] |> get<int>
 ```
 
-### ◼◻ 値を配列データで取得する<br>`gets (range: IExcelRange): obj [,]` `gets<'T> (range: IExcelRange): 'T [,]`
+### ◼◻ 値を配列データで取得する<br>`gets (range: IExcelRange): obj [,]`<br>`gets<'T> (range: IExcelRange): 'T [,]`
 
 ```fsharp
 [<EntryPoint>]
@@ -588,7 +588,7 @@ let main argv =
   }
 ```
 
-### ◼◻ IExcelRangeオブジェクトを操作する（コピー・ペースト・挿入・削除）<br>`cell'op` コンピュテーション式
+### ◼◻ IExcelRangeオブジェクトを操作する（コピー・ペースト・挿入・削除など）<br>`cell'op` コンピュテーション式
 
 #### 📑 `cell'op` で利用できるカスタムオペレーション
 
