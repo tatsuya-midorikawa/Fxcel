@@ -30,6 +30,10 @@ module CellOp =
     member __.Set(_: unit, target: IExcelRange, theme: ThemeColor) = target.Interior.ThemeColor <- theme
     [<CustomOperation("set")>]
     member __.Set(_: unit, target: IExcelRange, pattern: Pattern) = target.Interior.Pattern <- pattern
+    [<CustomOperation("set")>]
+    member __.Set(_: unit, target: IExcelRange, halign: HorizontalAlignment) = target.HorizontalAlignment <- halign
+    [<CustomOperation("set")>]
+    member __.Set(_: unit, target: IExcelRange, valign: VerticalAlignment) = target.VerticalAlignment <- valign
     [<CustomOperation("fx")>]
     member __.Fx(_: unit, target: IExcelRange, value: IExcelRange) = target.Formula <- value.Formula
     [<CustomOperation("fx")>]
@@ -42,6 +46,22 @@ module CellOp =
     member __.FitWidth(_: unit, target: IExcelRange) = target.EntireColumn.AutoFit()
     [<CustomOperation("fit'height")>]
     member __.FitHeight(_: unit, target: IExcelRange) = target.EntireRow.AutoFit()
+    [<CustomOperation("merge")>]
+    member __.Merge(_: unit, target: IExcelRange, across: bool) = target.Merge(across)
+    [<CustomOperation("unmerge")>]
+    member __.UnMerge(_: unit, target: IExcelRange) = target.UnMerge()
+    [<CustomOperation("wrap")>]
+    member __.WrapText(_: unit, target: IExcelRange) = target.WrapText <- true
+    [<CustomOperation("unwrap")>]
+    member __.UnWrapText(_: unit, target: IExcelRange) = target.WrapText <- false
+    [<CustomOperation("shrink")>]
+    member __.ShrinkToFit(_: unit, target: IExcelRange) = target.ShrinkToFit <- true
+    [<CustomOperation("unshrink")>]
+    member __.UnShrinkToFit(_: unit, target: IExcelRange) = target.ShrinkToFit <- false
+    [<CustomOperation("orientation")>]
+    member __.Orientation(_: unit, target: IExcelRange, angle: int) = target.Orientation <- angle
+    [<CustomOperation("format")>]
+    member __.Format(_: unit, target: IExcelRange, format: string) = target.Format <- format
 
   let cell'op = CellOpBuilder ()
   let paste'mode = { Paste= PasteType.All; Op= PasteOperation.None; SkipBlanks= false; Transpose= false; }

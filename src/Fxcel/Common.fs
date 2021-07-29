@@ -116,3 +116,18 @@ module Constant =
 
   let visibility'visible = AppVisibility.Visible
   let visibility'hidden = AppVisibility.Hidden
+  
+  let h'right = HorizontalAlignment.Right
+  let h'left = HorizontalAlignment.Left
+  let h'center = HorizontalAlignment.Center
+  let h'justify = HorizontalAlignment.Justify
+  let h'distributed = HorizontalAlignment.Distributed
+  let h'general = HorizontalAlignment.General
+  let h'fill = HorizontalAlignment.Fill
+  let h'centerAcrossSelection = HorizontalAlignment.CenterAcrossSelection
+
+  let v'top = VerticalAlignment.Top
+  let v'bottom = VerticalAlignment.Bottom
+  let v'center = VerticalAlignment.Center
+  let v'justify = VerticalAlignment.Justify
+  let v'distributed = VerticalAlignment.Distributed

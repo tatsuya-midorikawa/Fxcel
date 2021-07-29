@@ -6,7 +6,7 @@
     <WarnOn>3390;$(WarnOn)</WarnOn>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <LangVersion>preview</LangVersion>
-    <Version>0.0.19</Version>
+    <Version>0.0.20</Version>
     <Authors>midoliy</Authors>
     <Company>midoliy</Company>
     <Copyright>© 2021 Tatsuya Midorikawa. All rights rserved</Copyright>
@@ -30,7 +30,7 @@
   </ItemGroup>
  
   <ItemGroup>
-    <PackageReference Include="Midoliy.Office.Interop.Excel" Version="0.0.6.28" />
+    <PackageReference Include="Midoliy.Office.Interop.Excel" Version="0.0.6.30" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
   </ItemGroup>
 

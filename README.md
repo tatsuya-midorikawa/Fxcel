@@ -28,7 +28,7 @@ dotnet fsi
 Fxcel を nuget から読み込みます。
 
 ```fsharp
-#r "nuget: Fxcel, 0.0.19";;
+#r "nuget: Fxcel, 0.0.20";;
 open Fxcel;;
 ```  
 
@@ -602,11 +602,21 @@ let main argv =
 | `set (target: IExcelRange, color: Color)` | 対象の背景色を設定する. | `Color.Red`<br>`Color.Orange`<br>`Color.Blue`<br>and more... |
 | `set (target: IExcelRange, theme: ThemeColor)` | 対象の背景色をテーマカラーで設定する. | `theme'background1`<br>`theme'background2`<br>`theme'foreground1`<br>`theme'foreground2`<br>`theme'accent1`<br>`theme'accent2`<br>`theme'accent3`<br>`theme'accent4`<br>`theme'accent5`<br>`theme'accent6`<br> |
 | `set (target: IExcelRange, pattern: Pattern)` | 対象の背景パターンを設定する. | `pattern'none`<br>`pattern'auto`<br>`pattern'up`<br>`pattern'down`<br>`pattern'vertical`<br>`pattern'horizontal`<br>`pattern'lightUp`<br>`pattern'lightDown`<br>`pattern'lightVertical`<br>`pattern'lightHorizontal`<br>`pattern'gray8`<br>`pattern'gray16`<br>`pattern'gray25`<br>`pattern'gray50`<br>`pattern'gray75`<br>`pattern'semigray75`<br>`pattern'solid`<br>`pattern'checker`<br>`pattern'grid`<br>`pattern'crisscross`<br>`pattern'linearGradient`<br>`pattern'rectangularGradient` |
+| `set (target: IExcelRange, halign: HorizontalAlignment)` |文字の水平位置を設定する. | `h'right`<br>`h'left`<br>`h'center`<br>`h'justify`<br>`h'distributed`<br>`h'general`<br>`h'fill`<br>`h'centerAcrossSelection` |
+| `set (target: IExcelRange, valign: VerticalAlignment)` |文字の垂直位置を設定する. | `v'top`<br>`v'bottom`<br>`v'center `<br>`v'justify`<br>`v'distributed` |
 | `fx (target: IExcelRange, formula: string)` | 対象に関数を設定する. | - |
 | `width (target: IExcelRange, length: int)` | 対象の列幅をpt単位で設定する. | - |
 | `height (target: IExcelRange, length: int)` | 対象の行高をpt単位で設定する. | - |
 | `fit'width (target: IExcelRange)` | 対象の列幅を自動調整する. | - |
 | `fit'height (target: IExcelRange)` | 対象の行高を自動調整する. | - |
+| `merge (target: IExcelRange, across: bool)` | セルを結合する. | `true`: 範囲内のセルを行ごとに結合.<br>`false`: 範囲内すべてのセルを1つに結合. |
+| `unmerge (target: IExcelRange)` | セルの結合を解除する. | - |
+| `wrap (target: IExcelRange)` | 折り返して全体を表示する. | - |
+| `unwrap (target: IExcelRange)` | 折り返して全体を表示を解除する. | - |
+| `shrink (target: IExcelRange)` | 縮小して全体を表示する. | - |
+| `unshrink (target: IExcelRange)` | 縮小して全体を表示を解除する. | - |
+| `orientation (target: IExcelRange, angle: int)` | 文字の方向を設定する. | -90° ~ 90° |
+| `format (target: IExcelRange, format: string)` | セルの値の表示形式を設定する. | - |
 
 #### 📑 `PasteMode` の要素
 
@@ -690,12 +700,37 @@ let main argv =
     fit'height sheet.["A1"]
     fit'height sheet.["A1:B3"]
 
-    // 背景色を設定
+    // 背景色を設定.
     set sheet.["A1"] Color.Blue
-    // 背景色をテーマカラーで設定
+    // 背景色をテーマカラーで設定.
     set sheet.["A1"] theme'accent1
-    // 背景パターンを設定
+    // 背景パターンを設定.
     set sheet.["A1"] pattern'horizontal
+
+    // セルを結合.
+    merge sheet.["C1:D3"] true
+    merge sheet.["E1:F3"] false
+    // セルの結合を解除.
+    unmerge sheet.["C1:D3"]
+    unmerge sheet.["E1:F3"]
+
+    // 折り返して全体を表示.
+    wrap sheet.["A1"]
+    // 折り返して全体を表示を解除.
+    unwrap sheet.["A1"]
+
+    // 縮小して全体を表示.
+    shrink sheet.["A1"]
+    // 縮小して全体を表示を解除.
+    unshrink sheet.["A1"]
+
+    // 文字の方向を設定.
+    orientation sheet.["A1"] -90
+    orientation sheet.["A1"] 0
+    orientation sheet.["A1"] 90
+
+    // 表示形式を設定.
+    format sheet.["A1"] "(日付)yyyy-MM-dd"
   }
 ```
 

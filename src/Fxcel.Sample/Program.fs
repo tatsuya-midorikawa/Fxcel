@@ -67,12 +67,24 @@ try
 
     //fx sheet.["A1"] sheet.["B1"]
     //fx sheet.["A1"] "SUM(A1:B3)"
-    //width sheet.["A1"] 100
-    //height sheet.["A1"] 100
+    width sheet.["A1"] 100
+    height sheet.["A1"] 100
 
     //fit'height sheet.["A1"]
     //fit'width sheet.["A1"]
-    set sheet.["A1"] theme'accent1
+    //set sheet.["A1"] theme'accent1
+    //set sheet.["A1"] "a"
+    //set sheet.["A1"] v'center
+    //set sheet.["A1"] h'center
+
+    //merge sheet.["C1:D3"] true
+    //merge sheet.["E1:F3"] false
+    //unmerge sheet.["C1:D3"]
+    //unmerge sheet.["E1:F3"]
+
+    set sheet.["A1"] DateTime.Now
+    format sheet.["A1"] "(日付)yyyy-MM-dd"
+
   }
 
   //ruledline sheet.["B2:C5"] {
