@@ -9,10 +9,10 @@ type kg
 
 try
   use excel = create()
-  excel.Visibility <- AppVisibility.Visible
+  //excel.Visibility <- AppVisibility.Visible
 
   let sheet = excel |> workbook(1) |> worksheet(1)
-  excel |> workbook(1) |> save
+  
   sheet.["A1:A3"] |> set 100 
   sheet.["B1:B3"] |> fx "SUM(A1:A3)"
   let a = sheet.["A1:A3"] |> getsfx
@@ -31,7 +31,7 @@ try
   //sheet.["A1:B3"] |> current'columns |> address |> printfn "%s"
   //sheet.["A1"] |> current'rows |> address |> printfn "%s"
   //sheet.["A1:B3"] |> current'rows |> address |> printfn "%s"
-  ()
+
   //sheet.["B1:B3"] |> set 200
   //sheet.["C2"] |> set 200
   //let a = sheet.["C2"] |> getfx
@@ -47,7 +47,7 @@ try
 
   excel'op excel {
     set calc'auto
-    set visibility'visible
+    set visibility'hidden
   }
   |> ignore
 
@@ -84,8 +84,12 @@ try
 
     set sheet.["A1"] DateTime.Now
     format sheet.["A1"] "(日付)yyyy-MM-dd"
-
   }
+
+  ////sheet |> saveAs "sample.xlsx"
+  //let book = excel |> workbook(1)
+  //book.Close()
+
 
   //ruledline sheet.["B2:C5"] {
   //  top { border with Color= Color.Red }
@@ -157,29 +161,29 @@ try
 
   //sheet.["A1"].Rows |> delete dd'up
 
-  // rows関数を利用して, 1行ずつ取得する
-  for (index, row) in sheet.["A1:B3"] |> rowsi do
-    //if index % 2 = 0 then
-    //  column |> bgpattern Pattern.Checker
-    //else
-    //  column |> bgpattern Pattern.CrissCross
+  //// rows関数を利用して, 1行ずつ取得する
+  //for (index, row) in sheet.["A1:B3"] |> rowsi do
+  //  //if index % 2 = 0 then
+  //  //  column |> bgpattern Pattern.Checker
+  //  //else
+  //  //  column |> bgpattern Pattern.CrissCross
 
-    // 各cell毎に何か処理をする
-    for cell in row do
-      printf $"{cell |> get} "
-    printfn ""
+  //  // 各cell毎に何か処理をする
+  //  for cell in row do
+  //    printf $"{cell |> get} "
+  //  printfn ""
 
-  // columns関数を利用して, 1行ずつ取得する
-  for (index, column) in sheet.["A1:B3"] |> columnsi do
-    //if index % 2 = 0 then
-    //  column |> bgpattern Pattern.Checker
-    //else
-    //  column |> bgpattern Pattern.CrissCross
+  //// columns関数を利用して, 1行ずつ取得する
+  //for (index, column) in sheet.["A1:B3"] |> columnsi do
+  //  //if index % 2 = 0 then
+  //  //  column |> bgpattern Pattern.Checker
+  //  //else
+  //  //  column |> bgpattern Pattern.CrissCross
 
-    // 各cell毎に何か処理をする
-    for cell in column do
-      printf $"{cell |> get} "
-    printfn ""
+  //  // 各cell毎に何か処理をする
+  //  for cell in column do
+  //    printf $"{cell |> get} "
+  //  printfn ""
 
 with
   _ -> ()
