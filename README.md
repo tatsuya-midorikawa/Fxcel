@@ -742,8 +742,8 @@ let main argv =
 | --- | --- | --- |
 | `select (target: string)` | チャートで利用するデータの範囲を選択する. | - |
 | `size (size: (int<cols> * int<rows>))` | チャートのサイズをセル数で指定する. (幅 * 高さ). | - |
-| `position (position: string)` | チャートを挿入するセルを指定する. | - |
-| `add (recipe: ChartRecipe, ?newLayout: bool)` | チャートを追加する. | - |
+| `position (position: string)` | チャートを挿入する位置を指定する. | - |
+| `add (recipe: ChartRecipe, ?newLayout: bool)` | チャートを追加する. | `newLayout`: 動的書式設定規則を使用する (default: true). |
 
 #### 📑 `ChartRecipe` の要素
 
@@ -832,7 +832,7 @@ let main argv =
   let sheet = excel |> workbook(1) |> worksheet(1)
   
   sheet.["A1:F1"] |> set [| 100; 120; 110; 100; 200; 180; |]
-  
+
   chart'op sheet {
     select "A1:F1"
     position "A2"
