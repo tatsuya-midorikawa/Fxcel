@@ -18,7 +18,7 @@ module ChartOp =
     [<CustomOperation("select")>]
     member __.Select(_: unit, target: string) = sheet.[target].Select()
 
-    /// <summary></summary>
+    /// <summary>チャートのサイズをセル数で指定する.</summary>
     /// <param name="size">チャートのサイズ. (width * height)</param>
     [<CustomOperation("size")>]
     member __.Size(_: unit, size: (int<cols> * int<rows>)) = 
@@ -26,7 +26,7 @@ module ChartOp =
       __.width <- w
       __.height <- h
       
-    /// <summary></summary>
+    /// <summary>チャートを挿入する位置を指定する.</summary>
     /// <param name="position">チャートの挿入位置をアドレス形式で指定.</param>
     [<CustomOperation("position")>]
     member __.Position(_: unit, position: string) = __.position <- position

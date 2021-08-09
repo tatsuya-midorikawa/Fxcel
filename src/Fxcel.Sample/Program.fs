@@ -90,72 +90,67 @@ try
   //  //select sheet.["A1:F1"]
   //}
 
-  sheet'op sheet {
-    //set "A1" 100
-    //set "A2" 200
-    //set "A3" 300
-    //copy "A1:A3"
-    //paste "B1" paste'mode
-    //delete "A1:A3" { delete'mode with Shift = shift'up }
+  //sheet'op sheet {
+  //  //set "A1" 100
+  //  //set "A2" 200
+  //  //set "A3" 300
+  //  //copy "A1:A3"
+  //  //paste "B1" paste'mode
+  //  //delete "A1:A3" { delete'mode with Shift = shift'up }
 
-    //set ("A", 1<row>) 100
-    //set ("A", 2<row>) 200
-    //set ("A", 3<row>) 300
-    //copy ("A", 1<row>) ("A", 3<row>)
-    //paste ("B", 1<row>) paste'mode
-    //delete ("A", 1<row>) ("A", 3<row>) { delete'mode with Shift = shift'up }
+  //  //set ("A", 1<row>) 100
+  //  //set ("A", 2<row>) 200
+  //  //set ("A", 3<row>) 300
+  //  //copy ("A", 1<row>) ("A", 3<row>)
+  //  //paste ("B", 1<row>) paste'mode
+  //  //delete ("A", 1<row>) ("A", 3<row>) { delete'mode with Shift = shift'up }
 
-    set (1<row>, 1<col>) 100
-    set (2<row>, 1<col>)  200
-    set (3<row>, 1<col>)  300
-    copy (1<row>, 1<col>) (3<row>, 1<col>) 
-    paste (1<row>, 2<col>) paste'mode
-    delete (1<row>, 1<col>) (3<row>, 1<col>)  { delete'mode with Shift = shift'up }
+  //  set (1<row>, 1<col>) 100
+  //  set (2<row>, 1<col>)  200
+  //  set (3<row>, 1<col>)  300
+  //  copy (1<row>, 1<col>) (3<row>, 1<col>) 
+  //  paste (1<row>, 2<col>) paste'mode
+  //  delete (1<row>, 1<col>) (3<row>, 1<col>) { delete'mode with Shift = shift'up }
 
+  //  //paste sheet.["B1"] { paste'mode with Paste = paste'values; SkipBlanks = true }
+  //  //insert sheet.["B1"] insert'mode
+  //  //insert sheet.["B1"] { insert'mode with Shift = shift'down; Origin= origin'below }
+  //  ////delete sheet.["A1"] delete'mode
+  //  ////delete sheet.["A1"] { delete'mode with Shift= shift'up }
 
+  //  //set "A1" sheet.["B1"]
+  //  //set "A1" 100
 
-    //paste sheet.["B1"] { paste'mode with Paste = paste'values; SkipBlanks = true }
-    //insert sheet.["B1"] insert'mode
-    //insert sheet.["B1"] { insert'mode with Shift = shift'down; Origin= origin'below }
-    ////delete sheet.["A1"] delete'mode
-    ////delete sheet.["A1"] { delete'mode with Shift= shift'up }
+  //  //fx "A1" sheet.["B1"]
+  //  //fx "A1" "SUM(B1:B3)"
+  //  //width "A1" 100
+  //  //height "A1" 100
 
-    set "A1" sheet.["B1"]
-    set "A1" 100
+  //  //fit'height sheet.["A1"]
+  //  //fit'width sheet.["A1"]
+  //  //set sheet.["A1"] theme'accent1
+  //  //set sheet.["A1"] "a"
+  //  //set sheet.["A1"] v'center
+  //  //set sheet.["A1"] h'center
 
-    fx "A1" sheet.["B1"]
-    fx "A1" "SUM(B1:B3)"
-    width "A1" 100
-    height "A1" 100
+  //  //merge sheet.["C1:D3"] true
+  //  //merge sheet.["E1:F3"] false
+  //  //unmerge sheet.["C1:D3"]
+  //  //unmerge sheet.["E1:F3"]
 
-    //fit'height sheet.["A1"]
-    //fit'width sheet.["A1"]
-    //set sheet.["A1"] theme'accent1
-    //set sheet.["A1"] "a"
-    //set sheet.["A1"] v'center
-    //set sheet.["A1"] h'center
+  //  //set sheet.["A1"] DateTime.Now
+  //  //format sheet.["A1"] "(日付)yyyy-MM-dd"
+  //  //set "A1:F1" [| 100; 120; 110; 100; 200; 180; |]
+  //  //select sheet.["A1:F1"]
+  //}
 
-    //merge sheet.["C1:D3"] true
-    //merge sheet.["E1:F3"] false
-    //unmerge sheet.["C1:D3"]
-    //unmerge sheet.["E1:F3"]
-
-    //set sheet.["A1"] DateTime.Now
-    //format sheet.["A1"] "(日付)yyyy-MM-dd"
-    //set "A1:F1" [| 100; 120; 110; 100; 200; 180; |]
-    //select sheet.["A1:F1"]
-  }
-
-
-
-
-  //sheet.["A1:F1"] |> set [| 100; 120; 110; 100; 200; 180; |]
-  //chart'op sheet {
-  //  select "A1:F1"
-  //  position "A2"
-  //  size (6<cols>, 10<rows>)
-  //  add ChartRecipe.line
-  //} |> ignore
+  sheet.["A1:F1"] |> set [| 100; 120; 110; 100; 200; 180; |]
+  chart'op sheet {
+    select "A1:F1"
+    position "A2"
+    size (6<cols>, 10<rows>)
+    add ChartRecipe.line
+  } |> ignore
 
 
 

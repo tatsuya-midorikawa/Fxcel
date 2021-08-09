@@ -588,7 +588,7 @@ let main argv =
   }
 ```
 
-### ◼◻ IExcelRangeオブジェクトを操作する（コピー・ペースト・挿入・削除など）<br>`sheet'op` コンピュテーション式
+### ◼◻ IExcelRangeオブジェクトを操作する（コピー・ペースト・挿入・削除など）<br>`sheet'op (sheet): IWorksheet)` コンピュテーション式
 
 #### 📑 `sheet'op` で利用できるカスタムオペレーション
 
@@ -732,6 +732,114 @@ let main argv =
     // 表示形式を設定.
     format "A1" "(日付)yyyy-MM-dd"
   }
+```
+
+### ◼◻ チャートやグラフを挿入する<br>`chart'op (sheet: IWorksheet)` コンピュテーション式
+
+#### 📑 `chart'op` で利用できるカスタムオペレーション
+
+| operation name | description | values |
+| --- | --- | --- |
+| `select (target: string)` | チャートで利用するデータの範囲を選択する. | - |
+| `size (size: (int<cols> * int<rows>))` | チャートのサイズをセル数で指定する. (幅 * 高さ). | - |
+| `position (position: string)` | チャートを挿入するセルを指定する. | - |
+| `add (recipe: ChartRecipe, ?newLayout: bool)` | チャートを追加する. | - |
+
+#### 📑 `ChartRecipe` の要素
+
+| name | description |
+| --- | --- |
+| `columnClustered` | 集合縦棒 |
+| `columnStacked` | 積み上げ縦棒 |
+| `columnStacked100` | 100% 積み上げ縦棒 |
+| `barStacked` | 積み上げ横棒 |
+| `barStacked100` | 100% 積み上げ横棒 |
+| `column3d` | 3-D 縦棒 |
+| `columnClustered3d` | 3-D 集合縦棒 |
+| `coneCol` | 3-D 円錐型縦棒 |
+| `coneColClustered` | 集合円錐型 縦棒 |
+| `cylinderCol` | 3-D 円柱型 縦棒 |
+| `cylinderColClustered` | 集合円錐型 縦棒 |
+| `pyramidCol` | 3-D ピラミッド型縦棒 |
+| `pyramidColClustered` | 集合ピラミッド型 縦棒 |
+| `columnStacked3d` | 3-D 積み上げ縦棒 |
+| `columnStacked3d100` | 3-D 100% 積み上げ縦棒 |
+| `cylinderColStacked` | 積み上げ円錐型 縦棒 |
+| `cylinderColStacked100` | 100% 積み上げ円柱型 縦棒 |
+| `cylinderBarStacked` | 積み上げ円柱型 横棒 |
+| `cylinderBarStacked100` | 100% 積み上げ円柱型 横棒 |
+| `coneColStacked` | 積み上げ円錐型 縦棒 |
+| `coneColStacked100` | 100% 積み上げ円錐型 縦棒 |
+| `coneBarStacked` | 積み上げ円錐型 横棒 |
+| `coneBarStacked100` | 100% 積み上げ円錐型 横棒 |
+| `pyramidColStacked` | 積み上げピラミッド型 縦棒 |
+| `pyramidColStacked100` | 100% 積み上げピラミッド型 縦棒 |
+| `pyramidBarStacked` | 積み上げピラミッド型 横棒 |
+| `pyramidBarStacked100` | 100% 積み上げピラミッド型 横棒 |
+| `barStacked3d` | 3-D 積み上げ横棒 |
+| `barStacked3d100` | 3-D 100% 積み上げ横棒 |
+| `barClustered` | 集合横棒 |
+| `barClustered3d` | 3-D 集合横棒 |
+| `cylinderBarClustered` | 集合円柱型 横棒 |
+| `coneBarClustered` | 集合円錐型 横棒 |
+| `pyramidBarClustered` | 集合ピラミッド型 横棒 |
+| `lineStacked` | 積み上げ折れ線 |
+| `lineStacked100` | 100% 積み上げ折れ線 |
+| `lineMarkersStacked100` | マーカー付き 100% 積み上げ折れ線 |
+| `line` | 折れ線 |
+| `lineMarkers` | マーカー付き折れ線 |
+| `lineMarkersStacked` | マーカー付き積み上げ折れ線 |
+| `pieOfPie` | 補助円グラフ付き円 |
+| `barOfPie` | 補助縦棒グラフ付き円 |
+| `doughnut` | ドーナツ |
+| `doughnutExploded` | 分割ドーナツ |
+| `pie` | 円 |
+| `pieExploded` | 分割円 |
+| `pie3d` | 3-D 円 |
+| `pieExploded3d` | 分割 3-D 円 |
+| `xyScatter` | 散布図 |
+| `xyScatterSmooth` | 平滑線付き散布図 |
+| `xyScatterSmoothNoMarkers` | 平滑線付き散布図（データ マーカーなし） |
+| `xyScatterLines` | 折れ線付き散布図 |
+| `xyScatterLinesNoMarkers` | 折れ線付き散布図（データ マーカーなし） |
+| `area` | 面 |
+| `areaStacked` | 積み上げ面 |
+| `areaStacked100` | 100% 積み上げ面 |
+| `area3d` | 3-D 面 |
+| `areaStacked3d` | 3-D 積み上げ面 |
+| `areaStacked1003d` | 3-D 100% 積み上げ面 |
+| `radar` | レーダー |
+| `radarMarkers` | データ マーカー付きレーダー |
+| `radarFilled` | 塗りつぶしレーダー |
+| `surface` | 3-D 表面 |
+| `surfaceWireframe` | 3-D 表面（ワイヤーフレーム） |
+| `surfaceTopView` | 表面（トップビュー） |
+| `surfaceTopViewWireframe` | 表面（トップビュー・ワイヤーフレーム） |
+| `line3d` | 3-D 折れ線 |
+| `bubble` | バブル |
+| `bubble3dEffect` | 3-D 効果付きバブル |
+| `stockHLC` | 高値-安値-終値 |
+| `stockOHLC` | 始値-高値-安値-終値 |
+| `stockVHLC` | 出来高-高値-安値-終値 |
+| `stockVOHLC` | 出来高-始値-高値-安値-終値 |
+| `sunburst` | サンバースト |
+
+
+```fsharp
+[<EntryPoint>]
+let main argv =
+  use excel = open' "C:/work/sample.xlsx"
+  let sheet = excel |> workbook(1) |> worksheet(1)
+  
+  sheet.["A1:F1"] |> set [| 100; 120; 110; 100; 200; 180; |]
+  
+  chart'op sheet {
+    select "A1:F1"
+    position "A2"
+    size (6<cols>, 10<rows>)
+    add ChartRecipe.line
+  } |> ignore
+
 ```
 
 ### ◼◻ IExcelRangeを削除する<br>`delete (direction: DeleteShiftDirection) (target: IExcelRange): unit`
