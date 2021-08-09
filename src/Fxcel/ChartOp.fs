@@ -7,8 +7,8 @@ open System.Drawing
 module ChartOp =
 
   type ChartOpBuilder (sheet: IWorksheet) =
-    [<DefaultValue>] val mutable width : int<cell>
-    [<DefaultValue>] val mutable height : int<cell>
+    [<DefaultValue>] val mutable width : int<cols>
+    [<DefaultValue>] val mutable height : int<rows>
     [<DefaultValue>] val mutable position : string
 
     member __.Yield (_: unit) = ()
@@ -21,7 +21,7 @@ module ChartOp =
     /// <summary></summary>
     /// <param name="size">チャートのサイズ. (width * height)</param>
     [<CustomOperation("size")>]
-    member __.Size(_: unit, size: (int<cell> * int<cell>)) = 
+    member __.Size(_: unit, size: (int<cols> * int<rows>)) = 
       let w, h = size
       __.width <- w
       __.height <- h

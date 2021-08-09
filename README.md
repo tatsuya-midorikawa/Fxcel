@@ -28,7 +28,7 @@ dotnet fsi
 Fxcel を nuget から読み込みます。
 
 ```fsharp
-#r "nuget: Fxcel, 0.0.20";;
+#r "nuget: Fxcel, 0.0.21";;
 open Fxcel;;
 ```  
 
@@ -588,35 +588,35 @@ let main argv =
   }
 ```
 
-### ◼◻ IExcelRangeオブジェクトを操作する（コピー・ペースト・挿入・削除など）<br>`cell'op` コンピュテーション式
+### ◼◻ IExcelRangeオブジェクトを操作する（コピー・ペースト・挿入・削除など）<br>`sheet'op` コンピュテーション式
 
-#### 📑 `cell'op` で利用できるカスタムオペレーション
+#### 📑 `sheet'op` で利用できるカスタムオペレーション
 
 | operation name | description | values |
 | --- | --- | --- |
-| `copy (target: IExcelRange)` | 対象をクリップボードにコピーする. | - |
-| `paste (target: IExcelRange, pasteMode: PasteMode)` | 対象にクリップボードの値を貼り付ける. | - |
-| `insert (target: IExcelRange, insertMode: InsertMode)` | 対象にクリップボードの値を挿入する. | - |
-| `delete (target: IExcelRange, deleteMode: DeleteMode)` | 対象を削除する. | - |
-| `set (target: IExcelRange, value: obj)` | 対象に値を設定する. | - |
-| `set (target: IExcelRange, color: Color)` | 対象の背景色を設定する. | `Color.Red`<br>`Color.Orange`<br>`Color.Blue`<br>and more... |
-| `set (target: IExcelRange, theme: ThemeColor)` | 対象の背景色をテーマカラーで設定する. | `theme'background1`<br>`theme'background2`<br>`theme'foreground1`<br>`theme'foreground2`<br>`theme'accent1`<br>`theme'accent2`<br>`theme'accent3`<br>`theme'accent4`<br>`theme'accent5`<br>`theme'accent6`<br> |
-| `set (target: IExcelRange, pattern: Pattern)` | 対象の背景パターンを設定する. | `pattern'none`<br>`pattern'auto`<br>`pattern'up`<br>`pattern'down`<br>`pattern'vertical`<br>`pattern'horizontal`<br>`pattern'lightUp`<br>`pattern'lightDown`<br>`pattern'lightVertical`<br>`pattern'lightHorizontal`<br>`pattern'gray8`<br>`pattern'gray16`<br>`pattern'gray25`<br>`pattern'gray50`<br>`pattern'gray75`<br>`pattern'semigray75`<br>`pattern'solid`<br>`pattern'checker`<br>`pattern'grid`<br>`pattern'crisscross`<br>`pattern'linearGradient`<br>`pattern'rectangularGradient` |
-| `set (target: IExcelRange, halign: HorizontalAlignment)` |文字の水平位置を設定する. | `h'right`<br>`h'left`<br>`h'center`<br>`h'justify`<br>`h'distributed`<br>`h'general`<br>`h'fill`<br>`h'centerAcrossSelection` |
-| `set (target: IExcelRange, valign: VerticalAlignment)` |文字の垂直位置を設定する. | `v'top`<br>`v'bottom`<br>`v'center `<br>`v'justify`<br>`v'distributed` |
-| `fx (target: IExcelRange, formula: string)` | 対象に関数を設定する. | - |
-| `width (target: IExcelRange, length: int)` | 対象の列幅をpt単位で設定する. | - |
-| `height (target: IExcelRange, length: int)` | 対象の行高をpt単位で設定する. | - |
-| `fit'width (target: IExcelRange)` | 対象の列幅を自動調整する. | - |
-| `fit'height (target: IExcelRange)` | 対象の行高を自動調整する. | - |
-| `merge (target: IExcelRange, across: bool)` | セルを結合する. | `true`: 範囲内のセルを行ごとに結合.<br>`false`: 範囲内すべてのセルを1つに結合. |
-| `unmerge (target: IExcelRange)` | セルの結合を解除する. | - |
-| `wrap (target: IExcelRange)` | 折り返して全体を表示する. | - |
-| `unwrap (target: IExcelRange)` | 折り返して全体を表示を解除する. | - |
-| `shrink (target: IExcelRange)` | 縮小して全体を表示する. | - |
-| `unshrink (target: IExcelRange)` | 縮小して全体を表示を解除する. | - |
-| `orientation (target: IExcelRange, angle: int)` | 文字の方向を設定する. | -90° ~ 90° |
-| `format (target: IExcelRange, format: string)` | セルの値の表示形式を設定する. | - |
+| `copy (target: string)` | 対象をクリップボードにコピーする. | - |
+| `paste (target: string, pasteMode: PasteMode)` | 対象にクリップボードの値を貼り付ける. | - |
+| `insert (target: string, insertMode: InsertMode)` | 対象にクリップボードの値を挿入する. | - |
+| `delete (target: string, deleteMode: DeleteMode)` | 対象を削除する. | - |
+| `set (target: string, value: obj)` | 対象に値を設定する. | - |
+| `set (target: string, color: Color)` | 対象の背景色を設定する. | `Color.Red`<br>`Color.Orange`<br>`Color.Blue`<br>and more... |
+| `set (target: string, theme: ThemeColor)` | 対象の背景色をテーマカラーで設定する. | `theme'background1`<br>`theme'background2`<br>`theme'foreground1`<br>`theme'foreground2`<br>`theme'accent1`<br>`theme'accent2`<br>`theme'accent3`<br>`theme'accent4`<br>`theme'accent5`<br>`theme'accent6`<br> |
+| `set (target: string, pattern: Pattern)` | 対象の背景パターンを設定する. | `pattern'none`<br>`pattern'auto`<br>`pattern'up`<br>`pattern'down`<br>`pattern'vertical`<br>`pattern'horizontal`<br>`pattern'lightUp`<br>`pattern'lightDown`<br>`pattern'lightVertical`<br>`pattern'lightHorizontal`<br>`pattern'gray8`<br>`pattern'gray16`<br>`pattern'gray25`<br>`pattern'gray50`<br>`pattern'gray75`<br>`pattern'semigray75`<br>`pattern'solid`<br>`pattern'checker`<br>`pattern'grid`<br>`pattern'crisscross`<br>`pattern'linearGradient`<br>`pattern'rectangularGradient` |
+| `set (target: string, halign: HorizontalAlignment)` |文字の水平位置を設定する. | `h'right`<br>`h'left`<br>`h'center`<br>`h'justify`<br>`h'distributed`<br>`h'general`<br>`h'fill`<br>`h'centerAcrossSelection` |
+| `set (target: string, valign: VerticalAlignment)` |文字の垂直位置を設定する. | `v'top`<br>`v'bottom`<br>`v'center `<br>`v'justify`<br>`v'distributed` |
+| `fx (target: string, formula: string)` | 対象に関数を設定する. | - |
+| `width (target: string, length: int)` | 対象の列幅をpt単位で設定する. | - |
+| `height (target: string, length: int)` | 対象の行高をpt単位で設定する. | - |
+| `fit'width (target: string)` | 対象の列幅を自動調整する. | - |
+| `fit'height (target: string)` | 対象の行高を自動調整する. | - |
+| `merge (target: string, across: bool)` | セルを結合する. | `true`: 範囲内のセルを行ごとに結合.<br>`false`: 範囲内すべてのセルを1つに結合. |
+| `unmerge (target: string)` | セルの結合を解除する. | - |
+| `wrap (target: string)` | 折り返して全体を表示する. | - |
+| `unwrap (target: string)` | 折り返して全体を表示を解除する. | - |
+| `shrink (target: string)` | 縮小して全体を表示する. | - |
+| `unshrink (target: string)` | 縮小して全体を表示を解除する. | - |
+| `orientation (target: string, angle: int)` | 文字の方向を設定する. | -90° ~ 90° |
+| `format (target: string, format: string)` | セルの値の表示形式を設定する. | - |
 
 #### 📑 `PasteMode` の要素
 
@@ -647,90 +647,90 @@ let main argv =
   use excel = open' "C:/work/sample.xlsx"
   let sheet = excel |> workbook(1) |> worksheet(1)
   
-  cell'op {
+  sheet'op sheet {
     // A1 をクリップボードにコピー.
-    copy sheet.["A1"]
+    copy "A1"
     // 範囲コピーも可能.
-    copy sheet.["A1:A3"]
+    copy "A1:A3"
 
     // クリップボードのデータを B1 に貼り付け.
-    paste sheet.["B1"] paste'mode
-    paste sheet.["B1"] { paste'mode with Paste= paste'values }
-    paste sheet.["B1"] { paste'mode with Op= op'add }
-    paste sheet.["B1"] { paste'mode with SkipBlanks= true }
-    paste sheet.["B1"] { paste'mode with Transpose= true }
-    paste sheet.["B1"] { paste'mode with Paste= paste'values; SkipBlanks= true }
-    paste sheet.["B1"] { paste'mode with Paste= paste'values; Transpose= true }
+    paste "B1" paste'mode
+    paste "B1" { paste'mode with Paste= paste'values }
+    paste "B1" { paste'mode with Op= op'add }
+    paste "B1" { paste'mode with SkipBlanks= true }
+    paste "B1" { paste'mode with Transpose= true }
+    paste "B1" { paste'mode with Paste= paste'values; SkipBlanks= true }
+    paste "B1" { paste'mode with Paste= paste'values; Transpose= true }
     // 範囲貼り付けも可能.
-    paste sheet.["B1:B3"] paste'mode
+    paste "B1:B3" paste'mode
 
     // クリップボードのデータを C1 に挿入.
-    insert sheet.["C1"] insert'mode
-    insert sheet.["C1"] { insert'mode with Shift= shift'down }
-    insert sheet.["C1"] { insert'mode with Origin= origin'below }
-    insert sheet.["C1"] { insert'mode with Shift= shift'right; Origin= origin'below }
+    insert "C1" insert'mode
+    insert "C1" { insert'mode with Shift= shift'down }
+    insert "C1" { insert'mode with Origin= origin'below }
+    insert "C1" { insert'mode with Shift= shift'right; Origin= origin'below }
     // 範囲挿入も可能.
-    insert sheet.["C1:C3"] insert'mode
+    insert "C1:C3" insert'mode
 
     // A1 のデータを削除する.
-    delete sheet.["A1"] delete'mode
-    delete sheet.["A1"] { delete'mode with Shift= shift'up }
+    delete "A1" delete'mode
+    delete "A1" { delete'mode with Shift= shift'up }
     // 範囲削除も可能.
-    delete sheet.["A1:A3"] delete'mode
+    delete "A1:A3" delete'mode
 
     // A1 に値を設定.
-    set sheet.["A1"] 100
-    set sheet.["A1"] sheet.["B1"]
+    set "A1" 100
+    set "A1" sheet.["B1"]
 
     // A1 に関数を設定.
-    fx sheet.["A1"] "SUM(A1:B3)"
-    fx sheet.["A1"] sheet.["B1"]
+    fx "A1" "SUM(A1:B3)"
+    fx "A1" sheet.["B1"]
     
     // 列幅を 100 に設定.
-    width sheet.["A1"] 100
-    width sheet.["A1:B3"] 100
+    width "A1" 100
+    width "A1:B3" 100
     // 行高を 100 に設定.
-    height sheet.["A1"] 100
-    height sheet.["A1:B3"] 100
+    height "A1" 100
+    height "A1:B3" 100
 
     // 列幅を自動調整.
-    fit'width sheet.["A1"]
-    fit'width sheet.["A1:B3"]
+    fit'width "A1"
+    fit'width "A1:B3"
     // 行高を自動調整.
-    fit'height sheet.["A1"]
-    fit'height sheet.["A1:B3"]
+    fit'height "A1"
+    fit'height "A1:B3"
 
     // 背景色を設定.
-    set sheet.["A1"] Color.Blue
+    set "A1" Color.Blue
     // 背景色をテーマカラーで設定.
-    set sheet.["A1"] theme'accent1
+    set "A1" theme'accent1
     // 背景パターンを設定.
-    set sheet.["A1"] pattern'horizontal
+    set "A1" pattern'horizontal
 
     // セルを結合.
-    merge sheet.["C1:D3"] true
-    merge sheet.["E1:F3"] false
+    merge "C1:D3" true
+    merge "E1:F3" false
     // セルの結合を解除.
-    unmerge sheet.["C1:D3"]
-    unmerge sheet.["E1:F3"]
+    unmerge "C1:D3"
+    unmerge "E1:F3"
 
     // 折り返して全体を表示.
-    wrap sheet.["A1"]
+    wrap "A1"
     // 折り返して全体を表示を解除.
-    unwrap sheet.["A1"]
+    unwrap "A1"
 
     // 縮小して全体を表示.
-    shrink sheet.["A1"]
+    shrink "A1"
     // 縮小して全体を表示を解除.
-    unshrink sheet.["A1"]
+    unshrink "A1"
 
     // 文字の方向を設定.
-    orientation sheet.["A1"] -90
-    orientation sheet.["A1"] 0
-    orientation sheet.["A1"] 90
+    orientation "A1" -90
+    orientation "A1" 0
+    orientation "A1" 90
 
     // 表示形式を設定.
-    format sheet.["A1"] "(日付)yyyy-MM-dd"
+    format "A1" "(日付)yyyy-MM-dd"
   }
 ```
 

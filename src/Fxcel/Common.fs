@@ -7,6 +7,10 @@ type RGB = { r: int; g: int; b: int }
 type ThemeColor = { theme: Midoliy.Office.Interop.ThemeColor; tint: Tint }
 [<Measure>] type range
 [<Measure>] type cell
+[<Measure>] type row
+[<Measure>] type col
+[<Measure>] type rows
+[<Measure>] type cols
 
 [<AutoOpen>]
 module Constant =
