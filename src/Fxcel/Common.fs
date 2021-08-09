@@ -5,6 +5,8 @@ open Midoliy.Office.Interop
 
 type RGB = { r: int; g: int; b: int }
 type ThemeColor = { theme: Midoliy.Office.Interop.ThemeColor; tint: Tint }
+[<Measure>] type range
+[<Measure>] type cell
 
 [<AutoOpen>]
 module Constant =

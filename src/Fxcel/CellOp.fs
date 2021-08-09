@@ -62,6 +62,8 @@ module CellOp =
     member __.Orientation(_: unit, target: IExcelRange, angle: int) = target.Orientation <- angle
     [<CustomOperation("format")>]
     member __.Format(_: unit, target: IExcelRange, format: string) = target.Format <- format
+    [<CustomOperation("select")>]
+    member __.Select(_: unit, target: IExcelRange) = target.Select()
 
   let cell'op = CellOpBuilder ()
   let paste'mode = { Paste= PasteType.All; Op= PasteOperation.None; SkipBlanks= false; Transpose= false; }

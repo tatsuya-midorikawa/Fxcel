@@ -21,16 +21,18 @@
 
   <ItemGroup>
     <Compile Include="Common.fs" />
-    <Compile Include="ExcelOp.fs" />
-    <Compile Include="CellOp.fs" />
     <Compile Include="Font.fs" />
     <Compile Include="Border.fs" />
+    <Compile Include="Chart.fs" />
     <Compile Include="Interior.fs" />
     <Compile Include="Function.fs" />
+    <Compile Include="ChartOp.fs" />
+    <Compile Include="CellOp.fs" />
+    <Compile Include="ExcelOp.fs" />
   </ItemGroup>
  
   <ItemGroup>
-    <PackageReference Include="Midoliy.Office.Interop.Excel" Version="0.0.6.37" />
+    <PackageReference Include="Midoliy.Office.Interop.Excel" Version="0.0.6.42" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
   </ItemGroup>
 

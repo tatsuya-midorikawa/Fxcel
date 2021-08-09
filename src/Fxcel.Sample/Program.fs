@@ -13,19 +13,19 @@ try
 
   let sheet = excel |> workbook(1) |> worksheet(1)
   
-  sheet.["A1:A3"] |> set 100 
-  sheet.["B1:B3"] |> fx "SUM(A1:A3)"
-  let a = sheet.["A1:A3"] |> getsfx
-  let b = sheet.["B1:B3"] |> getsfx
+  //sheet.["A1:A3"] |> set 100 
+  //sheet.["B1:B3"] |> fx "SUM(A1:A3)"
+  //let a = sheet.["A1:A3"] |> getsfx
+  //let b = sheet.["B1:B3"] |> getsfx
   
-  sheet |> get'column(1) |> address |> printfn "%s"
-  sheet |> get'columns(1, 3) |> address |> printfn "%s"
-  sheet |> get'row(1) |> address |> printfn "%s"
-  sheet |> get'rows(1, 3) |> address |> printfn "%s"
+  //sheet |> get'column(1) |> address |> printfn "%s"
+  //sheet |> get'columns(1, 3) |> address |> printfn "%s"
+  //sheet |> get'row(1) |> address |> printfn "%s"
+  //sheet |> get'rows(1, 3) |> address |> printfn "%s"
 
-  "A" |> column'number |> printfn "%i"     // 1
-  "J" |> column'number |> printfn "%i"     // 10
-  "DX" |> column'number |> printfn "%i"   // 128
+  //"A" |> column'number |> printfn "%i"     // 1
+  //"J" |> column'number |> printfn "%i"     // 10
+  //"DX" |> column'number |> printfn "%i"   // 128
 
   //sheet.["A1"] |> current'columns |> address |> printfn "%s"
   //sheet.["A1:B3"] |> current'columns |> address |> printfn "%s"
@@ -47,44 +47,80 @@ try
 
   excel'op excel {
     set calc'auto
-    set visibility'hidden
+    //set visibility'hidden
+    set visibility'visible
   }
   |> ignore
 
-  cell'op {
-    //copy sheet.["A1:A3"]
-    //paste sheet.["B1"] paste'mode
-    ////delete sheet.["A1:A3"] delete'mode
+  //cell'op {
+  //  //copy sheet.["A1:A3"]
+  //  //paste sheet.["B1"] paste'mode
+  //  ////delete sheet.["A1:A3"] delete'mode
 
-    //paste sheet.["B1"] { paste'mode with Paste = paste'values; SkipBlanks = true }
-    //insert sheet.["B1"] insert'mode
-    //insert sheet.["B1"] { insert'mode with Shift = shift'down; Origin= origin'below }
-    ////delete sheet.["A1"] delete'mode
-    ////delete sheet.["A1"] { delete'mode with Shift= shift'up }
+  //  //paste sheet.["B1"] { paste'mode with Paste = paste'values; SkipBlanks = true }
+  //  //insert sheet.["B1"] insert'mode
+  //  //insert sheet.["B1"] { insert'mode with Shift = shift'down; Origin= origin'below }
+  //  ////delete sheet.["A1"] delete'mode
+  //  ////delete sheet.["A1"] { delete'mode with Shift= shift'up }
 
-    //set sheet.["A1"] sheet.["B1"]
-    //set sheet.["A1"] 100
+  //  //set sheet.["A1"] sheet.["B1"]
+  //  //set sheet.["A1"] 100
 
-    //fx sheet.["A1"] sheet.["B1"]
-    //fx sheet.["A1"] "SUM(A1:B3)"
-    width sheet.["A1"] 100
-    height sheet.["A1"] 100
+  //  //fx sheet.["A1"] sheet.["B1"]
+  //  //fx sheet.["A1"] "SUM(A1:B3)"
+  //  //width sheet.["A1"] 100
+  //  //height sheet.["A1"] 100
 
-    //fit'height sheet.["A1"]
-    //fit'width sheet.["A1"]
-    //set sheet.["A1"] theme'accent1
-    //set sheet.["A1"] "a"
-    //set sheet.["A1"] v'center
-    //set sheet.["A1"] h'center
+  //  //fit'height sheet.["A1"]
+  //  //fit'width sheet.["A1"]
+  //  //set sheet.["A1"] theme'accent1
+  //  //set sheet.["A1"] "a"
+  //  //set sheet.["A1"] v'center
+  //  //set sheet.["A1"] h'center
 
-    //merge sheet.["C1:D3"] true
-    //merge sheet.["E1:F3"] false
-    //unmerge sheet.["C1:D3"]
-    //unmerge sheet.["E1:F3"]
+  //  //merge sheet.["C1:D3"] true
+  //  //merge sheet.["E1:F3"] false
+  //  //unmerge sheet.["C1:D3"]
+  //  //unmerge sheet.["E1:F3"]
 
-    set sheet.["A1"] DateTime.Now
-    format sheet.["A1"] "(日付)yyyy-MM-dd"
-  }
+  //  //set sheet.["A1"] DateTime.Now
+  //  //format sheet.["A1"] "(日付)yyyy-MM-dd"
+
+  //  set sheet.["A1:F1"] [| 100; 120; 110; 100; 200; 180; |]
+  //  //select sheet.["A1:F1"]
+  //}
+
+
+
+  sheet.["A1:F1"] |> set [| 100; 120; 110; 100; 200; 180; |]
+  chart'op sheet {
+    select "A1:F1"
+    position "A2"
+    size (6<cell>, 10<cell>)
+    add ChartRecipe.line
+  } |> ignore
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //sheet |> Chart.add ChartRecipe.line |> ignore
+  //sheet.Shapes.AddChart(Midoliy.Office.Interop.ChartRecipe.MakeLine()) |> ignore
 
   ////sheet |> saveAs "sample.xlsx"
   //let book = excel |> workbook(1)
