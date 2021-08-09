@@ -143,6 +143,8 @@ module Function =
 
   let private isNullOrEmpty value = System.String.IsNullOrEmpty(value)
 
+  let matrix = array2D
+
   /// <summary>起動している Excel プロセスを列挙する.</summary>
   let enumerate () = 
     Excel.EnumerateProcess()
