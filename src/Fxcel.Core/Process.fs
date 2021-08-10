@@ -11,8 +11,34 @@ open Fxcel.Core.Common
 open Fxcel.Core.Natives
 
 module Process =
+  /// <summary>Window HandleからProcess Idを取得する.</summary>
+  let get_pid (hwnd: int<handle>) =
+    let mutable pid = 0
+    Win32.get_window_thread_process_id(int hwnd, &pid) |> ignore
+    pid |> to_id
+    
+  /// <summary>Process IdからWindow Handleを取得する.</summary>
+  let get_hwnd (pid: int<id>) =
+    let rec loop (pid': int<id>) (hwnd': int<handle>) =
+      match hwnd' with
+      | 0<handle> -> hwnd'
+      | _ ->
+        let hwnd = int hwnd'
+        if Win32.get_parent hwnd = 0 && Win32.is_window_visible hwnd <> 0 && pid' = get_pid hwnd' then hwnd'
+        else loop pid (to_handle (Win32.get_window (int hwnd', gw_hwnd_next)))
+      
+    loop pid (Win32.find_window (null, null) |> to_handle)
+
   /// <summary>Excel Processを列挙する.</summary>
   let enumerate () = System.Diagnostics.Process.GetProcessesByName "Excel"
+  
+  /// <summary>対象のプロセスを終了する.</summary>
+  let kill (hwnd: int<handle>) =
+    try
+      let pid = get_pid hwnd
+      Win32.send_message (int hwnd, wm_close, 0n, 0n) |> ignore
+      Process.GetProcessById(int pid).Kill(true)
+    with _ -> ()
 
   /// <summary>Excel Processにアタッチする.</summary>
   let attach (hwnd: int<handle>) =
@@ -48,21 +74,3 @@ module Process =
     monikers.Reset ()
 
     loop table monikers 0n
-
-  /// <summary>Window HandleからProcess Idを取得する.</summary>
-  let get_pid (hwnd: int<handle>) =
-    let mutable pid = 0
-    Win32.get_window_thread_process_id(int hwnd, &pid) |> ignore
-    pid |> to_id
-    
-  /// <summary>Process IdからWindow Handleを取得する.</summary>
-  let get_hwnd (pid: int<id>) =
-    let rec loop (pid': int<id>) (hwnd': int<handle>) =
-      match hwnd' with
-      | 0<handle> -> hwnd'
-      | _ ->
-        let hwnd = int hwnd'
-        if Win32.get_parent hwnd = 0 && Win32.is_window_visible hwnd <> 0 && pid' = get_pid hwnd' then hwnd'
-        else loop pid (to_handle (Win32.get_window (int hwnd', gw_hwnd_next)))
-      
-    loop pid (Win32.find_window (null, null) |> to_handle)

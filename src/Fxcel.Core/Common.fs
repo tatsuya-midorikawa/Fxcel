@@ -10,6 +10,8 @@ module Common =
   let internal s_ok = 0x00000000
   let internal e_fail = 0x80004005
   let internal gw_hwnd_next = 2
+  let internal wm_close = 0x0010
+
   let rent'<'T> (length: int)= ArrayPool<'T>.Shared.Rent(length)
   let return'<'T> (array: array<'T>, clear: bool)= ArrayPool<'T>.Shared.Return(array, clear)
   let release' (com: obj) = if com <> null then while 0 < Marshal.ReleaseComObject(com) do () done
