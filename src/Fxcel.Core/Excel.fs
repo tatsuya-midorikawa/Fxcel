@@ -9,6 +9,11 @@ module Excel =
   type internal MicrosoftWorkbook = Microsoft.Office.Interop.Excel.Workbook
   type internal MicrosoftWorksheet = Microsoft.Office.Interop.Excel.Worksheet
   type internal DisposeStatus = { mutable Disposed: bool }
+  
+  /// <summary>Excel Worksheet</summary>
+  [<IsReadOnly;Struct;>]
+  type Worksheet internal (worksheet: MicrosoftWorksheet) =
+    member __.Name with get() : string = worksheet.Name and set(name) = worksheet.Name <- name
 
   /// <summary>Excel Workbook</summary>
   [<IsReadOnly;Struct;>]
