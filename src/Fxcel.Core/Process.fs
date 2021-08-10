@@ -24,6 +24,7 @@ module Process =
         let mutable com = null
         if table'.GetObject(container.[0], &com) = s_ok then
           match com with
+          // TODO: Fxcel.Core.ExcelApplicationでwrap
           | :? Workbook as wb -> wb
           | _ ->
             release' com
