@@ -1,6 +1,5 @@
 ﻿namespace Fxcel.Core.Natives
 
-open Fxcel.Core.Common
 open System.Runtime.InteropServices
 open System.Runtime.InteropServices.ComTypes
 

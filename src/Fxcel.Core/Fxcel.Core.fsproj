@@ -23,9 +23,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Common.fs" />
     <Compile Include="Natives\Win32.fs" />
+    <Compile Include="Common.fs" />
+    <Compile Include="Com.fs" />
+    <Compile Include="Interop.fs" />
+    <Compile Include="Excel.fs" />
     <Compile Include="Process.fs" />
+    <None Include="Samples\COM.fsx" />
     <None Include="Samples\Process.fsx" />
   </ItemGroup>
 

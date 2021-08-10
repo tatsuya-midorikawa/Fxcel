@@ -4,17 +4,10 @@
 #r @"..\obj\Debug\net5.0\Interop.Microsoft.Office.Interop.Excel.dll"
 
 open Fxcel.Core
-open Fxcel.Core.Common
 
-let hwnd = Process.get_hwnd 33332<id>
-printfn $"hwnd= %d{hwnd}"
+type MicrosoftExcel = Microsoft.Office.Interop.Excel.Application
+let excel = Com.new'<MicrosoftExcel> Interop.excel'id
 
-let pid = Process.get_pid hwnd
-printfn $"pid= %d{pid}"
+printfn $"%A{excel}"
 
-let com = Process.attach hwnd
-printfn $"com= %A{com}"
-
-release' com
-
-//Process.kill hwnd
+Com.release' excel

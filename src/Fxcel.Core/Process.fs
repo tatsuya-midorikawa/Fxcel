@@ -56,10 +56,10 @@ module Process =
           // TODO: Fxcel.Core.ExcelApplicationでwrap
           | :? Workbook as wb -> wb
           | _ ->
-            release' com
+            Com.release' com
             loop table' monikers' fetchedMonikers'
         else
-          release' com
+          Com.release' com
           loop table' monikers' fetchedMonikers'
       | _ -> 
         raise (exn "The HWND is not found.")
