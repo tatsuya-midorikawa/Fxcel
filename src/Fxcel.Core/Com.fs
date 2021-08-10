@@ -9,4 +9,8 @@ module Com =
   let new'<'T> (cls_id: Guid) = Type.GetTypeFromCLSID(cls_id) |> Activator.CreateInstance :?> 'T
   
   /// <summary>COMオブジェクトを解放する.</summary>
-  let release' (com: obj) = if com <> null then while 0 < Marshal.ReleaseComObject(com) do () done
+  let release' (com: obj) = 
+    try
+      if com <> null then 
+        while 0 < Marshal.ReleaseComObject(com) do () done
+    with _ -> ()

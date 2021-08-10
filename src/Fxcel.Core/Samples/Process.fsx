@@ -15,6 +15,6 @@ printfn $"pid= %d{pid}"
 let com = Process.attach hwnd
 printfn $"com= %A{com}"
 
-release' com
+Com.release' com
 
-//Process.kill hwnd
+Process.kill hwnd

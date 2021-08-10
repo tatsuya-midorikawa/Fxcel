@@ -53,7 +53,7 @@ module Process =
         let mutable com = null
         if table'.GetObject(container.[0], &com) = s_ok then
           match com with
-          // TODO: Fxcel.Core.ExcelApplicationでwrap
+          // TODO: Fxcel.Core.Excel.Applicationでwrap
           | :? Workbook as wb -> wb
           | _ ->
             Com.release' com
