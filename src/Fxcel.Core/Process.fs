@@ -11,7 +11,10 @@ open Fxcel.Core.Common
 open Fxcel.Core.Natives
 
 module Process =
-  /// <summary></summary>
+  /// <summary>Excel Processを列挙する.</summary>
+  let enumerate () = System.Diagnostics.Process.GetProcessesByName "Excel"
+
+  /// <summary>Excel Processにアタッチする.</summary>
   let attach (hwnd: int<handle>) =
     let rec loop (table': IRunningObjectTable) (monikers': IEnumMoniker) (fetchedMonikers': nativeint) =
       #if DEBUG
@@ -46,13 +49,13 @@ module Process =
 
     loop table monikers 0n
 
-  /// <summary></summary>
+  /// <summary>Window HandleからProcess Idを取得する.</summary>
   let get_pid (hwnd: int<handle>) =
     let mutable pid = 0
     Win32.get_window_thread_process_id(int hwnd, &pid) |> ignore
     pid |> to_id
     
-  /// <summary></summary>
+  /// <summary>Process IdからWindow Handleを取得する.</summary>
   let get_hwnd (pid: int<id>) =
     let rec loop (pid': int<id>) (hwnd': int<handle>) =
       match hwnd' with
