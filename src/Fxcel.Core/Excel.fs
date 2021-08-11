@@ -11,22 +11,23 @@ module Excel =
   type internal DisposeStatus = { mutable Disposed: bool }
   
   /// <summary>Excel Worksheet</summary>
-  [<IsReadOnly;Struct;>]
-  type Worksheet internal (worksheet: MicrosoftWorksheet) =
+  [<IsReadOnly;IsByRefLike;Struct;>]
+  type Worksheet internal (worksheet: MicrosoftWorksheet, status: DisposeStatus) =
     member __.Name with get() : string = worksheet.Name and set(name) = worksheet.Name <- name
 
   /// <summary>Excel Workbook</summary>
-  [<IsReadOnly;Struct;>]
-  type Workbook internal (workbook: MicrosoftWorkbook) =
+  [<IsReadOnly;IsByRefLike;Struct;>]
+  type Workbook internal (workbook: MicrosoftWorkbook, status: DisposeStatus) =
     member __.Name with get() = workbook.Name
 
   /// <summary>Excel Application</summary>
-  [<IsReadOnly;Struct;>]
+  [<IsReadOnly;IsByRefLike;Struct;>]
   type Application internal (excel: MicrosoftExcel, status: DisposeStatus) =
     interface IDisposable with
       member __.Dispose() = __.dispose()
 
     member __.Hwnd with get() : int<handle> = excel.Hwnd |> to_handle
+
     member __.dispose() =
       if not status.Disposed then
         excel.IgnoreRemoteRequests <- false
@@ -34,7 +35,8 @@ module Excel =
         Com.release' excel
         status.Disposed <- true
         GC.Collect()
-
+        
+  /// <summary></summary>
   let create () =
     let excel = Com.new'<MicrosoftExcel> Interop.excel'id
     excel.IgnoreRemoteRequests <- true

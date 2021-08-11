@@ -6,10 +6,10 @@ open System.Runtime.InteropServices
 
 module Com =
   /// <summary>GUIDからCOMインスタンスを生成する.</summary>
-  let new'<'T> (cls_id: Guid) = Type.GetTypeFromCLSID(cls_id) |> Activator.CreateInstance :?> 'T
+  let inline new'<'T> (cls_id: Guid) = Type.GetTypeFromCLSID(cls_id) |> Activator.CreateInstance :?> 'T
   
   /// <summary>COMオブジェクトを解放する.</summary>
-  let release' (com: obj) = 
+  let inline release' (com: obj) = 
     try
       if com <> null then 
         while 0 < Marshal.ReleaseComObject(com) do () done
