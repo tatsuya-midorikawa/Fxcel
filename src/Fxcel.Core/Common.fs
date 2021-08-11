@@ -32,4 +32,5 @@ module Common =
 
   let inline to_handle (h: int) = LanguagePrimitives.Int32WithMeasure<handle> h
   let inline to_id (id: int) = LanguagePrimitives.Int32WithMeasure<id> id
+  let to_enum<'T when 'T: enum<int>> (n: int) = LanguagePrimitives.EnumOfValue<int, 'T> n
 
