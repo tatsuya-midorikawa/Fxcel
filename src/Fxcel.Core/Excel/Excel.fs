@@ -15,11 +15,11 @@ type Application internal (excel: MicrosoftExcel, status: DisposeStatus, workboo
   interface IDisposable with
     member __.Dispose() = __.dispose()
 
-  member __.WindowHandle with get() : int<handle> = excel.Hwnd |> to_handle
-  member __.IgnoreRemoteRequests with get() : bool = excel.IgnoreRemoteRequests and set(v) = excel.IgnoreRemoteRequests <- v
-  member __.DisplayAlerts with get() : bool = excel.DisplayAlerts and set(v) = excel.DisplayAlerts <- v
-  member __.Visible with get() : bool = excel.Visible and set (v) = excel.Visible <- v
-  member __.Calculation 
+  member __.window_handle with get() : int<handle> = excel.Hwnd |> to_handle
+  member __.ignore_remote_requests with get() : bool = excel.IgnoreRemoteRequests and set(v) = excel.IgnoreRemoteRequests <- v
+  member __.display_alerts with get() : bool = excel.DisplayAlerts and set(v) = excel.DisplayAlerts <- v
+  member __.visible with get() : bool = excel.Visible and set (v) = excel.Visible <- v
+  member __.calculation 
     with get() : Calculation = excel.Calculation |> (int >> to_enum<Calculation>)
     and set(v: Calculation) = excel.Calculation  <- v |> (int >> to_enum<Application.MicrosoftCalculation>)
 
@@ -35,9 +35,9 @@ type Application internal (excel: MicrosoftExcel, status: DisposeStatus, workboo
       // 子要素を解放
       workbooks |> Seq.iter (fun wb -> wb.dispose())
       // 自分自身を解放
-      if not __.Visible then
+      if not __.visible then
         __.quit ()
-        Process.kill __.WindowHandle
+        Process.kill __.window_handle
       Com.release' excel
       // 後始末
       status.Disposed <- true
