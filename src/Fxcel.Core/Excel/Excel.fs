@@ -5,15 +5,6 @@ open System.Runtime.CompilerServices
 open Fxcel.Core
 open Fxcel.Core.Common
 
-module Excel =        
-  /// <summary></summary>
-  let create () =
-    let excel = Com.new'<MicrosoftExcel> Interop.excel'id
-    excel.IgnoreRemoteRequests <- true
-    excel.DisplayAlerts <- false
-    excel.Visible <- false
-    new Application (excel, { Disposed= false })
-
 /// <summary>Excel Application</summary>
 [<IsReadOnly;Struct;>]
 type Application internal (excel: MicrosoftExcel, status: DisposeStatus) =
@@ -29,3 +20,12 @@ type Application internal (excel: MicrosoftExcel, status: DisposeStatus) =
       Com.release' excel
       status.Disposed <- true
       GC.Collect()
+
+module Excel =        
+  /// <summary></summary>
+  let create () =
+    let excel = Com.new'<MicrosoftExcel> Interop.excel'id
+    excel.IgnoreRemoteRequests <- true
+    excel.DisplayAlerts <- false
+    excel.Visible <- false
+    new Application (excel, { Disposed= false })
