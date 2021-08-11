@@ -27,6 +27,8 @@
     <Compile Include="Common.fs" />
     <Compile Include="Com.fs" />
     <Compile Include="Interop.fs" />
+    <Compile Include="Excel\Range.fs" />
+    <Compile Include="Excel\Worksheet.fs" />
     <Compile Include="Excel\Workbook.fs" />
     <Compile Include="Excel\Excel.fs" />
     <Compile Include="Process.fs" />
