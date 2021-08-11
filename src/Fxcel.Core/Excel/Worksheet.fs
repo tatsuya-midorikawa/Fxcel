@@ -10,9 +10,9 @@ open Fxcel.Core.Common
 type Worksheet internal (worksheet: MicrosoftWorksheet, status: DisposeStatus) =
   interface IDisposable with
     member __.Dispose() = __.dispose()
-
-  member __.Name with get() : string = worksheet.Name and set(name) = worksheet.Name <- name
-
+  /// <summary></summary>
+  member __.name with get() : string = worksheet.Name and set(name) = worksheet.Name <- name
+  /// <summary></summary>
   member __.dispose() =
     if not status.Disposed then
       Com.release' worksheet

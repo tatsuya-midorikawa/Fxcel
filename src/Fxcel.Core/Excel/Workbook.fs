@@ -10,9 +10,9 @@ open Fxcel.Core.Common
 type Workbook internal (workbook: MicrosoftWorkbook, status: DisposeStatus) =
   interface IDisposable with
     member __.Dispose() = __.dispose()
-
-  member __.Name with get() = workbook.Name
-
+  /// <summary></summary>
+  member __.name with get() = workbook.Name
+  /// <summary></summary>
   member __.dispose() =
     if not status.Disposed then
       Com.release' workbook

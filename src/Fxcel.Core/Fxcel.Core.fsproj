@@ -32,7 +32,9 @@
     <Compile Include="Excel\Range.fs" />
     <Compile Include="Excel\Worksheet.fs" />
     <Compile Include="Excel\Workbook.fs" />
+    <Compile Include="Excel\Application.fs" />
     <Compile Include="Excel\Excel.fs" />
+    <None Include="Samples\Application.fsx" />
     <None Include="Samples\COM.fsx" />
     <None Include="Samples\Process.fsx" />
   </ItemGroup>
