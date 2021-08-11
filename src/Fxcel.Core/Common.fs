@@ -6,6 +6,12 @@ open System.Runtime.InteropServices
 open Microsoft.FSharp.NativeInterop
 
 module Common =
+  type internal MicrosoftExcel = Microsoft.Office.Interop.Excel.Application
+  type internal MicrosoftWorkbook = Microsoft.Office.Interop.Excel.Workbook
+  type internal MicrosoftWorksheet = Microsoft.Office.Interop.Excel.Worksheet
+  type internal MicrosoftRange = Microsoft.Office.Interop.Excel.Range
+  type internal DisposeStatus = { mutable Disposed: bool }
+
   [<Measure>] type handle
   [<Measure>] type id
 
