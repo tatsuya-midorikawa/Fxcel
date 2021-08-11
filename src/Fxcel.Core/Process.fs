@@ -4,7 +4,6 @@
 open System.Diagnostics
 #endif
 
-open System.Runtime.InteropServices
 open System.Runtime.InteropServices.ComTypes
 open Microsoft.Office.Interop.Excel
 open Fxcel.Core.Common
