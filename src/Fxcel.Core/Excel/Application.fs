@@ -23,6 +23,14 @@ type Application internal (excel: MicrosoftExcel, status: DisposeStatus, workboo
   interface IDisposable with
     member __.Dispose() = __.dispose()
     
+  /// <summary></summary>
+  [<ComponentModel.DataAnnotations.Range(1, 255, ErrorMessage= "Value for {0} must be between {0} and {1}")>]
+  member __.Item with get (index: int) = workbooks.[index - 1]
+  /// <summary></summary>
+  [<ComponentModel.DataAnnotations.Range(1, 255, ErrorMessage= "Value for {0} must be between {0} and {1}")>]
+  member __.Item with get (name: string) = workbooks |> Seq.find (fun wb -> wb.name = name)
+  
+  /// <summary></summary>
   member __.window_handle with get () : int<handle> = excel.Hwnd |> to_handle
   /// <summary></summary>
   member __.ignore_remote_requests with get () : bool = excel.IgnoreRemoteRequests

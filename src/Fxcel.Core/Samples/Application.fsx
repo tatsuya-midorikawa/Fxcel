@@ -11,7 +11,7 @@ let main() =
   use excel = Excel.create()
   excel.set_display_alerts false
   excel.set_visible true
-
+  let a = excel.[0]
   excel.input_box(prompt= "Test") |> printfn "%A"
 
   0

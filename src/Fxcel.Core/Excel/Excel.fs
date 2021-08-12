@@ -7,5 +7,7 @@ module Excel =
   // TODO:
   /// <summary></summary>
   let create () =
-    let excel = Com.new'<MicrosoftExcel> Interop.excel'id
-    new Application (excel, { Disposed= false }, ResizeArray<Workbook>())
+    let com = Com.new'<MicrosoftExcel> Interop.excel'id
+    let excel = new Application (com, { Disposed= false }, ResizeArray<Workbook>())
+    excel.blank_workbook() |> ignore
+    excel
