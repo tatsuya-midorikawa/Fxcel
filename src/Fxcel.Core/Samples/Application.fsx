@@ -12,7 +12,7 @@ let main() =
   excel.set_display_alerts false
   excel.set_visible true
 
-  excel.input_box("Test") |> printfn "%A"
+  excel.input_box(prompt= "Test") |> printfn "%A"
 
   0
 

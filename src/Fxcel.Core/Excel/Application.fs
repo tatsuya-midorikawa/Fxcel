@@ -64,12 +64,76 @@ type Application internal (excel: MicrosoftExcel, status: DisposeStatus, workboo
   /// <summary>Operation undo.</summary>
   member __.undo () = excel.Undo()
   /// <summary>Run excel macro.</summary>
-  member __.run (macro: string, ?arg1: obj, ?arg2: obj, ?arg3: obj, ?arg4: obj, ?arg5: obj, ?arg6: obj, ?arg7: obj, ?arg8: obj, ?arg9: obj, ?arg10: obj, ?arg11: obj, ?arg12: obj, ?arg13: obj, ?arg14: obj, ?arg15: obj, ?arg16: obj, ?arg17: obj, ?arg18: obj, ?arg19: obj, ?arg20: obj, ?arg21: obj, ?arg22: obj, ?arg23: obj, ?arg24: obj, ?arg25: obj, ?arg26: obj, ?arg27: obj, ?arg28: obj, ?arg29: obj, ?arg30: obj) = 
-    excel.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27, arg28, arg29, arg30)
-  // TODO
+  member __.run (macro: string, ?arg1: obj, ?arg2: obj, ?arg3: obj, ?arg4: obj, ?arg5: obj, ?arg6: obj, ?arg7: obj, ?arg8: obj, ?arg9: obj, ?arg10: obj, ?arg11: obj, ?arg12: obj, ?arg13: obj, ?arg14: obj, ?arg15: obj) = 
+    match (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15) with
+    | (None, None, None, None, None, None, None, None, None, None, None, None, None, None, None) -> excel.Run(macro, arg1)
+    | (Some arg1, None, None, None, None, None, None, None, None, None, None, None, None, None, None) -> excel.Run(macro, arg1)
+    | (Some arg1, Some arg2, None, None, None, None, None, None, None, None, None, None, None, None, None) -> excel.Run(macro, arg1, arg2)
+    | (Some arg1, Some arg2, Some arg3, None, None, None, None, None, None, None, None, None, None, None, None) -> excel.Run(macro, arg1, arg2, arg3)
+    | (Some arg1, Some arg2, Some arg3, Some arg4, None, None, None, None, None, None, None, None, None, None, None) -> excel.Run(macro, arg1, arg2, arg3, arg4)
+    | (Some arg1, Some arg2, Some arg3, Some arg4, Some arg5, None, None, None, None, None, None, None, None, None, None) -> excel.Run(macro, arg1, arg2, arg3, arg4, arg5)
+    | (Some arg1, Some arg2, Some arg3, Some arg4, Some arg5, Some arg6, None, None, None, None, None, None, None, None, None) -> excel.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6)
+    | (Some arg1, Some arg2, Some arg3, Some arg4, Some arg5, Some arg6, Some arg7, None, None, None, None, None, None, None, None) -> excel.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+    | (Some arg1, Some arg2, Some arg3, Some arg4, Some arg5, Some arg6, Some arg7, Some arg8, None, None, None, None, None, None, None) -> excel.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
+    | (Some arg1, Some arg2, Some arg3, Some arg4, Some arg5, Some arg6, Some arg7, Some arg8, Some arg9, None, None, None, None, None, None) -> excel.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
+    | (Some arg1, Some arg2, Some arg3, Some arg4, Some arg5, Some arg6, Some arg7, Some arg8, Some arg9, Some arg10, None, None, None, None, None) -> excel.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10)
+    | (Some arg1, Some arg2, Some arg3, Some arg4, Some arg5, Some arg6, Some arg7, Some arg8, Some arg9, Some arg10, Some arg11, None, None, None, None) -> excel.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11)
+    | (Some arg1, Some arg2, Some arg3, Some arg4, Some arg5, Some arg6, Some arg7, Some arg8, Some arg9, Some arg10, Some arg11, Some arg12, None, None, None) -> excel.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12)
+    | (Some arg1, Some arg2, Some arg3, Some arg4, Some arg5, Some arg6, Some arg7, Some arg8, Some arg9, Some arg10, Some arg11, Some arg12, Some arg13, None, None) -> excel.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13)
+    | (Some arg1, Some arg2, Some arg3, Some arg4, Some arg5, Some arg6, Some arg7, Some arg8, Some arg9, Some arg10, Some arg11, Some arg12, Some arg13, Some arg14, None) -> excel.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
+    | (Some arg1, Some arg2, Some arg3, Some arg4, Some arg5, Some arg6, Some arg7, Some arg8, Some arg9, Some arg10, Some arg11, Some arg12, Some arg13, Some arg14, Some arg15) -> excel.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15)
+    | _ -> raise (NotSupportedException())
+    
   /// <summary>Show input box.</summary>
-  member __.input_box(prompt: string, ?title: string, ?default'input: string, ?xpos: int, ?ypos: int, ?help'filepath: string(*, ?help'context'id: int, ?type': Application.InputBoxType*)) =
-    excel.InputBox(prompt, title, default'input, xpos, ypos, help'filepath(*, help'context'id, type'*)) |> unbox<string>
+  member __.input_box(prompt: string, ?title: string, ?default'input: string, ?xpos: int, ?ypos: int, ?help'filepath: string, ?help'context'id: int, ?type': Application.InputBoxType) =
+    match (title, default'input, xpos, ypos, help'filepath, help'context'id, type') with
+    | (Some title, None, None, None, None, None, None) -> excel.InputBox(Prompt= prompt, Title= title)
+    | (None, Some default'input, None, None, None, None, None) -> excel.InputBox(Prompt= prompt, Default= default'input)
+    | (None, None, Some xpos, None, None, None, None) -> excel.InputBox(Prompt= prompt, Left= xpos)
+    | (None, None, None, Some ypos, None, None, None) -> excel.InputBox(Prompt= prompt, Top= ypos)
+    | (None, None, None, None, Some help'filepath, None, None) -> excel.InputBox(Prompt= prompt, HelpFile= help'filepath)
+    | (None, None, None, None, None, Some help'context'id, None) -> excel.InputBox(Prompt= prompt, HelpContextID= help'context'id)
+    | (None, None, None, None, None, None, Some type') -> excel.InputBox(Prompt= prompt, Type= type')
+    | (Some title, Some default'input, None, None, None, None, None) -> excel.InputBox(Prompt= prompt, Title= title, Default= default'input)
+    | (Some title, None, Some xpos, None, None, None, None) -> excel.InputBox(Prompt= prompt, Title= title, Left= xpos)
+    | (Some title, None, None, Some ypos, None, None, None) -> excel.InputBox(Prompt= prompt, Title= title, Top= ypos)
+    | (Some title, None, None, None, Some help'filepath, None, None) -> excel.InputBox(Prompt= prompt, Title= title, HelpFile= help'filepath)
+    | (Some title, None, None, None, None, Some help'context'id, None) -> excel.InputBox(Prompt= prompt, Title= title, HelpContextID= help'context'id)
+    | (Some title, None, None, None, None, None, Some type') -> excel.InputBox(Prompt= prompt, Title= title, Type= type')
+    | (Some title, Some default'input, Some xpos, None, None, None, None) -> excel.InputBox(Prompt= prompt, Title= title, Default= default'input, Left= xpos)
+    | (Some title, Some default'input, None, Some ypos, None, None, None) -> excel.InputBox(Prompt= prompt, Title= title, Default= default'input, Top= ypos)
+    | (Some title, Some default'input, Some xpos, Some ypos, None, None, None) -> excel.InputBox(Prompt= prompt, Title= title, Default= default'input, Left= xpos, Top= ypos)
+    | (Some title, Some default'input, Some xpos, None, None, None, Some type') -> excel.InputBox(Prompt= prompt, Title= title, Default= default'input, Left= xpos, Type= type')
+    | (Some title, Some default'input, None, Some ypos, None, None, Some type') -> excel.InputBox(Prompt= prompt, Title= title, Default= default'input, Top= ypos, Type= type')
+    | (Some title, Some default'input, Some xpos, Some ypos, None, None, Some type') -> excel.InputBox(Prompt= prompt, Title= title, Default= default'input, Left= xpos, Top= ypos, Type= type')
+    | (Some title, Some default'input, Some xpos, None, Some help'filepath, None, None) -> excel.InputBox(Prompt= prompt, Title= title, Default= default'input, Left= xpos, HelpFile= help'filepath)
+    | (Some title, Some default'input, None, Some ypos, Some help'filepath, None, None) -> excel.InputBox(Prompt= prompt, Title= title, Default= default'input, Top= ypos, HelpFile= help'filepath)
+    | (Some title, Some default'input, Some xpos, Some ypos, Some help'filepath, None, None) -> excel.InputBox(Prompt= prompt, Title= title, Default= default'input, Left= xpos, Top= ypos, HelpFile= help'filepath)
+    | (Some title, Some default'input, Some xpos, None, Some help'filepath, None, Some type') -> excel.InputBox(Prompt= prompt, Title= title, Default= default'input, Left= xpos, HelpFile= help'filepath, Type= type')
+    | (Some title, Some default'input, None, Some ypos, Some help'filepath, None, Some type') -> excel.InputBox(Prompt= prompt, Title= title, Default= default'input, Top= ypos, HelpFile= help'filepath, Type= type')
+    | (Some title, Some default'input, Some xpos, Some ypos, Some help'filepath, None, Some type') -> excel.InputBox(Prompt= prompt, Title= title, Default= default'input, Left= xpos, Top= ypos, HelpFile= help'filepath, Type= type')
+    | (Some title, Some default'input, Some xpos, None, Some help'filepath, Some help'context'id, None) -> excel.InputBox(Prompt= prompt, Title= title, Default= default'input, Left= xpos, HelpFile= help'filepath, HelpContextID= help'context'id)
+    | (Some title, Some default'input, None, Some ypos, Some help'filepath, Some help'context'id, None) -> excel.InputBox(Prompt= prompt, Title= title, Default= default'input, Top= ypos, HelpFile= help'filepath, HelpContextID= help'context'id)
+    | (Some title, Some default'input, Some xpos, Some ypos, Some help'filepath, Some help'context'id, None) -> excel.InputBox(Prompt= prompt, Title= title, Default= default'input, Left= xpos, Top= ypos, HelpFile= help'filepath, HelpContextID= help'context'id)
+    | (Some title, Some default'input, Some xpos, None, Some help'filepath, Some help'context'id, Some type') -> excel.InputBox(Prompt= prompt, Title= title, Default= default'input, Left= xpos, HelpFile= help'filepath, HelpContextID= help'context'id, Type= type')
+    | (Some title, Some default'input, None, Some ypos, Some help'filepath, Some help'context'id, Some type') -> excel.InputBox(Prompt= prompt, Title= title, Default= default'input, Top= ypos, HelpFile= help'filepath, HelpContextID= help'context'id, Type= type')
+    | (Some title, Some default'input, Some xpos, Some ypos, Some help'filepath, Some help'context'id, Some type') -> excel.InputBox(Prompt= prompt, Title= title, Default= default'input, Left= xpos, Top= ypos, HelpFile= help'filepath, HelpContextID= help'context'id, Type= type')
+    | (Some title, None, None, None, Some help'filepath, Some help'context'id, None) -> excel.InputBox(Prompt= prompt, Title= title, HelpFile= help'filepath, HelpContextID= help'context'id)
+    | (Some title, None, None, None, Some help'filepath, Some help'context'id, Some type') -> excel.InputBox(Prompt= prompt, Title= title, HelpFile= help'filepath, HelpContextID= help'context'id, Type= type')
+    | (Some title, None, None, None, Some help'filepath, None, Some type') -> excel.InputBox(Prompt= prompt, Title= title, HelpFile= help'filepath, Type= type')
+    | (None, Some default'input, None, None, Some help'filepath, Some help'context'id, None) -> excel.InputBox(Prompt= prompt, Default= default'input, HelpFile= help'filepath, HelpContextID= help'context'id)
+    | (None, Some default'input, None, None, Some help'filepath, Some help'context'id, Some type') -> excel.InputBox(Prompt= prompt, Default= default'input, HelpFile= help'filepath, HelpContextID= help'context'id, Type= type')
+    | (None, Some default'input, None, None, Some help'filepath, None, Some type') -> excel.InputBox(Prompt= prompt, Default= default'input, HelpFile= help'filepath, Type= type')
+    | (None, None, None, None, Some help'filepath, Some help'context'id, None) -> excel.InputBox(Prompt= prompt, HelpFile= help'filepath, HelpContextID= help'context'id)
+    | (None, None, None, None, Some help'filepath, Some help'context'id, Some type') -> excel.InputBox(Prompt= prompt, HelpFile= help'filepath, HelpContextID= help'context'id, Type= type')
+    | (None, None, None, None, Some help'filepath, None, Some type') -> excel.InputBox(Prompt= prompt, HelpFile= help'filepath, Type= type')
+    | (Some title, Some default'input, None, None, Some help'filepath, Some help'context'id, None) -> excel.InputBox(Prompt= prompt, Title= title, Default= default'input, HelpFile= help'filepath, HelpContextID= help'context'id)
+    | (Some title, Some default'input, None, None, Some help'filepath, Some help'context'id, Some type') -> excel.InputBox(Prompt= prompt, Title= title, Default= default'input, HelpFile= help'filepath, HelpContextID= help'context'id, Type= type')
+    | (Some title, Some default'input, None, None, Some help'filepath, None, Some type') -> excel.InputBox(Prompt= prompt, Title= title, Default= default'input, HelpFile= help'filepath, Type= type')
+    | (None, None, None, None, None, None, None) -> excel.InputBox(Prompt= prompt)
+    | _ -> raise (NotSupportedException())
+    |> unbox<string>
+
 
   /// <summary></summary>
   member __.dispose () =
