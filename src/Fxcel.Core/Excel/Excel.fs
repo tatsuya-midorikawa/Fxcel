@@ -6,7 +6,7 @@ open Fxcel.Core.Common
 module Excel = 
   let private new_app () =
     let com = Com.new'<MicrosoftExcel> Interop.excel'id
-    new Application (com, { Disposed= false }, ResizeArray<Workbook>())
+    new Application (com, { Disposed= false }, ResizeArray<Workbook>(), ResizeArray<Workbook>())
   
   // TODO:
   /// <summary></summary>

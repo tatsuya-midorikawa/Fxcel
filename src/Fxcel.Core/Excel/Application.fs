@@ -19,7 +19,7 @@ module Application =
 
 /// <summary>Excel Application</summary>
 [<IsReadOnly;Struct;>]
-type Application internal (excel: MicrosoftExcel, status: DisposeStatus, workbooks: ResizeArray<Workbook>) =
+type Application internal (excel: MicrosoftExcel, status: DisposeStatus, workbooks: ResizeArray<Workbook>, cache: ResizeArray<Workbook>) =
   interface IDisposable with
     member __.Dispose() = __.dispose()
     
@@ -29,6 +29,8 @@ type Application internal (excel: MicrosoftExcel, status: DisposeStatus, workboo
   /// <summary></summary>
   member __.Item with get (name: string) = workbooks |> Seq.find (fun wb -> wb.name = name)
   
+  /// <summary></summary>
+  member __.count with get () : int = workbooks.Count
   /// <summary></summary>
   member __.window_handle with get () : int<handle> = excel.Hwnd |> to_handle
   /// <summary></summary>
@@ -47,7 +49,7 @@ type Application internal (excel: MicrosoftExcel, status: DisposeStatus, workboo
   member __.active_workbook 
     with get () : Workbook = 
       let book = new Workbook(excel.ActiveWorkbook, { Disposed = false })
-      workbooks.Add(book)
+      cache.Add(book)
       book
 
   /// <summary></summary>
@@ -147,6 +149,7 @@ type Application internal (excel: MicrosoftExcel, status: DisposeStatus, workboo
     if not status.Disposed then
       // 子要素を解放
       workbooks |> Seq.iter (fun wb -> wb.dispose())
+      cache |> Seq.iter (fun wb -> wb.dispose())
       // 自分自身を解放
       if not __.visible then
         __.quit ()
