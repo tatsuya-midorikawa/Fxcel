@@ -27,7 +27,6 @@ type Application internal (excel: MicrosoftExcel, status: DisposeStatus, workboo
   [<ComponentModel.DataAnnotations.Range(1, 255, ErrorMessage= "Value for {0} must be between {0} and {1}")>]
   member __.Item with get (index: int) = workbooks.[index - 1]
   /// <summary></summary>
-  [<ComponentModel.DataAnnotations.Range(1, 255, ErrorMessage= "Value for {0} must be between {0} and {1}")>]
   member __.Item with get (name: string) = workbooks |> Seq.find (fun wb -> wb.name = name)
   
   /// <summary></summary>
@@ -44,7 +43,7 @@ type Application internal (excel: MicrosoftExcel, status: DisposeStatus, workboo
   /// <summary></summary>
   member __.calculation with get () : Calculation = excel.Calculation |> (int >> to_enum<Calculation>)
   member __.set_calculations (calculation: Calculation) = excel.Calculation  <- calculation |> (int >> to_enum<Application.MicrosoftCalculation>)
-    /// <summary></summary>
+  /// <summary></summary>
   member __.active_workbook 
     with get () : Workbook = 
       let book = new Workbook(excel.ActiveWorkbook, { Disposed = false })

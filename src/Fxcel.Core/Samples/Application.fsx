@@ -8,10 +8,10 @@ open System
 open System.Runtime.CompilerServices
 
 let main() =
-  use excel = Excel.create()
+  use excel = Excel.new'()
   excel.set_display_alerts false
   excel.set_visible true
-  let a = excel.[0]
+  let a = excel.[1]
   excel.input_box(prompt= "Test") |> printfn "%A"
 
   0
