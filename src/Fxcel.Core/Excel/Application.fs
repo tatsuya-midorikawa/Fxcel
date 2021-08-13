@@ -70,8 +70,10 @@ type Application internal (excel: MicrosoftExcel, status: DisposeStatus, workboo
 
   /// <summary>Quit excel application.</summary>
   member __.quit () = excel.Quit()
+  
   /// <summary>Operation undo.</summary>
   member __.undo () = excel.Undo()
+
   /// <summary>Run excel macro.</summary>
   member __.run (macro: string, ?arg1: obj, ?arg2: obj, ?arg3: obj, ?arg4: obj, ?arg5: obj, ?arg6: obj, ?arg7: obj, ?arg8: obj, ?arg9: obj, ?arg10: obj, ?arg11: obj, ?arg12: obj, ?arg13: obj, ?arg14: obj, ?arg15: obj) = 
     match (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15) with
@@ -142,6 +144,9 @@ type Application internal (excel: MicrosoftExcel, status: DisposeStatus, workboo
     | (None, None, None, None, None, None, None) -> excel.InputBox(Prompt= prompt)
     | _ -> raise (NotSupportedException())
     |> unbox<string>
+    
+  /// <summary>Show input box.</summary>
+  member __.activate ([<ComponentModel.DataAnnotations.Range(1, 255, ErrorMessage= "Value for {0} must be between {0} and {1}")>] index: int) = __.[index].activate()
 
 
   /// <summary></summary>
