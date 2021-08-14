@@ -1,16 +1,28 @@
 ﻿namespace Fxcel.Core.Excel
 
 open System
+open System.Collections
+open System.Collections.Generic
 open System.Runtime.CompilerServices
 open Fxcel.Core
 open Fxcel.Core.Common
 
 /// <summary>Excel Workbook</summary>
 [<IsReadOnly;Struct;>]
-type Workbook internal (workbook: MicrosoftWorkbook, status: DisposeStatus) =
+type Workbook internal (workbook: MicrosoftWorkbook, status: DisposeStatus, worksheets: ResizeArray<Worksheet>) =
   interface IDisposable with
     member __.Dispose() = __.dispose()
   
+  interface IEnumerable<Worksheet> with
+    member __.GetEnumerator() = (worksheets :> IEnumerable<Worksheet>).GetEnumerator()
+  
+  interface IEnumerable with
+    member __.GetEnumerator() = (worksheets :> IEnumerable).GetEnumerator()
+  
+  /// <summary></summary>
+  [<ComponentModel.DataAnnotations.Range(1, 512, ErrorMessage= "Value for {0} must be between {0} and {1}")>]
+  member __.Item with get (index: int) = worksheets.[index - 1]
+
   /// <summary></summary>
   member __.name with get() = workbook.Name
   

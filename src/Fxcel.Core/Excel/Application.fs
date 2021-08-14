@@ -2,6 +2,8 @@
 
 open System
 open System.IO
+open System.Collections
+open System.Collections.Generic
 open System.Runtime.CompilerServices
 open Fxcel.Core
 open Fxcel.Core.Common
@@ -22,7 +24,14 @@ module Application =
 type Application internal (excel: MicrosoftExcel, status: DisposeStatus, workbooks: ResizeArray<Workbook>, cache: ResizeArray<Workbook>) =
   interface IDisposable with
     member __.Dispose() = __.dispose()
-    
+  
+  interface IEnumerable<Workbook> with
+    member __.GetEnumerator() = (workbooks :> IEnumerable<Workbook>).GetEnumerator()
+  
+  interface IEnumerable with
+    member __.GetEnumerator() = (workbooks :> IEnumerable).GetEnumerator()
+
+
   /// <summary></summary>
   [<ComponentModel.DataAnnotations.Range(1, 255, ErrorMessage= "Value for {0} must be between {0} and {1}")>]
   member __.Item with get (index: int) = workbooks.[index - 1]
@@ -48,25 +57,39 @@ type Application internal (excel: MicrosoftExcel, status: DisposeStatus, workboo
   /// <summary></summary>
   member __.active_workbook 
     with get () : Workbook = 
-      let book = new Workbook(excel.ActiveWorkbook, { Disposed = false })
+      let book = new Workbook(excel.ActiveWorkbook, { Disposed = false }, ResizeArray<Worksheet>())
       cache.Add(book)
       book
-
+      
+  /// <summary></summary>
+  member private __.insert (workbook: MicrosoftWorkbook, worksheets: ResizeArray<Worksheet>) =
+    let wb = new Workbook (workbook, { Disposed = false }, worksheets)
+    workbooks.Add(wb)
+    wb
+    
   /// <summary></summary>
   member __.blank_workbook () =
-    let book = new Workbook (excel.Workbooks.Add (), { Disposed = false })
-    workbooks.Add(book)
-    book
+    let sheets = ResizeArray<Worksheet>()
+    let book = excel.Workbooks.Add ()
+    book.Worksheets 
+    |> Seq.cast<MicrosoftWorksheet> 
+    |> Seq.iter (fun sheet -> sheets.Add(new Worksheet (sheet, { Disposed = false })))
+    __.insert (book, sheets)
+
   /// <summary></summary>
   member __.open_file (file: string) =
-    let book = new Workbook (Path.GetFullPath(file) |> excel.Workbooks.Open, { Disposed = false })
-    workbooks.Add(book)
-    book
+    let sheets = ResizeArray<Worksheet>()
+    let book = Path.GetFullPath(file) |> excel.Workbooks.Open
+    book.Worksheets 
+    |> Seq.cast<MicrosoftWorksheet> 
+    |> Seq.iter (fun sheet -> sheets.Add(new Worksheet (sheet, { Disposed = false })))
+    __.insert (book, sheets)
+
   /// <summary></summary>
   member __.create_from (template: string) =
-    let book = new Workbook (excel.Workbooks.Add (Path.GetFullPath(template)), { Disposed = false })
-    workbooks.Add(book)
-    book
+    let sheets = ResizeArray<Worksheet>()
+    let book = excel.Workbooks.Add (Path.GetFullPath(template))
+    __.insert (book, sheets)
 
   /// <summary>Quit excel application.</summary>
   member __.quit () = excel.Quit()
@@ -147,7 +170,8 @@ type Application internal (excel: MicrosoftExcel, status: DisposeStatus, workboo
     
   /// <summary>Show input box.</summary>
   member __.activate ([<ComponentModel.DataAnnotations.Range(1, 255, ErrorMessage= "Value for {0} must be between {0} and {1}")>] index: int) = __.[index].activate()
-
+  /// <summary>Show input box.</summary>
+  member __.activate (name: string) = __.[name].activate()
 
   /// <summary></summary>
   member __.dispose () =
