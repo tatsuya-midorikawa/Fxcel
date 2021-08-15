@@ -8,7 +8,7 @@ open Fxcel.Core
 open Fxcel.Core.Common
 
 /// <summary>Excel Workbook</summary>
-[<IsReadOnly;Struct;>]
+[<Struct;IsReadOnly;NoComparison;>]
 type Workbook internal (workbook: MicrosoftWorkbook, status: DisposeStatus, worksheets: ResizeArray<Worksheet>) =
   interface IDisposable with
     member __.Dispose() = __.dispose()
@@ -28,6 +28,10 @@ type Workbook internal (workbook: MicrosoftWorkbook, status: DisposeStatus, work
   
   /// <summary></summary>
   member __.activate () = workbook.Activate()
+  /// <summary></summary>
+  member __.save () = workbook.Save()
+  /// <summary></summary>
+  member __.save_as (filepath: string) = workbook.SaveAs(filepath)
 
   /// <summary></summary>
   member __.dispose() =

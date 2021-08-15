@@ -6,7 +6,7 @@ open Fxcel.Core
 open Fxcel.Core.Common
 
 /// <summary>Excel Worksheet</summary>
-[<IsReadOnly;Struct;>]
+[<Struct;IsReadOnly;NoComparison;>]
 type Worksheet internal (worksheet: MicrosoftWorksheet, status: DisposeStatus) =
   interface IDisposable with
     member __.Dispose() = __.dispose()

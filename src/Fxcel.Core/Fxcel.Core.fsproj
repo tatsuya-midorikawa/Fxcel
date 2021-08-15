@@ -5,7 +5,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <WarnOn>3390;$(WarnOn)</WarnOn>
     <LangVersion>preview</LangVersion>
-    <Version>0.0.1</Version>
+    <Version>0.0.0.6-alpha</Version>
     <Authors>midoliy</Authors>
     <Company>midoliy</Company>
     <Copyright>© 2021 Tatsuya Midorikawa. All rights rserved</Copyright>
@@ -15,14 +15,22 @@
     <RepositoryUrl>https://github.com/tatsuya-midorikawa/Fxcel</RepositoryUrl>
     <PackageIcon />
     <PackageIconUrl />
-    <Description>Excel COM operation tools for F#</Description>
+    <Description>Excel COM wrapper by F#</Description>
+    <RepositoryType>git</RepositoryType>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <WarningLevel>5</WarningLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <WarningLevel>5</WarningLevel>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="ExcelInterop.fs" />
     <Compile Include="Natives\Win32.fs" />
     <Compile Include="Common.fs" />
     <Compile Include="Com.fs" />
@@ -34,22 +42,7 @@
     <Compile Include="Excel\Workbook.fs" />
     <Compile Include="Excel\Application.fs" />
     <Compile Include="Excel\Excel.fs" />
-    <None Include="Samples\Application.fsx" />
-    <None Include="Samples\COM.fsx" />
-    <None Include="Samples\Process.fsx" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <COMReference Include="Microsoft.Office.Core">
-      <WrapperTool>tlbimp</WrapperTool>
-      <VersionMinor>8</VersionMinor>
-      <VersionMajor>2</VersionMajor>
-      <Guid>2df8d04c-5bfa-101b-bde5-00aa0044de52</Guid>
-      <Lcid>0</Lcid>
-      <Isolated>false</Isolated>
-      <EmbedInteropTypes>true</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="Microsoft.Office.Interop.Excel">
+    <!--<COMReference Include="Microsoft.Office.Interop.Excel">
       <WrapperTool>tlbimp</WrapperTool>
       <VersionMinor>9</VersionMinor>
       <VersionMajor>1</VersionMajor>
@@ -58,10 +51,26 @@
       <Isolated>false</Isolated>
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </COMReference>
+    <COMReference Include="Microsoft.Office.Core">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>8</VersionMinor>
+      <VersionMajor>2</VersionMajor>
+      <Guid>2df8d04c-5bfa-101b-bde5-00aa0044de52</Guid>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </COMReference>-->
+    <None Include="Samples\Application.fsx" />
+    <None Include="Samples\COM.fsx" />
+    <None Include="Samples\Process.fsx" />
   </ItemGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Fxcel.Core.Interop\Fxcel.Core.Interop.csproj" />
   </ItemGroup>
 
 </Project>

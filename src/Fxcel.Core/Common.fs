@@ -1,15 +1,19 @@
 ﻿namespace Fxcel.Core
 
-open System
+open System.Reflection
 open System.Buffers
+open System.Runtime.CompilerServices
 open System.Runtime.InteropServices
+open System.Collections
 open Microsoft.FSharp.NativeInterop
 
+#nowarn "9"
+
 module Common =
-  type internal MicrosoftExcel = Microsoft.Office.Interop.Excel.Application
-  type internal MicrosoftWorkbook = Microsoft.Office.Interop.Excel.Workbook
-  type internal MicrosoftWorksheet = Microsoft.Office.Interop.Excel.Worksheet
-  type internal MicrosoftRange = Microsoft.Office.Interop.Excel.Range
+  type MicrosoftExcel = Microsoft.Office.Interop.Excel.Application
+  type MicrosoftWorkbook = Microsoft.Office.Interop.Excel.Workbook
+  type MicrosoftWorksheet = Microsoft.Office.Interop.Excel.Worksheet
+  type MicrosoftRange = Microsoft.Office.Interop.Excel.Range
   type internal DisposeStatus = { mutable Disposed: bool }
 
   [<Measure>] type handle
@@ -33,3 +37,4 @@ module Common =
   let inline to_handle (h: int) = LanguagePrimitives.Int32WithMeasure<handle> h
   let inline to_id (id: int) = LanguagePrimitives.Int32WithMeasure<id> id
   let to_enum<'T when 'T: enum<int>> (n: int) = LanguagePrimitives.EnumOfValue<int, 'T> n
+  

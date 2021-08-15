@@ -5,12 +5,18 @@ open System.IO
 open System.Collections
 open System.Collections.Generic
 open System.Runtime.CompilerServices
+
+open System.Reflection
+open System.Buffers
+open System.Runtime.InteropServices
+open Microsoft.FSharp.NativeInterop
+
 open Fxcel.Core
 open Fxcel.Core.Common
 open Fxcel.Core.Excel.Constant
 
 module Application =
-  type internal MicrosoftCalculation = Microsoft.Office.Interop.Excel.XlCalculation
+  //type internal MicrosoftCalculation = Microsoft.Office.Interop.Excel.XlCalculation
   
   let internal to_nullable<'T when 'T: struct and 'T: (new: unit -> 'T) and 'T :> ValueType> (value: Option<'T>) = match value with Some value -> Nullable value | None -> Nullable()
   let internal unwrap<'T when 'T: not struct and 'T: null> (value: Option<'T>) = match value with Some value -> value | None -> null
@@ -19,8 +25,13 @@ module Application =
   [<Flags>]
   type InputBoxType = Formula = 0 | Number = 1 | String = 2 | Boolean = 4 | RangeObject = 8 | Error = 16 | Array = 64
 
+//[<Interface>]
+//type IApplication =
+//  inherit IDisposable
+//  abstract member Item : int -> obj with get
+
 /// <summary>Excel Application</summary>
-[<IsReadOnly;Struct;>]
+[<Struct;IsReadOnly;NoComparison;>]
 type Application internal (excel: MicrosoftExcel, status: DisposeStatus, workbooks: ResizeArray<Workbook>, cache: ResizeArray<Workbook>) =
   interface IDisposable with
     member __.Dispose() = __.dispose()
@@ -31,6 +42,10 @@ type Application internal (excel: MicrosoftExcel, status: DisposeStatus, workboo
   interface IEnumerable with
     member __.GetEnumerator() = (workbooks :> IEnumerable).GetEnumerator()
 
+  //interface IApplication with
+  //  /// <summary></summary>
+  //  [<ComponentModel.DataAnnotations.Range(1, 255, ErrorMessage= "Value for {0} must be between {0} and {1}")>]
+  //  member __.Item with get (index: int) = box workbooks.[index - 1]
 
   /// <summary></summary>
   [<ComponentModel.DataAnnotations.Range(1, 255, ErrorMessage= "Value for {0} must be between {0} and {1}")>]
@@ -51,9 +66,9 @@ type Application internal (excel: MicrosoftExcel, status: DisposeStatus, workboo
   /// <summary></summary>
   member __.visible with get () : bool = excel.Visible
   member __.set_visible (visible: bool) = excel.Visible <- visible
-  /// <summary></summary>
-  member __.calculation with get () : Calculation = excel.Calculation |> (int >> to_enum<Calculation>)
-  member __.set_calculations (calculation: Calculation) = excel.Calculation  <- calculation |> (int >> to_enum<Application.MicrosoftCalculation>)
+  ///// <summary></summary>
+  //member __.calculation with get () : Calculation = excel.Calculation |> (int >> to_enum<Calculation>)
+  //member __.set_calculations (calculation: Calculation) = excel.Calculation  <- calculation |> (int >> to_enum<Application.MicrosoftCalculation>)
   /// <summary></summary>
   member __.active_workbook 
     with get () : Workbook = 
@@ -90,6 +105,9 @@ type Application internal (excel: MicrosoftExcel, status: DisposeStatus, workboo
     let sheets = ResizeArray<Worksheet>()
     let book = excel.Workbooks.Add (Path.GetFullPath(template))
     __.insert (book, sheets)
+    
+  /// <summary></summary>
+  member __.get_save_as_filename() = excel.GetSaveAsFilename()
 
   /// <summary>Quit excel application.</summary>
   member __.quit () = excel.Quit()
@@ -168,10 +186,14 @@ type Application internal (excel: MicrosoftExcel, status: DisposeStatus, workboo
     | _ -> raise (NotSupportedException())
     |> unbox<string>
     
-  /// <summary>Show input box.</summary>
-  member __.activate ([<ComponentModel.DataAnnotations.Range(1, 255, ErrorMessage= "Value for {0} must be between {0} and {1}")>] index: int) = __.[index].activate()
-  /// <summary>Show input box.</summary>
-  member __.activate (name: string) = __.[name].activate()
+  /// <summary></summary>
+  member __.activate ([<ComponentModel.DataAnnotations.Range(1, 255, ErrorMessage= "Value for {0} must be between {0} and {1}")>] index: int) =
+    let wb = __.[index]
+    wb.activate()
+  /// <summary></summary>
+  member __.activate (name: string) =
+    let wb = __.[name];
+    wb.activate()
 
   /// <summary></summary>
   member __.dispose () =
