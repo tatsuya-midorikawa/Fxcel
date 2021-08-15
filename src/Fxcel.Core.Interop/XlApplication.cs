@@ -20,6 +20,7 @@ namespace Fxcel.Core.Interop
     using MicrosoftMsoAutomationSecurity = Microsoft.Office.Core.MsoAutomationSecurity;
     using MicrosoftMsoFileDialogType = Microsoft.Office.Core.MsoFileDialogType;
     using MicrosoftXlCalculationInterruptKey = Microsoft.Office.Interop.Excel.XlCalculationInterruptKey;
+    using MicrosoftXlGenerateTableRefs = Microsoft.Office.Interop.Excel.XlGenerateTableRefs;
 
     [SupportedOSPlatform("windows")]
     public readonly struct XlApplication : IComObject
@@ -234,5 +235,27 @@ namespace Fxcel.Core.Interop
         public bool WarnOnFunctionNameConflict { get => raw.WarnOnFunctionNameConflict; set => raw.WarnOnFunctionNameConflict = value; }
         public int FormulaBarHeight { get => raw.FormulaBarHeight; set => raw.FormulaBarHeight = value; }
         public bool DisplayFormulaAutoComplete { get => raw.DisplayFormulaAutoComplete; set => raw.DisplayFormulaAutoComplete = value; }
+        public XlGenerateTableRefs GenerateTableRefs { get => (XlGenerateTableRefs)raw.GenerateTableRefs; set => raw.GenerateTableRefs = (MicrosoftXlGenerateTableRefs)value; }
+        public XlIAssistance Assistance => new(raw.Assistance);
+        public bool EnableLargeOperationAlert { get => raw.EnableLargeOperationAlert; set => raw.EnableLargeOperationAlert = value; }
+        public int LargeOperationCellThousandCount { get => raw.LargeOperationCellThousandCount; set => raw.LargeOperationCellThousandCount = value; }
+        public bool DeferAsyncQueries { get => raw.DeferAsyncQueries; set => raw.DeferAsyncQueries = value; }
+        public XlMultiThreadedCalculation MultiThreadedCalculation => new(raw.MultiThreadedCalculation);
+        public int ActiveEncryptionSession => raw.ActiveEncryptionSession;
+        public bool HighQualityModeForGraphics { get => raw.HighQualityModeForGraphics; set => raw.HighQualityModeForGraphics = value; }
+        public XlFileExportConverters FileExportConverters => new(raw.FileExportConverters);
+        public XlSmartArtLayouts SmartArtLayouts => new(raw.SmartArtLayouts);
+        public XlSmartArtQuickStyles SmartArtQuickStyles => new(raw.SmartArtQuickStyles);
+        public XlSmartArtColors SmartArtColors => new(raw.SmartArtColors);
+        public XlAddIns2 AddIns2 => new(raw.AddIns2);
+        public bool PrintCommunication { get => raw.PrintCommunication; set => raw.PrintCommunication = value; }
+        public bool UseClusterConnector { get => raw.UseClusterConnector; set => raw.UseClusterConnector = value; }
+        public string ClusterConnector { get => raw.ClusterConnector; set => raw.ClusterConnector = value; }
+        public bool Quitting => raw.Quitting;
+        public XlProtectedViewWindows ProtectedViewWindows => new(raw.ProtectedViewWindows);
+        public XlProtectedViewWindow ActiveProtectedViewWindow => new(raw.ActiveProtectedViewWindow);
+        public bool IsSandboxed => raw.IsSandboxed;
+        public bool SaveISO8601Dates { get => raw.SaveISO8601Dates; set => raw.SaveISO8601Dates = value; }
+
     }
 }
