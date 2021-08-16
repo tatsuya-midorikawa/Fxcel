@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
 namespace Fxcel.Core.Interop
@@ -19,8 +20,10 @@ namespace Fxcel.Core.Interop
     using MicrosoftMsoFeatureInstall = Microsoft.Office.Core.MsoFeatureInstall;
     using MicrosoftMsoAutomationSecurity = Microsoft.Office.Core.MsoAutomationSecurity;
     using MicrosoftMsoFileDialogType = Microsoft.Office.Core.MsoFileDialogType;
+    using MicrosoftMsoFileValidationMode = Microsoft.Office.Core.MsoFileValidationMode;
     using MicrosoftXlCalculationInterruptKey = Microsoft.Office.Interop.Excel.XlCalculationInterruptKey;
     using MicrosoftXlGenerateTableRefs = Microsoft.Office.Interop.Excel.XlGenerateTableRefs;
+    using MicrosoftXlFileValidationPivotMode = Microsoft.Office.Interop.Excel.XlFileValidationPivotMode;
 
     [SupportedOSPlatform("windows")]
     public readonly struct XlApplication : IComObject
@@ -256,6 +259,54 @@ namespace Fxcel.Core.Interop
         public XlProtectedViewWindow ActiveProtectedViewWindow => new(raw.ActiveProtectedViewWindow);
         public bool IsSandboxed => raw.IsSandboxed;
         public bool SaveISO8601Dates { get => raw.SaveISO8601Dates; set => raw.SaveISO8601Dates = value; }
+        public XlMsoFileValidationMode FileValidation { get => (XlMsoFileValidationMode)raw.FileValidation; set => raw.FileValidation = (MicrosoftMsoFileValidationMode)value; }
+        public XlFileValidationPivotMode FileValidationPivot { get => (XlFileValidationPivotMode)raw.FileValidationPivot; set => raw.FileValidationPivot = (MicrosoftXlFileValidationPivotMode)value; }
+        public bool ShowQuickAnalysis { get => raw.ShowQuickAnalysis; set => raw.ShowQuickAnalysis = value; }
+        public XlQuickAnalysis QuickAnalysis => new(raw.QuickAnalysis);
+        public bool FlashFill { get => raw.FlashFill; set => raw.FlashFill = value; }
+        public bool EnableMacroAnimations { get => raw.EnableMacroAnimations; set => raw.EnableMacroAnimations = value; }
+        public bool ChartDataPointTrack { get => raw.ChartDataPointTrack; set => raw.ChartDataPointTrack = value; }
+        public bool FlashFillMode { get => raw.FlashFillMode; set => raw.FlashFillMode = value; }
+        public bool MergeInstances { get => raw.MergeInstances; set => raw.MergeInstances = value; }
+        public bool EnableCheckFileExtensions { get => raw.EnableCheckFileExtensions; set => raw.EnableCheckFileExtensions = value; }
 
+        public void Calculate() => raw.Calculate();
+        /// <summary>指定したDDEチャネルを介してコマンドの実行や別のアプリケーションでアクションの実行をする.</summary>
+        /// <param name="channel">DdeInitiateの戻り値.</param>
+        /// <param name="message">受信アプリケーションで定義されたメッセージ.</param>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.ddeexecute?view=excel-pia" />
+        public void DdeExecute(int channel, string message) => raw.DDEExecute(channel, message);
+        /// <summary>アプリケーションへのDDEチャネルを開く.</summary>
+        /// <param name="app">アプリケーション名.</param>
+        /// <param name="topic">チャネルを開いているアプリケーション内容についての説明.</param>
+        /// <returns>チャネルID.</returns>
+        /// <see href="https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.office.interop.excel._application.ddeinitiate?view=excel-pia" />
+        public int DdeInitiate(string app, string topic) => raw.DDEInitiate(app, topic);
+        /// <summary>アプリケーションにデータを送信する.</summary>
+        /// <param name="channel">DdeInitiateの戻り値.</param>
+        /// <param name="item">データの送信先アイテム.</param>
+        /// <param name="data">アプリケーションに送信されるデータ.</param>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.ddepoke?view=excel-pia" />
+        public void DdePoke(int channel, object item, object data) => raw.DDEPoke(channel, item, data);
+        /// <summary>指定したアプリケーションに情報を要求する.</summary>
+        /// <param name="channel">DdeInitiateの戻り値.</param>
+        /// <param name="item">リクエストするアイテム.</param>
+        /// <returns>配列アイテム.</returns>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.dderequest?view=excel-pia" />
+        public object DdeRequest(int channel, string item) => raw.DDERequest(channel, item);
+        /// <summary>チャネルを閉じる.</summary>
+        /// <param name="channel">DdeInitiateの戻り値.</param>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.ddeterminate?view=excel-pia" />
+        public void DdeTerminate(int channel) => raw.DDETerminate(channel);
+        /// <summary></summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.evaluate?view=excel-pia" />
+        public object Evaluate(string name) => raw.Evaluate(name);
+        /// <summary></summary>
+        /// <param name="function"></param>
+        /// <returns></returns>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.executeexcel4macro?view=excel-pia" />
+        public object ExecuteExcel4Macro(string function) => raw.ExecuteExcel4Macro(function);
     }
 }
