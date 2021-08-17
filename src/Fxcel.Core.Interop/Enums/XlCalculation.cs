@@ -1,4 +1,5 @@
-﻿namespace Fxcel.Core.Interop
+﻿using Microsoft.Office.Interop.Excel;
+namespace Fxcel.Core.Interop
 {
     public enum XlCalculation
     {
