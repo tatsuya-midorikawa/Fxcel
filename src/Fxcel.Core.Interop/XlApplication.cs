@@ -407,6 +407,31 @@ namespace Fxcel.Core.Interop
         public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20, XlRange arg21, XlRange arg22, XlRange arg23, XlRange arg24, XlRange arg25, XlRange arg26, XlRange arg27, XlRange arg28, XlRange arg29) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw, arg29.raw));
         public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20, XlRange arg21, XlRange arg22, XlRange arg23, XlRange arg24, XlRange arg25, XlRange arg26, XlRange arg27, XlRange arg28, XlRange arg29, XlRange arg30) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw, arg29.raw, arg30.raw));
 
+        public void ActivateMicrosoftApp(XlMsApplication application) => raw.ActivateMicrosoftApp((Microsoft.Office.Interop.Excel.XlMSApplication)application);
 
+        public void AddChartAutoFormat(object chart, string name) => raw.AddChartAutoFormat(chart, name);
+        public void AddChartAutoFormat(object chart, string name, object description) => raw.AddChartAutoFormat(chart, name, description);
+
+        /// <summary>ユーザー設定リストに追加する</summary>
+        /// <param name="listArray">追加する文字列を配列で指定</param>
+        public void AddCustomList(string[] listArray) => raw.AddCustomList(listArray);
+        /// <summary>ユーザー設定リストに追加する</summary>
+        /// <param name="listArray">追加する文字列を配列で指定</param>
+        /// <param name="byRow">行単位の場合はtrue, 列単位の場合はfalseを指定</param>
+        public void AddCustomList(string[] listArray, bool byRow) => raw.AddCustomList(listArray, byRow);
+        /// <summary>ユーザー設定リストに追加する</summary>
+        /// <param name="listArray">追加する文字列をセル範囲で指定</param>
+        public void AddCustomList(XlRange listArray) => raw.AddCustomList(listArray.raw);
+        /// <summary>ユーザー設定リストに追加する</summary>
+        /// <param name="listArray">追加する文字列をセル範囲で指定</param>
+        /// <param name="byRow">行単位の場合はtrue, 列単位の場合はfalseを指定</param>
+        public void AddCustomList(XlRange listArray, bool byRow) => raw.AddCustomList(listArray.raw, byRow);
+
+        public void CentimetersToPoints(double centimeters) => raw.CentimetersToPoints(centimeters);
+
+        public bool CheckSpelling(string word) => raw.CheckSpelling(Word: word);
+        public bool CheckSpelling(string word, string customDirectoryPath) => raw.CheckSpelling(Word: word, CustomDictionary: customDirectoryPath);
+        public bool CheckSpelling(string word, bool ignoreUppercase) => raw.CheckSpelling(Word: word, IgnoreUppercase: ignoreUppercase);
+        public bool CheckSpelling(string word, string customDirectoryPath, bool ignoreUppercase) => raw.CheckSpelling(Word: word, CustomDictionary: customDirectoryPath, IgnoreUppercase: ignoreUppercase);
     }
 }
