@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftCommandBars raw;
         public XlCommandBars(MicrosoftCommandBars commandBars) => raw = commandBars;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

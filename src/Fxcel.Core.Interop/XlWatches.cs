@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftWatches raw;
         public XlWatches(MicrosoftWatches watches) => raw = watches;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

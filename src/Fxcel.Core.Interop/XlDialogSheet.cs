@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftDialogSheet raw;
         public XlDialogSheet(MicrosoftDialogSheet dialogSheet) => raw = dialogSheet;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

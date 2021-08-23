@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftProtectedViewWindows raw;
         public XlProtectedViewWindows(MicrosoftProtectedViewWindows windows) => raw = windows;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftNames raw;
         public XlNames(MicrosoftNames names) => raw = names;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

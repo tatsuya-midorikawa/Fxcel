@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftIFind raw;
         public XlIFind(MicrosoftIFind ifind) => raw = ifind;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftRecentFiles raw;
         public XlRecentFiles(MicrosoftRecentFiles recentFiles) => raw = recentFiles;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

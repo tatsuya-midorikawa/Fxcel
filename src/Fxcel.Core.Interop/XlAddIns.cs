@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftAddIns raw;
         public XlAddIns(MicrosoftAddIns addins) => raw = addins;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

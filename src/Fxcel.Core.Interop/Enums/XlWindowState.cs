@@ -1,5 +1,6 @@
 ﻿namespace Fxcel.Core.Interop
 {
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public enum XlWindowState
     {
         Maximized = -4137,

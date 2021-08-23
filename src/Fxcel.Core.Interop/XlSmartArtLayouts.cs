@@ -8,5 +8,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftSmartArtLayouts raw;
         public XlSmartArtLayouts(MicrosoftSmartArtLayouts layouts) => raw = layouts;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

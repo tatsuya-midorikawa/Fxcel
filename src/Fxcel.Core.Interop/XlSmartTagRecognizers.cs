@@ -8,5 +8,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftSmartTagRecognizers raw;
         public XlSmartTagRecognizers(MicrosoftSmartTagRecognizers recognizers) => raw = recognizers;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

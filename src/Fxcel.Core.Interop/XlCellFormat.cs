@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftCellFormat raw;
         public XlCellFormat(MicrosoftCellFormat format) => raw = format;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

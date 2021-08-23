@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftAnswerWizard raw;
         public XlAnswerWizard(MicrosoftAnswerWizard wizard) => raw = wizard;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

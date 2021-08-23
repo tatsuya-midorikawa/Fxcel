@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftAutoCorrect raw;
         public XlAutoCorrect(MicrosoftAutoCorrect autocorrect) => raw = autocorrect;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

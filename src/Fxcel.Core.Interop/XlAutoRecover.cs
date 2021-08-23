@@ -8,5 +8,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftAutoRecover raw;
         public XlAutoRecover(MicrosoftAutoRecover recover) => raw = recover;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

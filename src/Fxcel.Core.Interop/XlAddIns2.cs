@@ -8,5 +8,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftAddIns2 raw;
         public XlAddIns2(MicrosoftAddIns2 addins) => raw = addins;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

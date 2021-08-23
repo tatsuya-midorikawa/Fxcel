@@ -8,5 +8,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftFileExportConverters raw;
         public XlFileExportConverters(MicrosoftFileExportConverters converters) => raw = converters;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
@@ -26,13 +27,12 @@ namespace Fxcel.Core.Interop
     using MicrosoftXlFileValidationPivotMode = Microsoft.Office.Interop.Excel.XlFileValidationPivotMode;
 
     [SupportedOSPlatform("windows")]
-    public readonly struct XlApplication : IComObject
+    public readonly ref struct XlApplication
     {
-        internal static readonly List<XlApplication> apps = new();
         internal readonly MicrosoftApplication raw;
         internal XlApplication(MicrosoftApplication excel) => raw = excel;
-
-        public int ComRelease() => ComHelper.Release(raw);
+        
+        public int Release() => ComHelper.Release(raw);
 
         public XlApplication Application => new(raw.Application);
         public XlCreator Creator => (XlCreator)raw.Creator;
@@ -433,7 +433,7 @@ namespace Fxcel.Core.Interop
         public bool CheckSpelling(string word, string customDirectoryPath) => raw.CheckSpelling(Word: word, CustomDictionary: customDirectoryPath);
         public bool CheckSpelling(string word, bool ignoreUppercase) => raw.CheckSpelling(Word: word, IgnoreUppercase: ignoreUppercase);
         public bool CheckSpelling(string word, string customDirectoryPath, bool ignoreUppercase) => raw.CheckSpelling(Word: word, CustomDictionary: customDirectoryPath, IgnoreUppercase: ignoreUppercase);
-
+        
         // TODO: 戻り値の型を調査する.
         /// <summary></summary>
         /// <returns></returns>

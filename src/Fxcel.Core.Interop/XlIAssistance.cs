@@ -8,5 +8,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftIAssistance raw;
         public XlIAssistance(MicrosoftIAssistance assistance) => raw = assistance;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

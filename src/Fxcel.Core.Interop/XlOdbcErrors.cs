@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftOdbcErrors raw;
         public XlOdbcErrors(MicrosoftOdbcErrors odbcErrors) => raw = odbcErrors;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

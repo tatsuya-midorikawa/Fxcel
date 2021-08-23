@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftAssistant raw;
         public XlAssistant(MicrosoftAssistant assistant) => raw = assistant;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

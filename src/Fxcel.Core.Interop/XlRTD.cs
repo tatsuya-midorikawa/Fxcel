@@ -8,5 +8,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftRTD raw;
         public XlRTD(MicrosoftRTD rtd) => raw = rtd;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

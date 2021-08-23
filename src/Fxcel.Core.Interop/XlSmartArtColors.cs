@@ -8,5 +8,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftSmartArtColors raw;
         public XlSmartArtColors(MicrosoftSmartArtColors colors) => raw = colors;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

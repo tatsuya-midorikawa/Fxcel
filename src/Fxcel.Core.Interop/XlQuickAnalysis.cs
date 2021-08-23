@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftQuickAnalysis raw;
         public XlQuickAnalysis(MicrosoftQuickAnalysis analysis) => raw = analysis;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

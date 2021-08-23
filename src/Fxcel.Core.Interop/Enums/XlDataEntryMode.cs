@@ -1,6 +1,7 @@
 ﻿using Microsoft.Office.Interop.Excel;
 namespace Fxcel.Core.Interop
 {
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public enum XlDataEntryMode
     {
         On = Constants.xlOn,

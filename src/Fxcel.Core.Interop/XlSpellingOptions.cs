@@ -8,5 +8,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftSpellingOptions raw;
         public XlSpellingOptions(MicrosoftSpellingOptions options) => raw = options;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

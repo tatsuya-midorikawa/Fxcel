@@ -9,9 +9,11 @@ using System.Runtime.Versioning;
 namespace Fxcel.Core.Interop
 {
     [SupportedOSPlatform("windows")]
-    public readonly struct XlSheets
+    public readonly ref struct XlSheets
     {
         internal readonly MicrosoftSheets raw;
         public XlSheets(MicrosoftSheets worksheets) => raw = worksheets;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftLanguageSettings raw;
         public XlLanguageSettings(MicrosoftLanguageSettings settings) => raw = settings;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

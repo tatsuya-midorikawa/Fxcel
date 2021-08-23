@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftRanges raw;
         public XlRanges(MicrosoftRanges ranges) => raw = ranges;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

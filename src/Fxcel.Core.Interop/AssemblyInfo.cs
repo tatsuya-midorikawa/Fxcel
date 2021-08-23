@@ -14,4 +14,5 @@ using System.Runtime.CompilerServices;
 
 [assembly: Guid("c1af52e4-843c-43da-9026-0fa45695b128")]
 
+[assembly: InternalsVisibleTo("Fxcel")]
 [assembly: InternalsVisibleTo("Fxcel.Core")]

@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftFileSearch raw;
         public XlFileSearch(MicrosoftFileSearch fileSearch) => raw = fileSearch;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

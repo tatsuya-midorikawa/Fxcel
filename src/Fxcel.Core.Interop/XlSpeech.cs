@@ -8,5 +8,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftSpeech raw;
         public XlSpeech(MicrosoftSpeech speach) => raw = speach;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

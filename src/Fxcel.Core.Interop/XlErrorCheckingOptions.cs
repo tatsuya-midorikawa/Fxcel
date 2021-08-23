@@ -8,5 +8,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftErrorCheckingOptions raw;
         public XlErrorCheckingOptions(MicrosoftErrorCheckingOptions options) => raw = options;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

@@ -8,5 +8,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftSmartArtQuickStyles raw;
         public XlSmartArtQuickStyles(MicrosoftSmartArtQuickStyles styles) => raw = styles;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

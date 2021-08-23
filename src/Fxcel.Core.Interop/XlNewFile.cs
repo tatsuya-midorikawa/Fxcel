@@ -8,5 +8,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftNewFile raw;
         public XlNewFile(MicrosoftNewFile file) => raw = file;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

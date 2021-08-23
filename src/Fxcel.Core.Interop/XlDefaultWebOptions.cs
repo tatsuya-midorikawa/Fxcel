@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftDefaultWebOptions raw;
         public XlDefaultWebOptions(MicrosoftDefaultWebOptions options) => raw = options;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

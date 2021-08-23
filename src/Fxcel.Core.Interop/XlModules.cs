@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftModules raw;
         public XlModules(MicrosoftModules modules) => raw = modules;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftWorksheetFunction raw;
         public XlWorksheetFunction(MicrosoftWorksheetFunction function) => raw = function;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

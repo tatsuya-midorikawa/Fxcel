@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftChart raw;
         public XlChart(MicrosoftChart chart) => raw = chart;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

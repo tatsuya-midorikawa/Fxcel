@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftDialogs raw;
         public XlDialogs(MicrosoftDialogs dialogs) => raw = dialogs;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

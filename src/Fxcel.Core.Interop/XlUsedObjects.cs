@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftUsedObjects raw;
         public XlUsedObjects(MicrosoftUsedObjects obj) => raw = obj;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

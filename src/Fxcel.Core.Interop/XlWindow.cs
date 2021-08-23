@@ -13,5 +13,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftWindow raw;
         public XlWindow(MicrosoftWindow window) => raw = window;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

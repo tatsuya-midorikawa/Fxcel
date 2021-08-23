@@ -8,5 +8,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftMultiThreadedCalculation raw;
         public XlMultiThreadedCalculation(MicrosoftMultiThreadedCalculation calculation) => raw = calculation;
+
+        public int Release() => ComHelper.Release(raw);
     }
 }

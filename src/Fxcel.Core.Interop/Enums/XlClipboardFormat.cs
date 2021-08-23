@@ -1,5 +1,6 @@
 ﻿namespace Fxcel.Core.Interop
 {
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public enum XlClipboardFormat
     {
         BIFF12 = 0x3F,
