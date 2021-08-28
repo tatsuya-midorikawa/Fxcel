@@ -500,5 +500,23 @@ namespace Fxcel.Core.Interop
         /// <returns></returns>
         /// <see href="https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.office.interop.excel._application.getcustomlistnum?view=excel-pia" />
         public int GetCustomListNum(string[] list) => raw.GetCustomListNum(list);
+
+        /// <summary></summary>
+        /// <param name="fileFilter"></param>
+        /// <param name="filterIndex"></param>
+        /// <param name="title"></param>
+        /// <param name="buttonText"></param>
+        /// <returns></returns>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.getopenfilename?view=excel-pia" />
+        public string GetOpenFilename(string fileFilter = "All Files (.),.", int filterIndex = 1, string title = "Open", string buttonText = "") => (string)raw.GetOpenFilename(FileFilter: fileFilter, FilterIndex: filterIndex, Title: title, ButtonText: buttonText, MultiSelect: false);
+
+        /// <summary></summary>
+        /// <param name="fileFilter"></param>
+        /// <param name="filterIndex"></param>
+        /// <param name="title"></param>
+        /// <param name="buttonText"></param>
+        /// <returns></returns>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.getopenfilename?view=excel-pia" />
+        public string[] GetOpenMultiFilename(string fileFilter = "All Files (.),.", int filterIndex = 1, string title = "Open", string buttonText = "") => (string[])raw.GetOpenFilename(FileFilter: fileFilter, FilterIndex: filterIndex, ButtonText: buttonText, MultiSelect: true);
     }
 }
