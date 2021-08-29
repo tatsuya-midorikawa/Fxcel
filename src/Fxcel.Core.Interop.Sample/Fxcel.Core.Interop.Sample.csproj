@@ -14,10 +14,6 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Fxcel.Core.Interop\Fxcel.Core.Interop.csproj" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">
@@ -38,6 +34,11 @@
       <Isolated>false</Isolated>
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fxcel.Core.Interop\Fxcel.Core.Interop.csproj" />
   </ItemGroup>
   
 </Project>

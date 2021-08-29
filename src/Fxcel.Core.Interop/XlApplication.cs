@@ -508,7 +508,8 @@ namespace Fxcel.Core.Interop
         /// <param name="buttonText"></param>
         /// <returns></returns>
         /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.getopenfilename?view=excel-pia" />
-        public string GetOpenFilename(string fileFilter = "All Files (.),.", int filterIndex = 1, string title = "Open", string buttonText = "") => (string)raw.GetOpenFilename(FileFilter: fileFilter, FilterIndex: filterIndex, Title: title, ButtonText: buttonText, MultiSelect: false);
+        public string GetOpenFilename(string? fileFilter = null, int filterIndex = 1, string? title = null) => (string)raw.GetOpenFilename(FileFilter: fileFilter, FilterIndex: filterIndex, Title: title, MultiSelect: false);
+        //public string GetOpenFilename(string fileFilter = "All Files (.),.", int filterIndex = 1, string title = "Open") => (string)raw.GetOpenFilename(FileFilter: fileFilter, FilterIndex: filterIndex, Title: title, MultiSelect: false);
 
         /// <summary></summary>
         /// <param name="fileFilter"></param>
@@ -517,6 +518,50 @@ namespace Fxcel.Core.Interop
         /// <param name="buttonText"></param>
         /// <returns></returns>
         /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.getopenfilename?view=excel-pia" />
-        public string[] GetOpenMultiFilename(string fileFilter = "All Files (.),.", int filterIndex = 1, string title = "Open", string buttonText = "") => (string[])raw.GetOpenFilename(FileFilter: fileFilter, FilterIndex: filterIndex, ButtonText: buttonText, MultiSelect: true);
+        public string[] GetOpenMultiFilename(string? fileFilter = null, int filterIndex = 1, string? title = null) => (string[])raw.GetOpenFilename(FileFilter: fileFilter, FilterIndex: filterIndex, Title: title, MultiSelect: true);
+        //public string[] GetOpenMultiFilename(string fileFilter = "All Files (.),.", int filterIndex = 1, string title = "Open") => (string[])raw.GetOpenFilename(FileFilter: fileFilter, FilterIndex: filterIndex, Title: title, MultiSelect: true);
+
+        /// <summary></summary>
+        /// <param name="initialFilename"></param>
+        /// <param name="fileFilter"></param>
+        /// <param name="filterIndex"></param>
+        /// <param name="title"></param>
+        /// <returns></returns>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.getsaveasfilename?view=excel-pia" />
+        public string GetSaveAsFilename(string? initialFilename = null, string? fileFilter = null, int filterIndex = 1, string? title = null) => (string)raw.GetSaveAsFilename(InitialFilename: initialFilename, FileFilter: fileFilter, FilterIndex: filterIndex, Title: title);
+        //public object GetSaveAsFilename(string? initialFilename = null, string fileFilter = "All Files (.),.", int filterIndex = 1, string title = "Save As") => raw.GetSaveAsFilename(FileFilter: fileFilter, FilterIndex: filterIndex, Title: title);
+
+        /// <summary></summary>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.goto?view=excel-pia" />
+        public void Goto() => raw.Goto();
+        public void Goto(XlRange reference, bool scroll = false) => raw.Goto(Reference: reference.raw, Scroll: scroll);
+        public void Goto(string reference, bool scroll = false) => raw.Goto(Reference: reference, Scroll: scroll);
+
+        /// <summary></summary>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.help?view=excel-pia" />
+        public void Help() => raw.Help();
+        public void Help(string helpFile) => raw.Help(HelpFile: helpFile);
+        public void Help(string helpFile, int helpContextID) => raw.Help(HelpFile: helpFile, HelpContextID: helpContextID);
+
+        /// <summary></summary>
+        /// <param name="Inches"></param>
+        /// <returns></returns>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.inchestopoints?view=excel-pia" />
+        public double InchesToPoints(double Inches) => raw.InchesToPoints(Inches);
+
+        /// <summary></summary>
+        /// <param name="prompt"></param>
+        /// <param name="title"></param>
+        /// <param name="defaultValue"></param>
+        /// <param name="left"></param>
+        /// <param name="top"></param>
+        /// <param name="helpFile"></param>
+        /// <param name="helpContextID"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.inputbox?view=excel-pia" />
+        /// <see href="https://docs.microsoft.com/en-us/office/vba/api/excel.application.inputbox" />
+        public object InputBox(string prompt, string? title = null, string? defaultValue = null, double? left = null, double? top = null, string? helpFile = null, int? helpContextID = null, XlInputType type = XlInputType.String) =>
+            raw.InputBox(Prompt: prompt, Title: title, Default: defaultValue, Left: left, Top: top, HelpFile: helpFile, HelpContextID: helpContextID, Type: type);
     }
 }
