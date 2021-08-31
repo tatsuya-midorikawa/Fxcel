@@ -553,6 +553,7 @@ namespace Fxcel.Core.Interop
         /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.inchestopoints?view=excel-pia" />
         public double InchesToPoints(double Inches) => raw.InchesToPoints(Inches);
 
+        // TODO:
         /// <summary></summary>
         /// <param name="prompt"></param>
         /// <param name="title"></param>
@@ -567,5 +568,36 @@ namespace Fxcel.Core.Interop
         /// <see href="https://docs.microsoft.com/en-us/office/vba/api/excel.application.inputbox" />
         public object InputBox(string prompt, string? title = null, string? defaultValue = null, double? left = null, double? top = null, string? helpFile = null, int? helpContextID = null, XlInputType type = XlInputType.String) =>
             raw.InputBox(Prompt: prompt, Title: title, Default: defaultValue, Left: left, Top: top, HelpFile: helpFile, HelpContextID: helpContextID, Type: type);
+
+        // TODO:
+        /// <summary></summary>
+        /// <param name="macro"></param>
+        /// <param name="description"></param>
+        /// <param name="hasShortcutKey"></param>
+        /// <param name="shortcutKey"></param>
+        /// <param name="category"></param>
+        /// <param name="statusBar"></param>
+        /// <param name="helpFile"></param>
+        /// <param name="helpContextID"></param>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.macrooptions?view=excel-pia" />
+        public void MacroOptions(string? macro = null, string? description = null, bool hasShortcutKey = false, string? shortcutKey = null, XlMacroOptionsCategory? category = null, string? statusBar = null, string? helpFile = null, int? helpContextID = null) => raw.MacroOptions(Macro: macro, Description: description, HasShortcutKey: hasShortcutKey, ShortcutKey: shortcutKey, Category: category, StatusBar: statusBar, HelpContextID: helpContextID, HelpFile: helpFile);
+
+        // TODO:
+        /// <summary></summary>
+        /// <param name="macro"></param>
+        /// <param name="description"></param>
+        /// <param name="hasShortcutKey"></param>
+        /// <param name="shortcutKey"></param>
+        /// <param name="category"></param>
+        /// <param name="statusBar"></param>
+        /// <param name="helpFile"></param>
+        /// <param name="helpContextID"></param>
+        /// <param name="argumentDescriptions"></param>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.macrooptions2?view=excel-pia" />
+        public void MacroOptions2(string? macro = null, string? description = null, bool hasShortcutKey = false, string? shortcutKey = null, XlMacroOptionsCategory? category = null, string? statusBar = null, string? helpFile = null, int? helpContextID = null, string? argumentDescriptions = null) => raw.MacroOptions2(Macro: macro, Description: description, HasShortcutKey: hasShortcutKey, ShortcutKey: shortcutKey, Category: category, StatusBar: statusBar, HelpContextID: helpContextID, HelpFile: helpFile, ArgumentDescriptions: argumentDescriptions);
+
+        /// <summary></summary>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.maillogoff?view=excel-pia" />
+        public void MailLogoff() => raw.MailLogoff();
     }
 }

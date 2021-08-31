@@ -1,0 +1,39 @@
+﻿namespace Fxcel.Core.Interop
+{
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+    public enum XlMacroOptionsCategory
+    {
+        Financial = 1,
+        DateAndTime,
+        MathAndTrig,
+        Statistical,
+        LookupAndReference,
+        Database,
+        Text,
+        Logical,
+        Information,
+        Commands,
+        Customizing,
+        MacroControl,
+        DdeExternal,
+        UserDefined,
+        FirstCustom,
+        SecondCustom,
+        ThirdCustom,
+        FourthCustom,
+        FifthCustom,
+        SixthCustom,
+        SeventhCustom,
+        EighthCustom,
+        NinthCustom,
+        TenthCustom,
+        EleventhCustom,
+        TwelfthCustom,
+        ThirteenthCustom,
+        FourteenthCustom,
+        FifteenthCustom,
+        SixteenthCustom,
+        SeventeenthCustom,
+        EighteenthCustom,
+    }
+}
