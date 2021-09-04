@@ -31,7 +31,7 @@ namespace Fxcel.Core.Interop
     {
         internal readonly MicrosoftApplication raw;
         internal XlApplication(MicrosoftApplication excel) => raw = excel;
-        
+
         public int Release() => ComHelper.Release(raw);
 
         public XlApplication Application => new(raw.Application);
@@ -599,5 +599,151 @@ namespace Fxcel.Core.Interop
         /// <summary></summary>
         /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.maillogoff?view=excel-pia" />
         public void MailLogoff() => raw.MailLogoff();
+
+        // TODO:
+        /// <summary></summary>
+        /// <param name="name"></param>
+        /// <param name="password"></param>
+        /// <param name="downloadNewMail"></param>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.maillogon?view=excel-pia" />
+        public void MailLogon(string? name = null, string? password = null, bool? downloadNewMail = null) => raw.MailLogon(name, password, downloadNewMail);
+
+        /// <summary></summary>
+        /// <returns></returns>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.nextletter?view=excel-pia" />
+        public XlWorkbook NextLetter() => new XlWorkbook(raw.NextLetter());
+
+        // TODO:
+        /// <summary></summary>
+        /// <param name="key"></param>
+        /// <param name="procedure"></param>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.onkey?view=excel-pia" />
+        public void OnKey(string key, string? procedure = null) => raw.OnKey(key, procedure);
+
+        /// <summary></summary>
+        /// <param name="text"></param>
+        /// <param name="procedure"></param>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.onrepeat?view=excel-pia" />
+        public void OnRepeat(
+            [In][MarshalAs(UnmanagedType.BStr)] string text, 
+            [In][MarshalAs(UnmanagedType.BStr)] string procedure
+        ) =>
+            raw.OnRepeat(text, procedure);
+
+        /// <summary></summary>
+        /// <param name="earliestTime"></param>
+        /// <param name="procedure"></param>
+        /// <param name="latestTime"></param>
+        /// <param name="schedule"></param>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.ontime?view=excel-pia" />
+        public void OnTime(
+            [In][MarshalAs(UnmanagedType.Struct)] DateTime earliestTime,
+            [In][MarshalAs(UnmanagedType.BStr)] string procedure,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] DateTime latestTime, 
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] bool schedule
+        ) => 
+            raw.OnTime(earliestTime, procedure, latestTime, schedule);
+
+        /// <summary></summary>
+        /// <param name="text"></param>
+        /// <param name="procedure"></param>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.onundo?view=excel-pia" />
+        public void OnUndo(
+            [In][MarshalAs(UnmanagedType.BStr)] string text, 
+            [In][MarshalAs(UnmanagedType.BStr)] string procedure
+        ) => 
+            raw.OnUndo(text, procedure);
+
+        /// <summary></summary>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.quit?view=excel-pia" />
+        public void Quit() => raw.Quit();
+
+        /// <summary></summary>
+        /// <param name="basicCode"></param>
+        /// <param name="xlmCode"></param>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.recordmacro?view=excel-pia" />
+        public void RecordMacro(
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] string basicCode, 
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] string xlmCode
+        ) => 
+            raw.RecordMacro(basicCode, xlmCode);
+
+        /// <summary></summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.registerxll?view=excel-pia" />
+        public bool RegisterXLL([In][MarshalAs(UnmanagedType.BStr)] string filename) => raw.RegisterXLL(filename);
+
+        /// <summary></summary>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.repeat?view=excel-pia" />
+        public void Repeat() => raw.Repeat();
+
+        /// <summary></summary>
+        /// /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.repeat?view=excel-pia" />
+        public void ResetTipWizard() => raw.ResetTipWizard();
+
+        /// <summary></summary>
+        /// <param name="filename"></param>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.save?view=excel-pia" />
+        public void Save([Optional][In][MarshalAs(UnmanagedType.Struct)] string filename) => raw.Save(filename);
+
+        /// <summary></summary>
+        /// <param name="filename"></param>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.saveworkspace?view=excel-pia" />
+        public void SaveWorkspace([Optional][In][MarshalAs(UnmanagedType.Struct)] string filename) => raw.SaveWorkspace(filename);
+
+        /// <summary></summary>
+        /// <param name="formatName"></param>
+        /// <param name="gallery"></param>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.setdefaultchart?view=excel-pia" />
+        public void SetDefaultChart(
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] string formatName, 
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] string gallery
+        ) => 
+            raw.SetDefaultChart(formatName, gallery);
+
+        /// <summary></summary>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.undo?view=excel-pia" />
+        public void Undo() => raw.Undo();
+
+        /// <summary></summary>
+        /// <param name="isVolatile"></param>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.volatile?view=excel-pia#Microsoft_Office_Interop_Excel__Application_Volatile_System_Object_" />
+        public void Volatile([Optional][In][MarshalAs(UnmanagedType.Struct)] bool isVolatile) => raw.Volatile(isVolatile);
+
+        /// <summary></summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.wait?view=excel-pia" />
+        public bool Wait([In][MarshalAs(UnmanagedType.Struct)] DateTime time) => raw.Wait(time);
+
+        /// <summary></summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.getphonetic?view=excel-pia#Microsoft_Office_Interop_Excel__Application_GetPhonetic_System_Object_" />
+        public string GetPhonetic([Optional][In][MarshalAs(UnmanagedType.Struct)] string text) => raw.GetPhonetic(text);
+
+        /// <summary></summary>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.calculatefull?view=excel-pia#Microsoft_Office_Interop_Excel__Application_CalculateFull" />
+        public void CalculateFull() => raw.CalculateFull();
+
+        /// <summary></summary>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.calculatefullrebuild?view=excel-pia" />
+        public void CalculateFullRebuild() => raw.CalculateFullRebuild();
+
+        /// <summary></summary>
+        /// <returns></returns>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.findfile?view=excel-pia" />
+        public bool FindFile() => raw.FindFile();
+
+        /// <summary></summary>
+        /// <param name="keepAbort"></param>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.checkabort?view=excel-pia" />
+        public void CheckAbort([Optional][In][MarshalAs(UnmanagedType.Struct)] bool keepAbort) => raw.CheckAbort(keepAbort);
+
+        /// <summary></summary>
+        /// <param name="xmlMap"></param>
+        public void DisplayXMLSourcePane([Optional][In] XlXmlMap xmlMap) => raw.DisplayXMLSourcePane(xmlMap.raw);
+
     }
 }

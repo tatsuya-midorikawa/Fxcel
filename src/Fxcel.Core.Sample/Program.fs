@@ -3,6 +3,7 @@
 //open Fxcel.Core.Excel
 //open Fxcel.Core.Common
 
+open Fxcel.Core.Interop
 
 let inline (?) (lhs: obj) (rhs: string) =
   $"{lhs.GetType().ToString()}:{rhs}"
@@ -38,6 +39,15 @@ let main argv =
   //(0 .@ 0) |> printfn "%d"
 
   (0?aaa <- "bbb", "ccc") |> printfn "%s"
+  
+
+
+
+
+  let app = XlApplication()
+  app.Foo()
+
+
 
 
   0 // return an integer exit code

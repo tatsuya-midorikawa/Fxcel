@@ -9,13 +9,6 @@ using Excel = Microsoft.Office.Interop.Excel;
 //var size = Marshal.SizeOf<XlApplication>();
 //Console.WriteLine($"{size}");
 
-Console.WriteLine(1 << 0);
-Console.WriteLine(1 << 1);
-Console.WriteLine(1 << 2);
-Console.WriteLine(1 << 3);
-Console.WriteLine(1 << 4);
-Console.WriteLine(1 << 5);
-
 //// 必要な変数は try の外で宣言する
 //Excel.Application xlApplication = null;
 
@@ -69,6 +62,7 @@ Console.WriteLine(1 << 5);
 //                            //Console.WriteLine($"xlRange is COM object= {Marshal.IsComObject(xlRange)}, ref count= {Marshal.ReleaseComObject(xlRange)}");
 //                            if (xlRange != null)
 //                            {
+//                                //xlRange = null;
 //                                Marshal.FinalReleaseComObject(xlRange);
 //                            }
 //                        }
@@ -79,6 +73,7 @@ Console.WriteLine(1 << 5);
 //                        //Console.WriteLine($"xlCells is COM object= {Marshal.IsComObject(xlCells)}, ref count= {Marshal.ReleaseComObject(xlCells)}");
 //                        if (xlCells != null)
 //                        {
+//                            //xlCells = null;
 //                            Marshal.FinalReleaseComObject(xlCells);
 //                        }
 //                    }
@@ -89,6 +84,7 @@ Console.WriteLine(1 << 5);
 //                    //Console.WriteLine($"xlSheet is COM object= {Marshal.IsComObject(xlSheet)}, ref count= {Marshal.ReleaseComObject(xlSheet)}");
 //                    if (xlSheet != null)
 //                    {
+//                        //xlSheet = null;
 //                        Marshal.FinalReleaseComObject(xlSheet);
 //                    }
 //                }
@@ -99,6 +95,7 @@ Console.WriteLine(1 << 5);
 //                //Console.WriteLine($"xlSheets is COM object= {Marshal.IsComObject(xlSheets)}, ref count= {Marshal.ReleaseComObject(xlSheets)}");
 //                if (xlSheets != null)
 //                {
+//                    //xlSheets = null;
 //                    Marshal.FinalReleaseComObject(xlSheets);
 //                }
 //            }
@@ -114,6 +111,7 @@ Console.WriteLine(1 << 5);
 //                }
 //                finally
 //                {
+//                    //xlBook = null;
 //                    Marshal.FinalReleaseComObject(xlBook);
 //                }
 //            }
@@ -124,6 +122,7 @@ Console.WriteLine(1 << 5);
 //        //Console.WriteLine($"xlBooks is COM object= {Marshal.IsComObject(xlBooks)}");
 //        if (xlBooks != null)
 //        {
+//            //xlBooks = null;
 //            Marshal.FinalReleaseComObject(xlBooks);
 //        }
 //    }
@@ -139,6 +138,7 @@ Console.WriteLine(1 << 5);
 //        }
 //        finally
 //        {
+//            //xlApplication = null;
 //            Marshal.FinalReleaseComObject(xlApplication);
 //        }
 //    }
