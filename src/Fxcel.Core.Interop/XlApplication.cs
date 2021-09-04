@@ -586,6 +586,8 @@ namespace Fxcel.Core.Interop
         /// <summary></summary>
         /// <param name="macro"></param>
         /// <param name="description"></param>
+        /// <param name="hasMenu">always ignore</param>
+        /// <param name="menuText">always ignore</param>
         /// <param name="hasShortcutKey"></param>
         /// <param name="shortcutKey"></param>
         /// <param name="category"></param>
@@ -594,7 +596,20 @@ namespace Fxcel.Core.Interop
         /// <param name="helpContextID"></param>
         /// <param name="argumentDescriptions"></param>
         /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.macrooptions2?view=excel-pia" />
-        public void MacroOptions2(string? macro = null, string? description = null, bool hasShortcutKey = false, string? shortcutKey = null, XlMacroOptionsCategory? category = null, string? statusBar = null, string? helpFile = null, int? helpContextID = null, string? argumentDescriptions = null) => raw.MacroOptions2(Macro: macro, Description: description, HasShortcutKey: hasShortcutKey, ShortcutKey: shortcutKey, Category: category, StatusBar: statusBar, HelpContextID: helpContextID, HelpFile: helpFile, ArgumentDescriptions: argumentDescriptions);
+        public void MacroOptions2(
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] string macro, 
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] string description,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object hasMenu,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object menuText,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] bool hasShortcutKey,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] string shortcutKey,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlMacroOptionsCategory category,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] string statusBar,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] string helpFile,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] int helpContextID,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] string argumentDescriptions
+        ) => 
+            raw.MacroOptions2(macro, description, hasMenu, menuText, hasShortcutKey, shortcutKey, category, statusBar, helpContextID, helpFile, argumentDescriptions);
 
         /// <summary></summary>
         /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.maillogoff?view=excel-pia" />
@@ -743,7 +758,17 @@ namespace Fxcel.Core.Interop
 
         /// <summary></summary>
         /// <param name="xmlMap"></param>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.displayxmlsourcepane?view=excel-pia" />
         public void DisplayXMLSourcePane([Optional][In] XlXmlMap xmlMap) => raw.DisplayXMLSourcePane(xmlMap.raw);
 
+        /// <summary></summary>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.calculateuntilasyncqueriesdone?view=excel-pia" />
+        public void CalculateUntilAsyncQueriesDone() => raw.CalculateUntilAsyncQueriesDone();
+
+        /// <summary></summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.sharepointversion?view=excel-pia" />
+        public int SharePointVersion([In][MarshalAs(UnmanagedType.BStr)] string url) => raw.SharePointVersion(url);
     }
 }
