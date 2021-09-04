@@ -742,17 +742,23 @@ namespace Fxcel.Core.Interop
         ) =>
             raw.Goto(Reference: reference, Scroll: scroll);
 
+        // TODO: 
         /// <summary></summary>
         /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.help?view=excel-pia" />
-        public void Help() => raw.Help();
-        public void Help(string helpFile) => raw.Help(HelpFile: helpFile);
-        public void Help(string helpFile, int helpContextID) => raw.Help(HelpFile: helpFile, HelpContextID: helpContextID);
+        //public void Help() => raw.Help();
+        //public void Help(string helpFile) => raw.Help(HelpFile: helpFile);
+        //public void Help(string helpFile, int helpContextID) => raw.Help(HelpFile: helpFile, HelpContextID: helpContextID);
+        public void Help(
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] string helpFile,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] int helpContextID
+        ) => 
+            raw.Help(HelpFile: helpFile, HelpContextID: helpContextID);
 
         /// <summary></summary>
         /// <param name="Inches"></param>
         /// <returns></returns>
         /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.inchestopoints?view=excel-pia" />
-        public double InchesToPoints(double Inches) => raw.InchesToPoints(Inches);
+        public double InchesToPoints([In] double Inches) => raw.InchesToPoints(Inches);
 
         // TODO:
         /// <summary></summary>
@@ -767,13 +773,26 @@ namespace Fxcel.Core.Interop
         /// <returns></returns>
         /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.inputbox?view=excel-pia" />
         /// <see href="https://docs.microsoft.com/en-us/office/vba/api/excel.application.inputbox" />
-        public object InputBox(string prompt, string? title = null, string? defaultValue = null, double? left = null, double? top = null, string? helpFile = null, int? helpContextID = null, XlInputType type = XlInputType.String) =>
-            raw.InputBox(Prompt: prompt, Title: title, Default: defaultValue, Left: left, Top: top, HelpFile: helpFile, HelpContextID: helpContextID, Type: type);
+        //public object InputBox(string prompt, string? title = null, string? defaultValue = null, double? left = null, double? top = null, string? helpFile = null, int? helpContextID = null, XlInputType type = XlInputType.String) =>
+        //    raw.InputBox(Prompt: prompt, Title: title, Default: defaultValue, Left: left, Top: top, HelpFile: helpFile, HelpContextID: helpContextID, Type: type);
+        public object InputBox(
+            [In][MarshalAs(UnmanagedType.BStr)] string prompt,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] string title,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] string defaultValue,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] double left,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] double top,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] string helpFile,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] int helpContextID,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlInputType type
+        ) =>
+            raw.InputBox(prompt, title, defaultValue, left, top, helpFile, helpContextID, type);
 
         // TODO:
         /// <summary></summary>
         /// <param name="macro"></param>
         /// <param name="description"></param>
+        /// <param name="hasMenu">always ignore</param>
+        /// <param name="menuText">always ignore</param>
         /// <param name="hasShortcutKey"></param>
         /// <param name="shortcutKey"></param>
         /// <param name="category"></param>
@@ -781,7 +800,19 @@ namespace Fxcel.Core.Interop
         /// <param name="helpFile"></param>
         /// <param name="helpContextID"></param>
         /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.macrooptions?view=excel-pia" />
-        public void MacroOptions(string? macro = null, string? description = null, bool hasShortcutKey = false, string? shortcutKey = null, XlMacroOptionsCategory? category = null, string? statusBar = null, string? helpFile = null, int? helpContextID = null) => raw.MacroOptions(Macro: macro, Description: description, HasShortcutKey: hasShortcutKey, ShortcutKey: shortcutKey, Category: category, StatusBar: statusBar, HelpContextID: helpContextID, HelpFile: helpFile);
+        public void MacroOptions(
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] string macro,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] string description,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object hasMenu,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object menuText,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] bool hasShortcutKey,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] string shortcutKey,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlMacroOptionsCategory category,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] string statusBar,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] string helpFile,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] int helpContextID
+        ) =>
+            raw.MacroOptions( macro, description, hasMenu, menuText, hasShortcutKey, shortcutKey, category,  statusBar, helpContextID, helpFile);
 
         // TODO:
         /// <summary></summary>
@@ -822,7 +853,13 @@ namespace Fxcel.Core.Interop
         /// <param name="password"></param>
         /// <param name="downloadNewMail"></param>
         /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.maillogon?view=excel-pia" />
-        public void MailLogon(string? name = null, string? password = null, bool? downloadNewMail = null) => raw.MailLogon(name, password, downloadNewMail);
+        //public void MailLogon(string? name = null, string? password = null, bool? downloadNewMail = null) => raw.MailLogon(name, password, downloadNewMail);
+        public void MailLogon(
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] string name,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] string password,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] bool downloadNewMail
+        ) =>
+            raw.MailLogon(name, password, downloadNewMail);
 
         /// <summary></summary>
         /// <returns></returns>
@@ -834,7 +871,12 @@ namespace Fxcel.Core.Interop
         /// <param name="key"></param>
         /// <param name="procedure"></param>
         /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.onkey?view=excel-pia" />
-        public void OnKey(string key, string? procedure = null) => raw.OnKey(key, procedure);
+        //public void OnKey(string key, string? procedure = null) => raw.OnKey(key, procedure);
+        public void OnKey(
+            [In][MarshalAs(UnmanagedType.BStr)] string key, 
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] string procedure
+        ) =>
+            raw.OnKey(key, procedure);
 
         /// <summary></summary>
         /// <param name="text"></param>
