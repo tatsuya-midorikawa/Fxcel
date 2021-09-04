@@ -45,7 +45,6 @@ let main argv =
 
 
   let app = XlApplication()
-  app.Foo()
 
 
 
