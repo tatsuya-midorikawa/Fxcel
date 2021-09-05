@@ -1,14 +1,13 @@
 ﻿using System.Runtime.Versioning;
-using MicrosoftSmartArtQuickStyles = Microsoft.Office.Core.SmartArtQuickStyles;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlSmartArtQuickStyles
-    {
-        internal readonly MicrosoftSmartArtQuickStyles raw;
-        public XlSmartArtQuickStyles(MicrosoftSmartArtQuickStyles styles) => raw = styles;
+    using MicrosoftSmartArtQuickStyles = Microsoft.Office.Core.SmartArtQuickStyles;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlSmartArtQuickStyles : XlComObject
+    {
+        public XlSmartArtQuickStyles(MicrosoftSmartArtQuickStyles styles) : base(styles) { }
+        private MicrosoftSmartArtQuickStyles raw => (MicrosoftSmartArtQuickStyles)_raw;
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
+using Fxcel.Core.Interop.Common;
 
 namespace Fxcel.Core.Interop
 {
@@ -27,38 +28,50 @@ namespace Fxcel.Core.Interop
     using MicrosoftXlFileValidationPivotMode = Microsoft.Office.Interop.Excel.XlFileValidationPivotMode;
 
     [SupportedOSPlatform("windows")]
-    public readonly ref struct XlApplication
+    public class XlApplication : XlComObject
     {
-        internal readonly MicrosoftApplication raw;
-        internal XlApplication(MicrosoftApplication excel) => raw = excel;
+        internal XlApplication(MicrosoftApplication excel) : base(excel) { }
+        internal MicrosoftApplication raw => (MicrosoftApplication)_raw;
 
-        public int Release() => ComHelper.Release(raw);
+        public static XlApplication BlankWorkbook()
+        {
+            var app = new XlApplication(new MicrosoftApplication());
+            //var books = app.Workbooks;
+            //var book = books.Add();
+            //book.FinalRelease();
+            //books.FinalRelease();
+            return app;
+        }
 
-        public XlApplication Application => new(raw.Application);
+        public XlApplication Application => ManageCom(new XlApplication(raw.Application));
         public XlCreator Creator => (XlCreator)raw.Creator;
-        public XlApplication Parent => new(raw.Parent);
-        public XlRange ActiveCell => new(raw.ActiveCell);
-        public XlChart ActiveChart => new(raw.ActiveChart);
-        public XlDialogSheet ActiveDialog => new(raw.ActiveDialog);
-        public XlMenuBar ActiveMenuBar => new(raw.ActiveMenuBar);
+        public XlApplication Parent => ManageCom(new XlApplication(raw.Parent));
+        public XlRange ActiveCell => ManageCom(new XlRange(raw.ActiveCell));
+        public XlChart ActiveChart => ManageCom(new XlChart(raw.ActiveChart));
+        public XlDialogSheet ActiveDialog => ManageCom(new XlDialogSheet(raw.ActiveDialog));
+        public XlMenuBar ActiveMenuBar => ManageCom(new XlMenuBar(raw.ActiveMenuBar));
         public string ActivePrinter { get => raw.ActivePrinter; set => raw.ActivePrinter = value; }
-        public XlWorksheet ActiveSheet => new((MicrosoftWorksheet)raw.ActiveSheet);
-        public XlWindow ActiveWindow => new(raw.ActiveWindow);
-        public XlWorkbook ActiveWorkbook => new(raw.ActiveWorkbook);
-        public XlAddIns AddIns => new(raw.AddIns);
-        public XlAssistant Assistant => new(raw.Assistant);
-        public XlRange Cells => new(raw.Cells);
-        public XlSheets Charts => new(raw.Charts);
-        public XlRange Columns => new(raw.Columns);
+        public XlWorksheet ActiveSheet => ManageCom(new XlWorksheet((MicrosoftWorksheet)raw.ActiveSheet));
+        public XlWindow ActiveWindow => ManageCom(new XlWindow(raw.ActiveWindow));
+        public XlWorkbook ActiveWorkbook => ManageCom(new XlWorkbook(raw.ActiveWorkbook));
+        public XlAddIns AddIns => ManageCom(new XlAddIns(raw.AddIns));
+        public XlAssistant Assistant => ManageCom(new XlAssistant(raw.Assistant));
+        public XlRange Cells => ManageCom(new XlRange(raw.Cells));
+        public XlSheets Charts => ManageCom(new XlSheets(raw.Charts));
+        public XlRange Columns => ManageCom(new XlRange(raw.Columns));
         public int DDEAppReturnCode => raw.DDEAppReturnCode;
-        public XlSheets DialogSheets => new(raw.DialogSheets);
-        public XlMenuBars MenuBars => new(raw.MenuBars);
-        public XlModules Modules => new(raw.Modules);
-        public XlNames Names => new(raw.Names);
-        public XlRange Rows => new(raw.Rows);
+        public XlSheets DialogSheets => ManageCom(new XlSheets(raw.DialogSheets));
+        public XlMenuBars MenuBars => ManageCom(new XlMenuBars(raw.MenuBars));
+        public XlModules Modules => ManageCom(new XlModules(raw.Modules));
+        public XlNames Names => ManageCom(new XlNames(raw.Names));
+        public XlRange Rows => ManageCom(new XlRange(raw.Rows));
+        // TODO: 
         public object Selection => raw.Selection;
-        public XlSheets Sheets => new(raw.Sheets);
-        public XlMenu ShortcutMenus(int index) => new(raw.ShortcutMenus[index]);
+        public XlSheets Sheets => ManageCom(new XlSheets(raw.Sheets));
+        // TODO: 
+        public XlMenus ShortcutMenus => new(this);
+        //public XlMenu ShortcutMenus(int index) => new(raw.ShortcutMenus[index]);
+
         public XlWorkbook ThisWorkbook => new(raw.ThisWorkbook);
         public XlToolbars Toolbars => new(raw.Toolbars);
         public XlWindows Windows => new(raw.Windows);
@@ -341,37 +354,70 @@ namespace Fxcel.Core.Interop
         /// <see href="https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.office.interop.excel._application.intersect?view=excel-pia" />
         public XlRange Intersect(
             [In][MarshalAs(UnmanagedType.Interface)] MicrosoftRange arg1,
-            [In][MarshalAs(UnmanagedType.Interface)] MicrosoftRange arg2, 
+            [In][MarshalAs(UnmanagedType.Interface)] MicrosoftRange arg2,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg3,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg4,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg5, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg6, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg7, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg8, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg9, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg10, 
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg5,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg6,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg7,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg8,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg9,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg10,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg11,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg12,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg13,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg14, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg15, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg16, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg17, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg18, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg19, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg20, 
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg14,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg15,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg16,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg17,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg18,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg19,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg20,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg21,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg22, 
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg22,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg23,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg24, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg25, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg26, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg27, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg28, 
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg24,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg25,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg26,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg27,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg28,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg29,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg30
-        ) => 
+        ) =>
             new(raw.Intersect(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27, arg28, arg29, arg30));
+        public XlRange Intersect(
+            [In] XlRange arg1,
+            [In] XlRange arg2,
+            [Optional][In] XlRange arg3,
+            [Optional][In] XlRange arg4,
+            [Optional][In] XlRange arg5,
+            [Optional][In] XlRange arg6,
+            [Optional][In] XlRange arg7,
+            [Optional][In] XlRange arg8,
+            [Optional][In] XlRange arg9,
+            [Optional][In] XlRange arg10,
+            [Optional][In] XlRange arg11,
+            [Optional][In] XlRange arg12,
+            [Optional][In] XlRange arg13,
+            [Optional][In] XlRange arg14,
+            [Optional][In] XlRange arg15,
+            [Optional][In] XlRange arg16,
+            [Optional][In] XlRange arg17,
+            [Optional][In] XlRange arg18,
+            [Optional][In] XlRange arg19,
+            [Optional][In] XlRange arg20,
+            [Optional][In] XlRange arg21,
+            [Optional][In] XlRange arg22,
+            [Optional][In] XlRange arg23,
+            [Optional][In] XlRange arg24,
+            [Optional][In] XlRange arg25,
+            [Optional][In] XlRange arg26,
+            [Optional][In] XlRange arg27,
+            [Optional][In] XlRange arg28,
+            [Optional][In] XlRange arg29,
+            [Optional][In] XlRange arg30
+        ) =>
+            new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw, arg29.raw, arg30.raw));
         //public XlRange Intersect(XlRange arg1, XlRange arg2) => new(raw.Intersect(arg1.raw, arg2.raw));
         //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw));
         //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw));
@@ -412,34 +458,34 @@ namespace Fxcel.Core.Interop
             [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg1,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg2,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg3,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg4, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg5, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg6, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg7, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg8, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg9, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg10, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg11, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg12, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg13, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg14, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg15, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg16, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg17, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg18, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg19, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg20, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg21, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg22, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg23, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg24, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg25, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg26, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg27, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg28, 
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg4,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg5,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg6,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg7,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg8,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg9,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg10,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg11,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg12,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg13,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg14,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg15,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg16,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg17,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg18,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg19,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg20,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg21,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg22,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg23,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg24,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg25,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg26,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg27,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg28,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg29,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg30
-        ) => 
+        ) =>
             raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27, arg28, arg29, arg30);
         //public object Run(string macro) => raw.Run(macro);
         //public object Run(string macro, object arg1) => raw.Run(macro, arg1);
@@ -478,9 +524,9 @@ namespace Fxcel.Core.Interop
         /// <param name="wait">マクロに制御を戻す前に, キーが処理されるのを待機させる場合は true を, キーが処理されるのを待機せずにマクロの実行をさせる場合は false を指定する. (default: false)</param>
         /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.sendkeys?view=excel-pia" />
         public void SendKeys(
-            [In][MarshalAs(UnmanagedType.Struct)] string keys, 
+            [In][MarshalAs(UnmanagedType.Struct)] string keys,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] bool wait
-        ) => 
+        ) =>
             raw.SendKeys(keys, wait);
 
         // TODO: 
@@ -491,37 +537,70 @@ namespace Fxcel.Core.Interop
         /// <see href="https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.office.interop.excel._application.union?view=excel-pia" />
         public XlRange Union(
             [In][MarshalAs(UnmanagedType.Interface)] MicrosoftRange arg1,
-            [In][MarshalAs(UnmanagedType.Interface)] MicrosoftRange arg2, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg3, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg4, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg5, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg6, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg7, 
+            [In][MarshalAs(UnmanagedType.Interface)] MicrosoftRange arg2,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg3,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg4,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg5,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg6,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg7,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg8,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg9, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg10, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg11, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg12, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg13, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg14, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg15, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg16, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg17, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg18, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg19, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg20, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg21, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg22, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg23, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg24, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg25, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg26, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg27, 
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg28, 
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg9,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg10,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg11,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg12,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg13,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg14,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg15,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg16,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg17,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg18,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg19,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg20,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg21,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg22,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg23,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg24,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg25,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg26,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg27,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg28,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg29,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg30
         ) =>
             new(raw.Union(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27, arg28, arg29, arg30));
+        public XlRange Union(
+            [In] XlRange arg1,
+            [In] XlRange arg2,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg3,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg4,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg5,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg6,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg7,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg8,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg9,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg10,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg11,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg12,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg13,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg14,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg15,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg16,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg17,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg18,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg19,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg20,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg21,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg22,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg23,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg24,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg25,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg26,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg27,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg28,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg29,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg30
+        ) =>
+            new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw, arg29.raw, arg30.raw));
         //public XlRange Union(XlRange arg1, XlRange arg2) => new(raw.Union(arg1.raw, arg2.raw));
         //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw));
         //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw));
@@ -565,7 +644,7 @@ namespace Fxcel.Core.Interop
             [In][MarshalAs(UnmanagedType.Struct)] object chart,
             [In][MarshalAs(UnmanagedType.BStr)] string name,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] object description
-        ) => 
+        ) =>
             raw.AddChartAutoFormat(chart, name, description);
         //public void AddChartAutoFormat(object chart, string name) => raw.AddChartAutoFormat(chart, name);
         //public void AddChartAutoFormat(object chart, string name, object description) => raw.AddChartAutoFormat(chart, name, description);
@@ -594,9 +673,9 @@ namespace Fxcel.Core.Interop
         /// <param name="byRow">行単位の場合はtrue, 列単位の場合はfalseを指定</param>
         /// <see href="https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.office.interop.excel._application.addcustomlist?view=excel-pia" />
         public void AddCustomList(
-            [In][MarshalAs(UnmanagedType.Struct)] string[] listArray, 
+            [In][MarshalAs(UnmanagedType.Struct)] string[] listArray,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] bool byRow
-        ) => 
+        ) =>
             raw.AddCustomList(listArray, byRow);
         /// <summary>ユーザー設定リストに追加する</summary>
         /// <param name="listArray">追加する文字列をセル範囲で指定</param>
@@ -625,7 +704,7 @@ namespace Fxcel.Core.Interop
             [In][MarshalAs(UnmanagedType.BStr)] string word,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] string customDirectoryPath,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] bool ignoreUppercase
-        ) => 
+        ) =>
             raw.CheckSpelling(Word: word, CustomDictionary: customDirectoryPath, IgnoreUppercase: ignoreUppercase);
 
         // TODO: 戻り値の型を調査する.
@@ -646,8 +725,8 @@ namespace Fxcel.Core.Interop
             [Optional][In][MarshalAs(UnmanagedType.Struct)] XlReferenceStyle toReferenceStyle,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] XlReferenceStyle toAbsolute,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange relativeTo
-        ) => 
-            raw.ConvertFormula(formula, (MicrosoftXlReferenceStyle)fromReferenceStyle,(MicrosoftXlReferenceStyle)toReferenceStyle, (MicrosoftXlReferenceStyle)toAbsolute, relativeTo);
+        ) =>
+            raw.ConvertFormula(formula, (MicrosoftXlReferenceStyle)fromReferenceStyle, (MicrosoftXlReferenceStyle)toReferenceStyle, (MicrosoftXlReferenceStyle)toAbsolute, relativeTo);
 
         /// <summary></summary>
         /// <param name="name"></param>
@@ -690,7 +769,7 @@ namespace Fxcel.Core.Interop
             [Optional][In][MarshalAs(UnmanagedType.Struct)] string title,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] string buttonText,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] bool multiSelect
-        ) => 
+        ) =>
             (string)raw.GetOpenFilename(fileFilter, filterIndex, title, buttonText, multiSelect);
         //public string GetOpenFilename(string? fileFilter = null, int filterIndex = 1, string? title = null) => (string)raw.GetOpenFilename(FileFilter: fileFilter, FilterIndex: filterIndex, Title: title, MultiSelect: false);
         //public string GetOpenFilename(string fileFilter = "All Files (.),.", int filterIndex = 1, string title = "Open") => (string)raw.GetOpenFilename(FileFilter: fileFilter, FilterIndex: filterIndex, Title: title, MultiSelect: false);
@@ -735,12 +814,17 @@ namespace Fxcel.Core.Interop
             [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange reference,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] bool scroll
         ) =>
-            raw.Goto(Reference: reference, Scroll: scroll);
+            raw.Goto(reference, scroll);
+        public void Goto(
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange reference,
+            [Optional][In][MarshalAs(UnmanagedType.Struct)] bool scroll
+        ) =>
+            raw.Goto(reference.raw, scroll);
         public void Goto(
             [Optional][In][MarshalAs(UnmanagedType.Struct)] string reference,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] bool scroll
         ) =>
-            raw.Goto(Reference: reference, Scroll: scroll);
+            raw.Goto(reference, scroll);
 
         // TODO: 
         /// <summary></summary>
@@ -751,7 +835,7 @@ namespace Fxcel.Core.Interop
         public void Help(
             [Optional][In][MarshalAs(UnmanagedType.Struct)] string helpFile,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] int helpContextID
-        ) => 
+        ) =>
             raw.Help(HelpFile: helpFile, HelpContextID: helpContextID);
 
         /// <summary></summary>
@@ -812,7 +896,7 @@ namespace Fxcel.Core.Interop
             [Optional][In][MarshalAs(UnmanagedType.Struct)] string helpFile,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] int helpContextID
         ) =>
-            raw.MacroOptions( macro, description, hasMenu, menuText, hasShortcutKey, shortcutKey, category,  statusBar, helpContextID, helpFile);
+            raw.MacroOptions(macro, description, hasMenu, menuText, hasShortcutKey, shortcutKey, category, statusBar, helpContextID, helpFile);
 
         // TODO:
         /// <summary></summary>
@@ -873,7 +957,7 @@ namespace Fxcel.Core.Interop
         /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.onkey?view=excel-pia" />
         //public void OnKey(string key, string? procedure = null) => raw.OnKey(key, procedure);
         public void OnKey(
-            [In][MarshalAs(UnmanagedType.BStr)] string key, 
+            [In][MarshalAs(UnmanagedType.BStr)] string key,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] string procedure
         ) =>
             raw.OnKey(key, procedure);

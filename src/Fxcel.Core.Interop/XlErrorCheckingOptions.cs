@@ -1,14 +1,13 @@
 ﻿using System.Runtime.Versioning;
-using MicrosoftErrorCheckingOptions = Microsoft.Office.Interop.Excel.ErrorCheckingOptions;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlErrorCheckingOptions
-    {
-        internal readonly MicrosoftErrorCheckingOptions raw;
-        public XlErrorCheckingOptions(MicrosoftErrorCheckingOptions options) => raw = options;
+    using MicrosoftErrorCheckingOptions = Microsoft.Office.Interop.Excel.ErrorCheckingOptions;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlErrorCheckingOptions : XlComObject
+    {
+        public XlErrorCheckingOptions(MicrosoftErrorCheckingOptions options) : base(options) { }
+        private MicrosoftErrorCheckingOptions raw => (MicrosoftErrorCheckingOptions)_raw;
     }
 }

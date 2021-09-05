@@ -4,16 +4,15 @@ using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
-using MicrosoftComAddIns = Microsoft.Office.Core.COMAddIns;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlComAddIns
-    {
-        internal readonly MicrosoftComAddIns raw;
-        public XlComAddIns(MicrosoftComAddIns comAddIns) => raw = comAddIns;
+    using MicrosoftComAddIns = Microsoft.Office.Core.COMAddIns;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlComAddIns : XlComObject
+    {
+        public XlComAddIns(MicrosoftComAddIns comAddIns) : base(comAddIns) { }
+        private MicrosoftComAddIns raw => (MicrosoftComAddIns)_raw;
     }
 }

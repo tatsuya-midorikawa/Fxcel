@@ -4,16 +4,15 @@ using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
-using MicrosoftChart = Microsoft.Office.Interop.Excel.Chart;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlChart
-    {
-        internal readonly MicrosoftChart raw;
-        public XlChart(MicrosoftChart chart) => raw = chart;
+    using MicrosoftChart = Microsoft.Office.Interop.Excel.Chart;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlChart : XlComObject
+    {
+        public XlChart(MicrosoftChart chart) : base(chart) { }
+        private MicrosoftChart raw => (MicrosoftChart)_raw;
     }
 }

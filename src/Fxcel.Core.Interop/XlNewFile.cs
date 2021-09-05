@@ -1,14 +1,13 @@
 ﻿using System.Runtime.Versioning;
-using MicrosoftNewFile = Microsoft.Office.Core.NewFile;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlNewFile
-    {
-        internal readonly MicrosoftNewFile raw;
-        public XlNewFile(MicrosoftNewFile file) => raw = file;
+    using MicrosoftNewFile = Microsoft.Office.Core.NewFile;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlNewFile : XlComObject
+    {
+        public XlNewFile(MicrosoftNewFile file) : base(file) { }
+        private MicrosoftNewFile raw => (MicrosoftNewFile)_raw;
     }
 }

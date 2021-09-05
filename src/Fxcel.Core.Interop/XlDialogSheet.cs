@@ -4,16 +4,15 @@ using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
-using MicrosoftDialogSheet = Microsoft.Office.Interop.Excel.DialogSheet;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlDialogSheet
-    {
-        internal readonly MicrosoftDialogSheet raw;
-        public XlDialogSheet(MicrosoftDialogSheet dialogSheet) => raw = dialogSheet;
+    using MicrosoftDialogSheet = Microsoft.Office.Interop.Excel.DialogSheet;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlDialogSheet : XlComObject
+    {
+        public XlDialogSheet(MicrosoftDialogSheet dialogSheet) : base(dialogSheet) { }
+        private MicrosoftDialogSheet raw => (MicrosoftDialogSheet)_raw;
     }
 }

@@ -1,14 +1,13 @@
 ﻿using System.Runtime.Versioning;
-using MicrosoftRTD = Microsoft.Office.Interop.Excel.RTD;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlRTD
-    {
-        internal readonly MicrosoftRTD raw;
-        public XlRTD(MicrosoftRTD rtd) => raw = rtd;
+    using MicrosoftRTD = Microsoft.Office.Interop.Excel.RTD;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlRTD : XlComObject
+    {
+        public XlRTD(MicrosoftRTD rtd) : base(rtd) { }
+        private MicrosoftRTD raw => (MicrosoftRTD)_raw;
     }
 }

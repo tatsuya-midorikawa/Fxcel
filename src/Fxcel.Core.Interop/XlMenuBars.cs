@@ -4,16 +4,15 @@ using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
-using MicrosoftMenuBars = Microsoft.Office.Interop.Excel.MenuBars;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlMenuBars
-    {
-        internal readonly MicrosoftMenuBars raw;
-        public XlMenuBars(MicrosoftMenuBars menubars) => raw = menubars;
+    using MicrosoftMenuBars = Microsoft.Office.Interop.Excel.MenuBars;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlMenuBars : XlComObject
+    {
+        public XlMenuBars(MicrosoftMenuBars menubars) : base(menubars) { }
+        private MicrosoftMenuBars raw => (MicrosoftMenuBars)_raw;
     }
 }

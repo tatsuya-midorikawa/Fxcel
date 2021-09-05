@@ -1,14 +1,13 @@
 ﻿using System.Runtime.Versioning;
-using MicrosoftSmartArtColors = Microsoft.Office.Core.SmartArtColors;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlSmartArtColors
-    {
-        internal readonly MicrosoftSmartArtColors raw;
-        public XlSmartArtColors(MicrosoftSmartArtColors colors) => raw = colors;
+    using MicrosoftSmartArtColors = Microsoft.Office.Core.SmartArtColors;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlSmartArtColors : XlComObject
+    {
+        public XlSmartArtColors(MicrosoftSmartArtColors colors) : base(colors) { }
+        private MicrosoftSmartArtColors raw => (MicrosoftSmartArtColors)_raw;
     }
 }

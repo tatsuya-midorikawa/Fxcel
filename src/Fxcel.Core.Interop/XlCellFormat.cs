@@ -4,16 +4,15 @@ using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
-using MicrosoftCellFormat = Microsoft.Office.Interop.Excel.CellFormat;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlCellFormat
-    {
-        internal readonly MicrosoftCellFormat raw;
-        public XlCellFormat(MicrosoftCellFormat format) => raw = format;
+    using MicrosoftCellFormat = Microsoft.Office.Interop.Excel.CellFormat;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlCellFormat : XlComObject
+    {
+        public XlCellFormat(MicrosoftCellFormat format) : base(format) { }
+        internal MicrosoftCellFormat raw => (MicrosoftCellFormat)_raw;
     }
 }

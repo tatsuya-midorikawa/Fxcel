@@ -4,16 +4,15 @@ using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
-using MicrosoftWindow = Microsoft.Office.Interop.Excel.Window;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlWindow
-    {
-        internal readonly MicrosoftWindow raw;
-        public XlWindow(MicrosoftWindow window) => raw = window;
+    using MicrosoftWindow = Microsoft.Office.Interop.Excel.Window;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlWindow : XlComObject
+    {
+        public XlWindow(MicrosoftWindow window) : base(window) { }
+        private MicrosoftWindow raw => (MicrosoftWindow)_raw;
     }
 }

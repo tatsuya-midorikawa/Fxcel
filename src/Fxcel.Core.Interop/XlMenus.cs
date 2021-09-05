@@ -10,9 +10,10 @@ namespace Fxcel.Core.Interop
     using MicrosoftMenu = Microsoft.Office.Interop.Excel.Menu;
 
     [SupportedOSPlatform("windows")]
-    public class XlMenu : XlComObject
+    public readonly ref struct XlMenus
     {
-        public XlMenu(MicrosoftMenu menu) : base(menu) { }
-        private MicrosoftMenu raw => (MicrosoftMenu)_raw;
+        private readonly XlApplication _app;
+        public XlMenus(XlApplication app) => _app = app;
+        public XlMenu this[int index] => _app.ManageCom(new XlMenu(_app.raw.ShortcutMenus[index]));
     }
 }

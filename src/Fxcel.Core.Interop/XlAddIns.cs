@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MicrosoftAddIns = Microsoft.Office.Interop.Excel.AddIns;
 using System.Runtime.Versioning;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlAddIns
-    {
-        internal readonly MicrosoftAddIns raw;
-        public XlAddIns(MicrosoftAddIns addins) => raw = addins;
+    using MicrosoftAddIns = Microsoft.Office.Interop.Excel.AddIns;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlAddIns : XlComObject
+    {
+        public XlAddIns(MicrosoftAddIns addins) : base(addins) { }
+        private MicrosoftAddIns raw => (MicrosoftAddIns)_raw;
     }
 }

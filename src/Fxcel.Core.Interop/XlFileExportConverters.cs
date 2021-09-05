@@ -1,14 +1,13 @@
 ﻿using System.Runtime.Versioning;
-using MicrosoftFileExportConverters = Microsoft.Office.Interop.Excel.FileExportConverters;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlFileExportConverters
-    {
-        internal readonly MicrosoftFileExportConverters raw;
-        public XlFileExportConverters(MicrosoftFileExportConverters converters) => raw = converters;
+    using MicrosoftFileExportConverters = Microsoft.Office.Interop.Excel.FileExportConverters;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlFileExportConverters : XlComObject
+    {
+        public XlFileExportConverters(MicrosoftFileExportConverters converters) : base(converters) { }
+        private MicrosoftFileExportConverters raw => (MicrosoftFileExportConverters)_raw;
     }
 }

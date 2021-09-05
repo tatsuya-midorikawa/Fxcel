@@ -1,14 +1,13 @@
 ﻿using System.Runtime.Versioning;
-using MicrosoftSmartTagRecognizers = Microsoft.Office.Interop.Excel.SmartTagRecognizers;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlSmartTagRecognizers
-    {
-        internal readonly MicrosoftSmartTagRecognizers raw;
-        public XlSmartTagRecognizers(MicrosoftSmartTagRecognizers recognizers) => raw = recognizers;
+    using MicrosoftSmartTagRecognizers = Microsoft.Office.Interop.Excel.SmartTagRecognizers;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlSmartTagRecognizers : XlComObject
+    {
+        public XlSmartTagRecognizers(MicrosoftSmartTagRecognizers recognizers) : base(recognizers) { }
+        private MicrosoftSmartTagRecognizers raw => (MicrosoftSmartTagRecognizers)_raw;
     }
 }

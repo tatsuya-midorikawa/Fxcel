@@ -9,11 +9,9 @@ using MicrosoftDialogs = Microsoft.Office.Interop.Excel.Dialogs;
 namespace Fxcel.Core.Interop
 {
     [SupportedOSPlatform("windows")]
-    public readonly ref struct XlDialogs
+    public class XlDialogs : XlComObject
     {
-        internal readonly MicrosoftDialogs raw;
-        public XlDialogs(MicrosoftDialogs dialogs) => raw = dialogs;
-
-        public int Release() => ComHelper.Release(raw);
+        public XlDialogs(MicrosoftDialogs dialogs) : base(dialogs) { }
+        private MicrosoftDialogs raw => (MicrosoftDialogs)_raw;
     }
 }

@@ -1,14 +1,13 @@
 ﻿using System.Runtime.Versioning;
-using MicrosoftSmartArtLayouts = Microsoft.Office.Core.SmartArtLayouts;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlSmartArtLayouts
-    {
-        internal readonly MicrosoftSmartArtLayouts raw;
-        public XlSmartArtLayouts(MicrosoftSmartArtLayouts layouts) => raw = layouts;
+    using MicrosoftSmartArtLayouts = Microsoft.Office.Core.SmartArtLayouts;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlSmartArtLayouts : XlComObject
+    {
+        public XlSmartArtLayouts(MicrosoftSmartArtLayouts layouts) : base(layouts) { }
+        private MicrosoftSmartArtLayouts raw => (MicrosoftSmartArtLayouts)_raw;
     }
 }

@@ -4,16 +4,15 @@ using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
-using MicrosoftFileDialog = Microsoft.Office.Core.FileDialog;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlFileDialog
-    {
-        internal readonly MicrosoftFileDialog raw;
-        public XlFileDialog(MicrosoftFileDialog dialog) => raw = dialog;
+    using MicrosoftFileDialog = Microsoft.Office.Core.FileDialog;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlFileDialog : XlComObject
+    {
+        public XlFileDialog(MicrosoftFileDialog dialog) : base(dialog) { }
+        private MicrosoftFileDialog raw => (MicrosoftFileDialog)_raw;
     }
 }

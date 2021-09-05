@@ -4,16 +4,15 @@ using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
-using MicrosoftUsedObjects = Microsoft.Office.Interop.Excel.UsedObjects;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlUsedObjects
-    {
-        internal readonly MicrosoftUsedObjects raw;
-        public XlUsedObjects(MicrosoftUsedObjects obj) => raw = obj;
+    using MicrosoftUsedObjects = Microsoft.Office.Interop.Excel.UsedObjects;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlUsedObjects : XlComObject
+    {
+        public XlUsedObjects(MicrosoftUsedObjects obj) : base(obj) { }
+        private MicrosoftUsedObjects raw => (MicrosoftUsedObjects)_raw;
     }
 }

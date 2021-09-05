@@ -4,16 +4,15 @@ using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
-using MicrosoftIFind = Microsoft.Office.Core.IFind;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlIFind
-    {
-        internal readonly MicrosoftIFind raw;
-        public XlIFind(MicrosoftIFind ifind) => raw = ifind;
+    using MicrosoftIFind = Microsoft.Office.Core.IFind;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlIFind : XlComObject
+    {
+        public XlIFind(MicrosoftIFind ifind) : base(ifind) { }
+        private MicrosoftIFind raw => (MicrosoftIFind)_raw;
     }
 }

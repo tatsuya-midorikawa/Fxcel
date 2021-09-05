@@ -4,16 +4,15 @@ using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
-using MicrosoftOleDbErrors = Microsoft.Office.Interop.Excel.OLEDBErrors;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlOleDbErrors
-    {
-        internal readonly MicrosoftOleDbErrors raw;
-        public XlOleDbErrors(MicrosoftOleDbErrors oleDbErrors) => raw = oleDbErrors;
+    using MicrosoftOleDbErrors = Microsoft.Office.Interop.Excel.OLEDBErrors;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlOleDbErrors : XlComObject
+    {
+        public XlOleDbErrors(MicrosoftOleDbErrors oleDbErrors) : base(oleDbErrors) { }
+        private MicrosoftOleDbErrors raw => (MicrosoftOleDbErrors)_raw;
     }
 }

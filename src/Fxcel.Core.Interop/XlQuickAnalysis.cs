@@ -9,11 +9,9 @@ using MicrosoftQuickAnalysis = Microsoft.Office.Interop.Excel.QuickAnalysis;
 namespace Fxcel.Core.Interop
 {
     [SupportedOSPlatform("windows")]
-    public readonly ref struct XlQuickAnalysis
+    public class XlQuickAnalysis : XlComObject
     {
-        internal readonly MicrosoftQuickAnalysis raw;
-        public XlQuickAnalysis(MicrosoftQuickAnalysis analysis) => raw = analysis;
-
-        public int Release() => ComHelper.Release(raw);
+        public XlQuickAnalysis(MicrosoftQuickAnalysis analysis) : base(analysis) { }
+        private MicrosoftQuickAnalysis raw => (MicrosoftQuickAnalysis)_raw;
     }
 }

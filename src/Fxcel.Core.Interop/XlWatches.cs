@@ -4,16 +4,15 @@ using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
-using MicrosoftWatches = Microsoft.Office.Interop.Excel.Watches;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlWatches
-    {
-        internal readonly MicrosoftWatches raw;
-        public XlWatches(MicrosoftWatches watches) => raw = watches;
+    using MicrosoftWatches = Microsoft.Office.Interop.Excel.Watches;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlWatches : XlComObject
+    {
+        public XlWatches(MicrosoftWatches watches) : base(watches) { }
+        private MicrosoftWatches raw => (MicrosoftWatches)_raw;
     }
 }

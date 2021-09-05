@@ -1,10 +1,20 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using System.Runtime.InteropServices;
-//using Fxcel.Core.Interop;
+using Fxcel.Core.Interop;
 using Excel = Microsoft.Office.Interop.Excel;
 
+var app = XlApplication.BlankWorkbook();
 
+//var books = app.Workbooks;
+//var book = books[1];
+//var colors = book.Colors;
+//Console.WriteLine(colors.GetType());
+//ComHelper.FinalRelease(colors);
+//book.FinalRelease();
+//books.FinalRelease();
+//app.Quit();
+//app.FinalRelease();
 //Console.WriteLine($"{IntPtr.Size}");
 //var size = Marshal.SizeOf<XlApplication>();
 //Console.WriteLine($"{size}");

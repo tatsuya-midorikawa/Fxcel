@@ -4,16 +4,15 @@ using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
-using MicrosoftNames = Microsoft.Office.Interop.Excel.Names;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlNames
-    {
-        internal readonly MicrosoftNames raw;
-        public XlNames(MicrosoftNames names) => raw = names;
+    using MicrosoftNames = Microsoft.Office.Interop.Excel.Names;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlNames : XlComObject
+    {
+        public XlNames(MicrosoftNames names) : base(names) { }
+        private MicrosoftNames raw => (MicrosoftNames)_raw;
     }
 }

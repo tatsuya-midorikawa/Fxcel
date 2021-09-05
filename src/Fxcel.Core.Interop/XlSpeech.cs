@@ -1,14 +1,13 @@
 ﻿using System.Runtime.Versioning;
-using MicrosoftSpeech = Microsoft.Office.Interop.Excel.Speech;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlSpeech
-    {
-        internal readonly MicrosoftSpeech raw;
-        public XlSpeech(MicrosoftSpeech speach) => raw = speach;
+    using MicrosoftSpeech = Microsoft.Office.Interop.Excel.Speech;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlSpeech : XlComObject
+    {
+        public XlSpeech(MicrosoftSpeech speach) : base(speach) { }
+        private MicrosoftSpeech raw => (MicrosoftSpeech)_raw;
     }
 }

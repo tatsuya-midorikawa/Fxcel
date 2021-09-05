@@ -1,14 +1,13 @@
-﻿using MicrosoftAddIns2 = Microsoft.Office.Interop.Excel.AddIns2;
-using System.Runtime.Versioning;
+﻿using System.Runtime.Versioning;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlAddIns2
-    {
-        internal readonly MicrosoftAddIns2 raw;
-        public XlAddIns2(MicrosoftAddIns2 addins) => raw = addins;
+    using MicrosoftAddIns2 = Microsoft.Office.Interop.Excel.AddIns2;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlAddIns2 : XlComObject
+    {
+        public XlAddIns2(MicrosoftAddIns2 addins) : base(addins) { }
+        private MicrosoftAddIns2 raw => (MicrosoftAddIns2)_raw;
     }
 }

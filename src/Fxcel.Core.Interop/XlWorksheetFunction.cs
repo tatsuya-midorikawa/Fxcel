@@ -4,16 +4,15 @@ using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
-using MicrosoftWorksheetFunction = Microsoft.Office.Interop.Excel.WorksheetFunction;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlWorksheetFunction
-    {
-        internal readonly MicrosoftWorksheetFunction raw;
-        public XlWorksheetFunction(MicrosoftWorksheetFunction function) => raw = function;
+    using MicrosoftWorksheetFunction = Microsoft.Office.Interop.Excel.WorksheetFunction;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlWorksheetFunction : XlComObject
+    {
+        public XlWorksheetFunction(MicrosoftWorksheetFunction function) : base(function) { }
+        private MicrosoftWorksheetFunction raw => (MicrosoftWorksheetFunction)_raw;
     }
 }

@@ -4,16 +4,15 @@ using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
-using MicrosoftAssistant = Microsoft.Office.Core.Assistant;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlAssistant
-    {
-        internal readonly MicrosoftAssistant raw;
-        public XlAssistant(MicrosoftAssistant assistant) => raw = assistant;
+    using MicrosoftAssistant = Microsoft.Office.Core.Assistant;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlAssistant : XlComObject
+    {
+        public XlAssistant(MicrosoftAssistant assistant) : base(assistant) { }
+        private MicrosoftAssistant raw => (MicrosoftAssistant)_raw;
     }
 }

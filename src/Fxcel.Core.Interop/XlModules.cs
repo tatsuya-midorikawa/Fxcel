@@ -4,16 +4,15 @@ using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
-using MicrosoftModules = Microsoft.Office.Interop.Excel.Modules;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlModules
-    {
-        internal readonly MicrosoftModules raw;
-        public XlModules(MicrosoftModules modules) => raw = modules;
+    using MicrosoftModules = Microsoft.Office.Interop.Excel.Modules;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlModules : XlComObject
+    {
+        public XlModules(MicrosoftModules modules) : base(modules) { }
+        private MicrosoftModules raw => (MicrosoftModules)_raw;
     }
 }

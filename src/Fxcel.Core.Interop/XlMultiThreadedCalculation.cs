@@ -1,14 +1,13 @@
 ﻿using System.Runtime.Versioning;
-using MicrosoftMultiThreadedCalculation = Microsoft.Office.Interop.Excel.MultiThreadedCalculation;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlMultiThreadedCalculation
-    {
-        internal readonly MicrosoftMultiThreadedCalculation raw;
-        public XlMultiThreadedCalculation(MicrosoftMultiThreadedCalculation calculation) => raw = calculation;
+    using MicrosoftMultiThreadedCalculation = Microsoft.Office.Interop.Excel.MultiThreadedCalculation;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlMultiThreadedCalculation : XlComObject
+    {
+        public XlMultiThreadedCalculation(MicrosoftMultiThreadedCalculation calculation) : base(calculation) { }
+        private MicrosoftMultiThreadedCalculation raw => (MicrosoftMultiThreadedCalculation)_raw;
     }
 }

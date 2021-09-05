@@ -1,14 +1,13 @@
 ﻿using System.Runtime.Versioning;
-using MicrosoftIAssistance = Microsoft.Office.Core.IAssistance;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlIAssistance
-    {
-        internal readonly MicrosoftIAssistance raw;
-        public XlIAssistance(MicrosoftIAssistance assistance) => raw = assistance;
+    using MicrosoftIAssistance = Microsoft.Office.Core.IAssistance;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public class XlIAssistance : XlComObject
+    {
+        public XlIAssistance(MicrosoftIAssistance assistance) : base(assistance) { }
+        private MicrosoftIAssistance raw => (MicrosoftIAssistance)_raw;
     }
 }

@@ -9,11 +9,9 @@ using MicrosoftFileSearch = Microsoft.Office.Core.FileSearch;
 namespace Fxcel.Core.Interop
 {
     [SupportedOSPlatform("windows")]
-    public readonly ref struct XlFileSearch
+    public class XlFileSearch : XlComObject
     {
-        internal readonly MicrosoftFileSearch raw;
-        public XlFileSearch(MicrosoftFileSearch fileSearch) => raw = fileSearch;
-
-        public int Release() => ComHelper.Release(raw);
+        public XlFileSearch(MicrosoftFileSearch fileSearch) : base(fileSearch) { }
+        private MicrosoftFileSearch raw => (MicrosoftFileSearch)_raw;
     }
 }

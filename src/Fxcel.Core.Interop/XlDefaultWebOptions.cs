@@ -9,11 +9,9 @@ using MicrosoftDefaultWebOptions = Microsoft.Office.Interop.Excel.DefaultWebOpti
 namespace Fxcel.Core.Interop
 {
     [SupportedOSPlatform("windows")]
-    public readonly ref struct XlDefaultWebOptions
+    public class XlDefaultWebOptions : XlComObject
     {
-        internal readonly MicrosoftDefaultWebOptions raw;
-        public XlDefaultWebOptions(MicrosoftDefaultWebOptions options) => raw = options;
-
-        public int Release() => ComHelper.Release(raw);
+        public XlDefaultWebOptions(MicrosoftDefaultWebOptions options) : base(options) { }
+        private MicrosoftDefaultWebOptions raw => (MicrosoftDefaultWebOptions)_raw;
     }
 }
