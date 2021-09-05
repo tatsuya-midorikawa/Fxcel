@@ -30,6 +30,7 @@ namespace Fxcel.Core.Interop
     [SupportedOSPlatform("windows")]
     public sealed class XlApplication : XlComObject
     {
+        internal XlApplication() : this(new MicrosoftApplication()) { }
         internal XlApplication(MicrosoftApplication com) => raw = com;
         internal MicrosoftApplication raw;
 
@@ -73,12 +74,14 @@ namespace Fxcel.Core.Interop
         public XlModules Modules => ManageCom(new XlModules(raw.Modules));
         public XlNames Names => ManageCom(new XlNames(raw.Names));
         public XlRange Rows => ManageCom(new XlRange(raw.Rows));
-        // TODO: 
-        public object Selection => raw.Selection;
+        
+        /// <summary></summary>
+        /// <see cref="https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.office.interop.excel._application.selection?view=excel-pia"/>
+        public XlObject Selection => ManageCom(new XlObject(raw.Selection));
+
         public XlSheets Sheets => ManageCom(new XlSheets(raw.Sheets));
         // TODO: 
         public XlMenus ShortcutMenus => new(this);
-        //public XlMenu ShortcutMenus(int index) => new(raw.ShortcutMenus[index]);
 
         public XlWorkbook ThisWorkbook => ManageCom(new XlWorkbook(raw.ThisWorkbook));
         public XlToolbars Toolbars => ManageCom(new XlToolbars(raw.Toolbars));
@@ -96,6 +99,7 @@ namespace Fxcel.Core.Interop
         public int Build => raw.Build;
         public bool CalculateBeforeSave { get => raw.CalculateBeforeSave; set => raw.CalculateBeforeSave = value; }
         public XlCalculation Calculation { get => (XlCalculation)raw.Calculation; set => raw.Calculation = (MicrosoftXlCalculation)value; }
+        // TODO: 
         public object Caller => raw.Caller;
         public bool CanPlaySounds => raw.CanPlaySounds;
         public bool CanRecordSounds => raw.CanRecordSounds;
@@ -128,6 +132,7 @@ namespace Fxcel.Core.Interop
         public XlEnableCancelKey EnableCancelKey { get => (XlEnableCancelKey)raw.EnableCancelKey; set => raw.EnableCancelKey = (MicrosoftXlEnableCancelKey)value; }
         public bool EnableSound { get => raw.EnableSound; set => raw.EnableSound = value; }
         public bool EnableTipWizard { get => raw.EnableTipWizard; set => raw.EnableTipWizard = value; }
+        // TODO: 
         public object FileConverters => raw.FileConverters;
         public XlFileSearch FileSearch => ManageCom(new XlFileSearch(raw.FileSearch));
         public XlIFind FileFind => ManageCom(new XlIFind(raw.FileFind));
@@ -136,6 +141,7 @@ namespace Fxcel.Core.Interop
         public double Height { get => raw.Height; set => raw.Height = value; }
         public bool IgnoreRemoteRequests { get => raw.IgnoreRemoteRequests; set => raw.IgnoreRemoteRequests = value; }
         public bool Interactive { get => raw.Interactive; set => raw.Interactive = value; }
+        // TODO: 
         public object International(XlApplicationInternational index) => raw.International[index];
         public bool Iteration { get => raw.Iteration; set => raw.Iteration = value; }
         public bool LargeButtons { get => raw.LargeButtons; set => raw.LargeButtons = value; }
@@ -174,6 +180,7 @@ namespace Fxcel.Core.Interop
         public bool PromptForSummaryInfo { get => raw.PromptForSummaryInfo; set => raw.PromptForSummaryInfo = value; }
         public bool RecordRelative => raw.RecordRelative;
         public XlReferenceStyle ReferenceStyle { get => (XlReferenceStyle)raw.ReferenceStyle; set => raw.ReferenceStyle = (MicrosoftXlReferenceStyle)value; }
+        // TODO: 
         public object RegisteredFunctions => raw.RegisteredFunctions;
         public bool RollZoom { get => raw.RollZoom; set => raw.RollZoom = value; }
         public bool ScreenUpdating { get => raw.ScreenUpdating; set => raw.ScreenUpdating = value; }

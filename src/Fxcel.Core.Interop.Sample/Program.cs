@@ -4,8 +4,9 @@ using System.Runtime.InteropServices;
 using Fxcel.Core.Interop;
 using Excel = Microsoft.Office.Interop.Excel;
 
-var app = XlApplication.BlankWorkbook();
-
+using var app = XlApplication.BlankWorkbook();
+var a = app.Selection;
+Console.WriteLine(a.GetType());
 //var books = app.Workbooks;
 //var book = books[1];
 //var colors = book.Colors;
