@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Versioning;
 using Fxcel.Core.Interop.Common;
+using System.Runtime.CompilerServices;
 
 namespace Fxcel.Core.Interop
 {
@@ -12,18 +13,35 @@ namespace Fxcel.Core.Interop
     using MicrosoftDocumentProperty = Microsoft.Office.Core.DocumentProperty;
 
     [SupportedOSPlatform("windows")]
-    public sealed class XlWorkbook : XlComObject
+    public readonly struct XlWorkbook : IDisposable, IComObject
     {
-        internal XlWorkbook(MicrosoftWorkbook com) => raw = com;
-        internal MicrosoftWorkbook raw;
+        internal readonly MicrosoftWorkbook raw;
+        private readonly bool disposed;
+        private readonly ComCollector collector;
 
-        public override int Release() => ComHelper.Release(raw);
-        public override void ForceRelease() => ComHelper.FinalRelease(raw);
-        protected override void DidDispose()
+        internal XlWorkbook(MicrosoftWorkbook com)
         {
-            raw = default!;
-            base.DidDispose();
+            raw = com;
+            disposed = false;
+            collector = new();
         }
+
+        public readonly void Dispose()
+        {
+            if (!disposed)
+            {
+                // release managed objects
+                collector.Collect();
+                ForceRelease();
+
+                // update status
+                Unsafe.AsRef(disposed) = true;
+            }
+            GC.SuppressFinalize(this);
+        }
+
+        public int Release() => ComHelper.Release(raw);
+        public void ForceRelease() => ComHelper.FinalRelease(raw);
 
         public XlApplication Application => new(raw.Application);
         public XlCreator Creator => (XlCreator)raw.Creator;

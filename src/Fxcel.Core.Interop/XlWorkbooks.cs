@@ -7,6 +7,7 @@ using System.Runtime.Versioning;
 using System.Runtime.InteropServices;
 using Fxcel.Core.Interop.Common;
 using System.Collections;
+using System.Runtime.CompilerServices;
 
 namespace Fxcel.Core.Interop
 {
@@ -14,37 +15,61 @@ namespace Fxcel.Core.Interop
     using MicrosoftWorkbooks = Microsoft.Office.Interop.Excel.Workbooks;
 
     [SupportedOSPlatform("windows")]
-    public sealed class XlWorkbooks : XlComObject, IEnumerable<XlWorkbook>
+    public readonly struct XlWorkbooks : IComObject, IEnumerable<XlWorkbook>
     {
-        internal XlWorkbooks(MicrosoftWorkbooks com) => raw = com;
-        internal MicrosoftWorkbooks raw;
+        internal readonly MicrosoftWorkbooks raw;
+        private readonly bool disposed;
+        private readonly ComCollector collector;
 
-        public override int Release() => ComHelper.Release(raw);
-        public override void ForceRelease() => ComHelper.FinalRelease(raw);
-        protected override void DidDispose()
+        internal XlWorkbooks(MicrosoftWorkbooks com)
         {
-            raw = default!;
-            base.DidDispose();
+            raw = com;
+            disposed = false;
+            collector = new();
         }
 
-        public IEnumerator<XlWorkbook> GetEnumerator() =>
-            raw.OfType<MicrosoftWorkbook>().Select(wb => ManageCom(new XlWorkbook(wb))).GetEnumerator();
+        public readonly void Dispose()
+        {
+            if (!disposed)
+            {
+                // release managed objects
+                collector.Collect();
+                ForceRelease();
 
-        IEnumerator IEnumerable.GetEnumerator() =>
-            raw.OfType<MicrosoftWorkbook>().Select(wb => ManageCom(new XlWorkbook(wb))).GetEnumerator();
+                // update status
+                Unsafe.AsRef(disposed) = true;
+            }
+            GC.SuppressFinalize(this);
+        }
 
-        public XlWorkbook this[int index] => new(raw[index]);
-        public XlWorkbook this[string name] => new(raw[name]);
+        public readonly int Release() => ComHelper.Release(raw);
+        public readonly void ForceRelease() => ComHelper.FinalRelease(raw);
 
-        public XlApplication Application => ManageCom(new XlApplication(raw.Application));
-        public XlCreator Creator => (XlCreator)raw.Creator;
-        public XlApplication Parent => ManageCom(new XlApplication(raw.Parent));
-        public int Count => raw.Count;
 
-        public XlWorkbook Add([Optional][In][MarshalAs(UnmanagedType.Struct)] string template) => 
+        public readonly IEnumerator<XlWorkbook> GetEnumerator()
+        {
+            var c = collector;
+            return raw.OfType<MicrosoftWorkbook>().Select(wb => c.Mark(new XlWorkbook(wb))).GetEnumerator();
+        }
+
+        readonly IEnumerator IEnumerable.GetEnumerator()
+        {
+            var c = collector;
+            return raw.OfType<MicrosoftWorkbook>().Select(wb => c.Mark(new XlWorkbook(wb))).GetEnumerator();
+        }
+
+        public readonly XlWorkbook this[int index] => new(raw[index]);
+        public readonly XlWorkbook this[string name] => new(raw[name]);
+
+        public readonly XlApplication Application => collector.Mark(new XlApplication(raw.Application));
+        public readonly XlCreator Creator => (XlCreator)raw.Creator;
+        public readonly XlApplication Parent => collector.Mark(new XlApplication(raw.Parent));
+        public readonly int Count => raw.Count;
+
+        public readonly XlWorkbook Add([Optional][In][MarshalAs(UnmanagedType.Struct)] string template) => 
             new(string.IsNullOrEmpty(template) ? raw.Add() : raw.Add(template));
 
-        public void Close() => raw.Close();
+        public readonly void Close() => raw.Close();
 
     }
 }

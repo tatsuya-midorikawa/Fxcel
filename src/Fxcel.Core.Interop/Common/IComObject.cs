@@ -1,6 +1,8 @@
-﻿namespace Fxcel.Core.Interop.Common
+﻿using System;
+
+namespace Fxcel.Core.Interop.Common
 {
-    public interface IComObject
+    public interface IComObject : IDisposable
     {
         int Release();
         void ForceRelease();

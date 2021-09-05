@@ -2,12 +2,32 @@
 
 using System.Runtime.InteropServices;
 using Fxcel.Core.Interop;
+using Fxcel.Core.Interop.Common;
 using Excel = Microsoft.Office.Interop.Excel;
 
-using var app = XlApplication.BlankWorkbook();
-var a = app.Workbooks;
-var b = a.Parent;
-Console.WriteLine(a.GetType());
+
+
+//using var app = XlApplication.BlankWorkbook();
+//var a = app.Workbooks;
+//var b = a.Parent;
+//Console.WriteLine(a.GetType());
+
+
+static class C
+{
+    public static int Main(string[] args)
+    {
+        Console.WriteLine("SizeOf({0}) = {1}", typeof(XlApplication), Marshal.SizeOf(typeof(XlApplication)));
+        Console.WriteLine("SizeOf({0}) = {1}", typeof(XlWorkbooks), Marshal.SizeOf(typeof(XlWorkbooks)));
+        using var app = XlApplication.BlankWorkbook();
+        var a = app.Workbooks;
+        var b = a.Parent;
+        Console.WriteLine(a.GetType());
+        return 0;
+    }
+}
+
+
 //var books = app.Workbooks;
 //var book = books[1];
 //var colors = book.Colors;
