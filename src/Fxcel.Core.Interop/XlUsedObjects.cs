@@ -10,9 +10,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftUsedObjects = Microsoft.Office.Interop.Excel.UsedObjects;
 
     [SupportedOSPlatform("windows")]
-    public class XlUsedObjects : XlComObject
+    public sealed class XlUsedObjects : XlComObject
     {
-        public XlUsedObjects(MicrosoftUsedObjects obj) : base(obj) { }
-        private MicrosoftUsedObjects raw => (MicrosoftUsedObjects)_raw;
+        internal XlUsedObjects(MicrosoftUsedObjects com) => raw = com;
+        internal MicrosoftUsedObjects raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

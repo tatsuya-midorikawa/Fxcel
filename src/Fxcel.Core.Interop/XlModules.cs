@@ -10,9 +10,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftModules = Microsoft.Office.Interop.Excel.Modules;
 
     [SupportedOSPlatform("windows")]
-    public class XlModules : XlComObject
+    public sealed class XlModules : XlComObject
     {
-        public XlModules(MicrosoftModules modules) : base(modules) { }
-        private MicrosoftModules raw => (MicrosoftModules)_raw;
+        internal XlModules(MicrosoftModules com) => raw = com;
+        internal MicrosoftModules raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

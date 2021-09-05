@@ -10,9 +10,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftDialogSheet = Microsoft.Office.Interop.Excel.DialogSheet;
 
     [SupportedOSPlatform("windows")]
-    public class XlDialogSheet : XlComObject
+    public sealed class XlDialogSheet : XlComObject
     {
-        public XlDialogSheet(MicrosoftDialogSheet dialogSheet) : base(dialogSheet) { }
-        private MicrosoftDialogSheet raw => (MicrosoftDialogSheet)_raw;
+        internal XlDialogSheet(MicrosoftDialogSheet com) => raw = com;
+        internal MicrosoftDialogSheet raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

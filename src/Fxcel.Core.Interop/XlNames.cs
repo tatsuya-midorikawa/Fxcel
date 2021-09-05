@@ -10,9 +10,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftNames = Microsoft.Office.Interop.Excel.Names;
 
     [SupportedOSPlatform("windows")]
-    public class XlNames : XlComObject
+    public sealed class XlNames : XlComObject
     {
-        public XlNames(MicrosoftNames names) : base(names) { }
-        private MicrosoftNames raw => (MicrosoftNames)_raw;
+        internal XlNames(MicrosoftNames com) => raw = com;
+        internal MicrosoftNames raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

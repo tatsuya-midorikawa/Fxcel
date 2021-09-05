@@ -10,9 +10,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftOdbcErrors = Microsoft.Office.Interop.Excel.ODBCErrors;
 
     [SupportedOSPlatform("windows")]
-    public class XlOdbcErrors : XlComObject
+    public sealed class XlOdbcErrors : XlComObject
     {
-        public XlOdbcErrors(MicrosoftOdbcErrors odbcErrors) : base(odbcErrors) { }
-        private MicrosoftOdbcErrors raw => (MicrosoftOdbcErrors)_raw;
+        internal XlOdbcErrors(MicrosoftOdbcErrors com) => raw = com;
+        internal MicrosoftOdbcErrors raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

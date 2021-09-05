@@ -10,9 +10,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftMenu = Microsoft.Office.Interop.Excel.Menu;
 
     [SupportedOSPlatform("windows")]
-    public class XlMenu : XlComObject
+    public sealed class XlMenu : XlComObject
     {
-        public XlMenu(MicrosoftMenu menu) : base(menu) { }
-        private MicrosoftMenu raw => (MicrosoftMenu)_raw;
+        internal XlMenu(MicrosoftMenu com) => raw = com;
+        internal MicrosoftMenu raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

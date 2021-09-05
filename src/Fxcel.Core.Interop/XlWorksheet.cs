@@ -10,9 +10,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftWorksheet = Microsoft.Office.Interop.Excel.Worksheet;
 
     [SupportedOSPlatform("windows")]
-    public class XlWorksheet : XlComObject
+    public sealed class XlWorksheet : XlComObject
     {
-        public XlWorksheet(MicrosoftWorksheet worksheet) : base(worksheet) { }
-        private MicrosoftWorksheet raw => (MicrosoftWorksheet)_raw;
+        internal XlWorksheet(MicrosoftWorksheet com) => raw = com;
+        internal MicrosoftWorksheet raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

@@ -10,9 +10,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftAnswerWizard = Microsoft.Office.Core.AnswerWizard;
 
     [SupportedOSPlatform("windows")]
-    public class XlAnswerWizard : XlComObject
+    public sealed class XlAnswerWizard : XlComObject
     {
-        public XlAnswerWizard(MicrosoftAnswerWizard wizard) : base(wizard) { }
-        private MicrosoftAnswerWizard raw => (MicrosoftAnswerWizard)_raw;
+        internal XlAnswerWizard(MicrosoftAnswerWizard com) => raw = com;
+        internal MicrosoftAnswerWizard raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

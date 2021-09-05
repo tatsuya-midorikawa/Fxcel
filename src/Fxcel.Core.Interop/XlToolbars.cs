@@ -10,9 +10,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftToolbars = Microsoft.Office.Interop.Excel.Toolbars;
 
     [SupportedOSPlatform("windows")]
-    public class XlToolbars : XlComObject
+    public sealed class XlToolbars : XlComObject
     {
-        public XlToolbars(MicrosoftToolbars toolbars) : base(toolbars) { }
-        private MicrosoftToolbars raw => (MicrosoftToolbars)_raw;
+        internal XlToolbars(MicrosoftToolbars com) => raw = com;
+        internal MicrosoftToolbars raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

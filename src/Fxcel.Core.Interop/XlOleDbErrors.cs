@@ -10,9 +10,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftOleDbErrors = Microsoft.Office.Interop.Excel.OLEDBErrors;
 
     [SupportedOSPlatform("windows")]
-    public class XlOleDbErrors : XlComObject
+    public sealed class XlOleDbErrors : XlComObject
     {
-        public XlOleDbErrors(MicrosoftOleDbErrors oleDbErrors) : base(oleDbErrors) { }
-        private MicrosoftOleDbErrors raw => (MicrosoftOleDbErrors)_raw;
+        internal XlOleDbErrors(MicrosoftOleDbErrors com) => raw = com;
+        internal MicrosoftOleDbErrors raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

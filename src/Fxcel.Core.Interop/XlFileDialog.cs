@@ -10,9 +10,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftFileDialog = Microsoft.Office.Core.FileDialog;
 
     [SupportedOSPlatform("windows")]
-    public class XlFileDialog : XlComObject
+    public sealed class XlFileDialog : XlComObject
     {
-        public XlFileDialog(MicrosoftFileDialog dialog) : base(dialog) { }
-        private MicrosoftFileDialog raw => (MicrosoftFileDialog)_raw;
+        internal XlFileDialog(MicrosoftFileDialog com) => raw = com;
+        internal MicrosoftFileDialog raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

@@ -10,9 +10,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftRange = Microsoft.Office.Interop.Excel.Range;
 
     [SupportedOSPlatform("windows")]
-    public class XlRange : XlComObject
+    public sealed class XlRange : XlComObject
     {
-        public XlRange(MicrosoftRange range) : base(range) { }
-        internal MicrosoftRange raw => (MicrosoftRange)_raw;
+        internal XlRange(MicrosoftRange com) => raw = com;
+        internal MicrosoftRange raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

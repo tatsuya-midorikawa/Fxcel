@@ -12,10 +12,18 @@ namespace Fxcel.Core.Interop
     using MicrosoftWorkbooks = Microsoft.Office.Interop.Excel.Workbooks;
 
     [SupportedOSPlatform("windows")]
-    public class XlWorkbooks : XlComObject
+    public sealed class XlWorkbooks : XlComObject
     {
-        public XlWorkbooks(MicrosoftWorkbooks workbooks) : base(workbooks) { }
-        private MicrosoftWorkbooks raw => (MicrosoftWorkbooks)_raw;
+        internal XlWorkbooks(MicrosoftWorkbooks com) => raw = com;
+        internal MicrosoftWorkbooks raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
 
         public XlWorkbook this[int index] => new(raw[index]);
         public XlWorkbook this[string name] => new(raw[name]);

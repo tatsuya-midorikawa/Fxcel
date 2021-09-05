@@ -5,9 +5,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftFileExportConverters = Microsoft.Office.Interop.Excel.FileExportConverters;
 
     [SupportedOSPlatform("windows")]
-    public class XlFileExportConverters : XlComObject
+    public sealed class XlFileExportConverters : XlComObject
     {
-        public XlFileExportConverters(MicrosoftFileExportConverters converters) : base(converters) { }
-        private MicrosoftFileExportConverters raw => (MicrosoftFileExportConverters)_raw;
+        internal XlFileExportConverters(MicrosoftFileExportConverters com) => raw = com;
+        internal MicrosoftFileExportConverters raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

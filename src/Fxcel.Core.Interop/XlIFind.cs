@@ -10,9 +10,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftIFind = Microsoft.Office.Core.IFind;
 
     [SupportedOSPlatform("windows")]
-    public class XlIFind : XlComObject
+    public sealed class XlIFind : XlComObject
     {
-        public XlIFind(MicrosoftIFind ifind) : base(ifind) { }
-        private MicrosoftIFind raw => (MicrosoftIFind)_raw;
+        internal XlIFind(MicrosoftIFind com) => raw = com;
+        internal MicrosoftIFind raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

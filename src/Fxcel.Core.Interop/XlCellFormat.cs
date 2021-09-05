@@ -10,9 +10,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftCellFormat = Microsoft.Office.Interop.Excel.CellFormat;
 
     [SupportedOSPlatform("windows")]
-    public class XlCellFormat : XlComObject
+    public sealed class XlCellFormat : XlComObject
     {
-        public XlCellFormat(MicrosoftCellFormat format) : base(format) { }
-        internal MicrosoftCellFormat raw => (MicrosoftCellFormat)_raw;
+        internal XlCellFormat(MicrosoftCellFormat com) => raw = com;
+        internal MicrosoftCellFormat raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

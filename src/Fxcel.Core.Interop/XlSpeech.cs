@@ -5,9 +5,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftSpeech = Microsoft.Office.Interop.Excel.Speech;
 
     [SupportedOSPlatform("windows")]
-    public class XlSpeech : XlComObject
+    public sealed class XlSpeech : XlComObject
     {
-        public XlSpeech(MicrosoftSpeech speach) : base(speach) { }
-        private MicrosoftSpeech raw => (MicrosoftSpeech)_raw;
+        internal XlSpeech(MicrosoftSpeech com) => raw = com;
+        internal MicrosoftSpeech raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

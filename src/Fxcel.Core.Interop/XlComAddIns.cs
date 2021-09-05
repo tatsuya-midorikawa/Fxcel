@@ -10,9 +10,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftComAddIns = Microsoft.Office.Core.COMAddIns;
 
     [SupportedOSPlatform("windows")]
-    public class XlComAddIns : XlComObject
+    public sealed class XlComAddIns : XlComObject
     {
-        public XlComAddIns(MicrosoftComAddIns comAddIns) : base(comAddIns) { }
-        private MicrosoftComAddIns raw => (MicrosoftComAddIns)_raw;
+        internal XlComAddIns(MicrosoftComAddIns com) => raw = com;
+        internal MicrosoftComAddIns raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

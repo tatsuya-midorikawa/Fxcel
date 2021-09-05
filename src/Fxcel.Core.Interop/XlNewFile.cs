@@ -5,9 +5,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftNewFile = Microsoft.Office.Core.NewFile;
 
     [SupportedOSPlatform("windows")]
-    public class XlNewFile : XlComObject
+    public sealed class XlNewFile : XlComObject
     {
-        public XlNewFile(MicrosoftNewFile file) : base(file) { }
-        private MicrosoftNewFile raw => (MicrosoftNewFile)_raw;
+        internal XlNewFile(MicrosoftNewFile com) => raw = com;
+        internal MicrosoftNewFile raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

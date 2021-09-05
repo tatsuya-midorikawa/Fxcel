@@ -5,9 +5,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftRTD = Microsoft.Office.Interop.Excel.RTD;
 
     [SupportedOSPlatform("windows")]
-    public class XlRTD : XlComObject
+    public sealed class XlRTD : XlComObject
     {
-        public XlRTD(MicrosoftRTD rtd) : base(rtd) { }
-        private MicrosoftRTD raw => (MicrosoftRTD)_raw;
+        internal XlRTD(MicrosoftRTD com) => raw = com;
+        internal MicrosoftRTD raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

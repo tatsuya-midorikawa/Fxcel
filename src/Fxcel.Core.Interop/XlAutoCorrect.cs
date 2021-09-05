@@ -10,9 +10,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftAutoCorrect = Microsoft.Office.Interop.Excel.AutoCorrect;
 
     [SupportedOSPlatform("windows")]
-    public class XlAutoCorrect : XlComObject
+    public sealed class XlAutoCorrect : XlComObject
     {
-        public XlAutoCorrect(MicrosoftAutoCorrect autocorrect) : base(autocorrect) { }
-        private MicrosoftAutoCorrect raw => (MicrosoftAutoCorrect)_raw;
+        internal XlAutoCorrect(MicrosoftAutoCorrect com) => raw = com;
+        internal MicrosoftAutoCorrect raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

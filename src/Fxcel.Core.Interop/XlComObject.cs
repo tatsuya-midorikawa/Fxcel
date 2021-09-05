@@ -10,9 +10,6 @@ namespace Fxcel.Core.Interop
     {
         private readonly List<IComObject> _garbage = new();
         private bool _disposed= false;
-        protected object _raw;
-
-        protected XlComObject(object com) => _raw = com;
 
         private void Dispose(bool disposing)
         {
@@ -31,9 +28,8 @@ namespace Fxcel.Core.Interop
                     }
 
                     OnDisposing();
-                    
+
                     FinalRelease();
-                    _raw = default!;
 
                     DidDispose();
                 }
@@ -59,7 +55,7 @@ namespace Fxcel.Core.Interop
         protected virtual void WillDispose() { }
         protected virtual void OnDisposing() { }
         protected virtual void DidDispose() { }
-        public int Release() => ComHelper.Release(_raw);
-        public void FinalRelease() => ComHelper.FinalRelease(_raw);
+        public abstract int Release();
+        public abstract void FinalRelease();
     }
 }

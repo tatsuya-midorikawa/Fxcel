@@ -10,9 +10,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftWindows = Microsoft.Office.Interop.Excel.Windows;
 
     [SupportedOSPlatform("windows")]
-    public class XlWindows : XlComObject
+    public sealed class XlWindows : XlComObject
     {
-        public XlWindows(MicrosoftWindows window) : base(window) { }
-        private MicrosoftWindows raw => (MicrosoftWindows)_raw;
+        internal XlWindows(MicrosoftWindows com) => raw = com;
+        internal MicrosoftWindows raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

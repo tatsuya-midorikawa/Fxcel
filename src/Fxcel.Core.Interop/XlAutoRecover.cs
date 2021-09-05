@@ -5,9 +5,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftAutoRecover = Microsoft.Office.Interop.Excel.AutoRecover;
 
     [SupportedOSPlatform("windows")]
-    public class XlAutoRecover : XlComObject
+    public sealed class XlAutoRecover : XlComObject
     {
-        public XlAutoRecover(MicrosoftAutoRecover recover) : base(recover) { }
-        private MicrosoftAutoRecover raw => (MicrosoftAutoRecover)_raw;
+        internal XlAutoRecover(MicrosoftAutoRecover com) => raw = com;
+        internal MicrosoftAutoRecover raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

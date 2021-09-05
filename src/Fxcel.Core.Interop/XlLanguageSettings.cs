@@ -10,9 +10,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftLanguageSettings = Microsoft.Office.Core.LanguageSettings;
 
     [SupportedOSPlatform("windows")]
-    public class XlLanguageSettings : XlComObject
+    public sealed class XlLanguageSettings : XlComObject
     {
-        public XlLanguageSettings(MicrosoftLanguageSettings settings) : base(settings) { }
-        private MicrosoftLanguageSettings raw => (MicrosoftLanguageSettings)_raw;
+        internal XlLanguageSettings(MicrosoftLanguageSettings com) => raw = com;
+        internal MicrosoftLanguageSettings raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

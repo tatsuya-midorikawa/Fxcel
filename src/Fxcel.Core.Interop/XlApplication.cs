@@ -28,10 +28,18 @@ namespace Fxcel.Core.Interop
     using MicrosoftXlFileValidationPivotMode = Microsoft.Office.Interop.Excel.XlFileValidationPivotMode;
 
     [SupportedOSPlatform("windows")]
-    public class XlApplication : XlComObject
+    public sealed class XlApplication : XlComObject
     {
-        internal XlApplication(MicrosoftApplication excel) : base(excel) { }
-        internal MicrosoftApplication raw => (MicrosoftApplication)_raw;
+        internal XlApplication(MicrosoftApplication com) => raw = com;
+        internal MicrosoftApplication raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
 
         public static XlApplication BlankWorkbook()
         {

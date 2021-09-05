@@ -1,14 +1,21 @@
 ﻿using System.Runtime.Versioning;
-using MicrosoftDocumentProperty = Microsoft.Office.Core.DocumentProperty;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly struct XlDocumentProperty
-    {
-        internal readonly MicrosoftDocumentProperty raw;
-        public XlDocumentProperty(MicrosoftDocumentProperty speach) => raw = speach;
+    using MicrosoftDocumentProperty = Microsoft.Office.Core.DocumentProperty;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public sealed class XlDocumentProperty : XlComObject
+    {
+        internal XlDocumentProperty(MicrosoftDocumentProperty com) => raw = com;
+        internal MicrosoftDocumentProperty raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

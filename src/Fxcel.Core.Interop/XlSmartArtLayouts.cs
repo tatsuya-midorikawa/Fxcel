@@ -5,9 +5,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftSmartArtLayouts = Microsoft.Office.Core.SmartArtLayouts;
 
     [SupportedOSPlatform("windows")]
-    public class XlSmartArtLayouts : XlComObject
+    public sealed class XlSmartArtLayouts : XlComObject
     {
-        public XlSmartArtLayouts(MicrosoftSmartArtLayouts layouts) : base(layouts) { }
-        private MicrosoftSmartArtLayouts raw => (MicrosoftSmartArtLayouts)_raw;
+        internal XlSmartArtLayouts(MicrosoftSmartArtLayouts com) => raw = com;
+        internal MicrosoftSmartArtLayouts raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

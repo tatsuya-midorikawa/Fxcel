@@ -5,9 +5,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftSmartArtQuickStyles = Microsoft.Office.Core.SmartArtQuickStyles;
 
     [SupportedOSPlatform("windows")]
-    public class XlSmartArtQuickStyles : XlComObject
+    public sealed class XlSmartArtQuickStyles : XlComObject
     {
-        public XlSmartArtQuickStyles(MicrosoftSmartArtQuickStyles styles) : base(styles) { }
-        private MicrosoftSmartArtQuickStyles raw => (MicrosoftSmartArtQuickStyles)_raw;
+        internal XlSmartArtQuickStyles(MicrosoftSmartArtQuickStyles com) => raw = com;
+        internal MicrosoftSmartArtQuickStyles raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

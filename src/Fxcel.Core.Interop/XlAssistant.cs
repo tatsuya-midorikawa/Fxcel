@@ -10,9 +10,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftAssistant = Microsoft.Office.Core.Assistant;
 
     [SupportedOSPlatform("windows")]
-    public class XlAssistant : XlComObject
+    public sealed class XlAssistant : XlComObject
     {
-        public XlAssistant(MicrosoftAssistant assistant) : base(assistant) { }
-        private MicrosoftAssistant raw => (MicrosoftAssistant)_raw;
+        internal XlAssistant(MicrosoftAssistant com) => raw = com;
+        internal MicrosoftAssistant raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

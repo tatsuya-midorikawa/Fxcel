@@ -5,9 +5,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftIAssistance = Microsoft.Office.Core.IAssistance;
 
     [SupportedOSPlatform("windows")]
-    public class XlIAssistance : XlComObject
+    public sealed class XlIAssistance : XlComObject
     {
-        public XlIAssistance(MicrosoftIAssistance assistance) : base(assistance) { }
-        private MicrosoftIAssistance raw => (MicrosoftIAssistance)_raw;
+        internal XlIAssistance(MicrosoftIAssistance com) => raw = com;
+        internal MicrosoftIAssistance raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

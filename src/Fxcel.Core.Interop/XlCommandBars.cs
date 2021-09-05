@@ -4,16 +4,23 @@ using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
-using MicrosoftCommandBars = Microsoft.Office.Core.CommandBars;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlCommandBars
-    {
-        internal readonly MicrosoftCommandBars raw;
-        public XlCommandBars(MicrosoftCommandBars commandBars) => raw = commandBars;
+    using MicrosoftCommandBars = Microsoft.Office.Core.CommandBars;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public sealed class XlCommandBars : XlComObject
+    {
+        internal XlCommandBars(MicrosoftCommandBars com) => raw = com;
+        internal MicrosoftCommandBars raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

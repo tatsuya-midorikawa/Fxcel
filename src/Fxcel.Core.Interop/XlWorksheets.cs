@@ -3,17 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MicrosoftWorksheets = Microsoft.Office.Interop.Excel.Worksheets;
 using System.Runtime.Versioning;
 
 namespace Fxcel.Core.Interop
 {
-    [SupportedOSPlatform("windows")]
-    public readonly ref struct XlWorksheets
-    {
-        internal readonly MicrosoftWorksheets raw;
-        public XlWorksheets(MicrosoftWorksheets worksheets) => raw = worksheets;
+    using MicrosoftWorksheets = Microsoft.Office.Interop.Excel.Worksheets;
 
-        public int Release() => ComHelper.Release(raw);
+    [SupportedOSPlatform("windows")]
+    public sealed class XlWorksheets : XlComObject
+    {
+        internal XlWorksheets(MicrosoftWorksheets com) => raw = com;
+        internal MicrosoftWorksheets raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

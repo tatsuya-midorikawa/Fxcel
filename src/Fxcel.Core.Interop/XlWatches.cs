@@ -10,9 +10,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftWatches = Microsoft.Office.Interop.Excel.Watches;
 
     [SupportedOSPlatform("windows")]
-    public class XlWatches : XlComObject
+    public sealed class XlWatches : XlComObject
     {
-        public XlWatches(MicrosoftWatches watches) : base(watches) { }
-        private MicrosoftWatches raw => (MicrosoftWatches)_raw;
+        internal XlWatches(MicrosoftWatches com) => raw = com;
+        internal MicrosoftWatches raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

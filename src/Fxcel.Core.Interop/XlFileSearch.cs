@@ -4,14 +4,23 @@ using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
-using MicrosoftFileSearch = Microsoft.Office.Core.FileSearch;
 
 namespace Fxcel.Core.Interop
 {
+    using MicrosoftFileSearch = Microsoft.Office.Core.FileSearch;
+
     [SupportedOSPlatform("windows")]
-    public class XlFileSearch : XlComObject
+    public sealed class XlFileSearch : XlComObject
     {
-        public XlFileSearch(MicrosoftFileSearch fileSearch) : base(fileSearch) { }
-        private MicrosoftFileSearch raw => (MicrosoftFileSearch)_raw;
+        internal XlFileSearch(MicrosoftFileSearch com) => raw = com;
+        internal MicrosoftFileSearch raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

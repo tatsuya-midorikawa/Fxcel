@@ -10,9 +10,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftProtectedViewWindow = Microsoft.Office.Interop.Excel.ProtectedViewWindow;
 
     [SupportedOSPlatform("windows")]
-    public class XlProtectedViewWindow : XlComObject
+    public sealed class XlProtectedViewWindow : XlComObject
     {
-        public XlProtectedViewWindow(MicrosoftProtectedViewWindow window) : base(window) { }
-        private MicrosoftProtectedViewWindow raw => (MicrosoftProtectedViewWindow)_raw;
+        internal XlProtectedViewWindow(MicrosoftProtectedViewWindow com) => raw = com;
+        internal MicrosoftProtectedViewWindow raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }

@@ -5,9 +5,17 @@ namespace Fxcel.Core.Interop
     using MicrosoftSpellingOptions = Microsoft.Office.Interop.Excel.SpellingOptions;
 
     [SupportedOSPlatform("windows")]
-    public class XlSpellingOptions : XlComObject
+    public sealed class XlSpellingOptions : XlComObject
     {
-        public XlSpellingOptions(MicrosoftSpellingOptions options) : base(options) { }
-        private MicrosoftSpellingOptions raw => (MicrosoftSpellingOptions)_raw;
+        internal XlSpellingOptions(MicrosoftSpellingOptions com) => raw = com;
+        internal MicrosoftSpellingOptions raw;
+
+        public override int Release() => ComHelper.Release(raw);
+        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        protected override void DidDispose()
+        {
+            raw = default!;
+            base.DidDispose();
+        }
     }
 }
