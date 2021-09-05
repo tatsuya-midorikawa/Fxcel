@@ -5,7 +5,8 @@ using Fxcel.Core.Interop;
 using Excel = Microsoft.Office.Interop.Excel;
 
 using var app = XlApplication.BlankWorkbook();
-var a = app.Selection;
+var a = app.Workbooks;
+var b = a.Parent;
 Console.WriteLine(a.GetType());
 //var books = app.Workbooks;
 //var book = books[1];

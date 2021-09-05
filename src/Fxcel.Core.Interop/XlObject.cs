@@ -12,12 +12,14 @@ namespace Fxcel.Core.Interop
         internal object raw;
         public bool TryGetValue<T>(out T value)
         {
-            var isValid = typeof(T) == raw.GetType();
+            var isValid = typeof(T) == raw?.GetType();
+#pragma warning disable CS8600, CS8601
             value = isValid ? (T)raw : default!;
+#pragma warning restore CS8600, CS8601
             return isValid;
         }
         public T GetValue<T>() => (T)raw;
-        public new Type GetType() => raw.GetType();
+        public new Type GetType() => raw is null ? typeof(XlObject) : raw.GetType();
 
         public override int Release() => ComHelper.Release(raw);
         public override void ForceRelease() => ComHelper.FinalRelease(raw);

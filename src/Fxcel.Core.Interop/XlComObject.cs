@@ -22,14 +22,13 @@ namespace Fxcel.Core.Interop
 
                     for (var i = 0; i < _garbage.Count; i++)
                     {
-                        try { _garbage[i]?.Release(); } 
+                        try { _garbage[i]?.ForceRelease(); } 
                         catch { /* ignore */ }
-                        // finally { _garbage[i] = default!; }
                     }
 
                     OnDisposing();
 
-                    Release();
+                    ForceRelease();
 
                     DidDispose();
                 }

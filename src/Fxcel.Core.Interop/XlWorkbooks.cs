@@ -37,6 +37,9 @@ namespace Fxcel.Core.Interop
         public XlWorkbook this[string name] => new(raw[name]);
 
         public XlApplication Application => ManageCom(new XlApplication(raw.Application));
+        public XlCreator Creator => (XlCreator)raw.Creator;
+        public XlApplication Parent => ManageCom(new XlApplication(raw.Parent));
+        public int Count => raw.Count;
 
         public XlWorkbook Add([Optional][In][MarshalAs(UnmanagedType.Struct)] string template) => 
             new(string.IsNullOrEmpty(template) ? raw.Add() : raw.Add(template));
