@@ -3,6 +3,6 @@
     public interface IComObject
     {
         int Release();
-        void FinalRelease();
+        void ForceRelease();
     }
 }

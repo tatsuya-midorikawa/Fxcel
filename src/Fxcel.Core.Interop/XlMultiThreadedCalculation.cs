@@ -11,7 +11,7 @@ namespace Fxcel.Core.Interop
         internal MicrosoftMultiThreadedCalculation raw;
 
         public override int Release() => ComHelper.Release(raw);
-        public override void FinalRelease() => ComHelper.FinalRelease(raw);
+        public override void ForceRelease() => ComHelper.FinalRelease(raw);
         protected override void DidDispose()
         {
             raw = default!;

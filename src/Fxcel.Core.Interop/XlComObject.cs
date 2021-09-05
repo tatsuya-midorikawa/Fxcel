@@ -22,14 +22,14 @@ namespace Fxcel.Core.Interop
 
                     for (var i = 0; i < _garbage.Count; i++)
                     {
-                        try { _garbage[i]?.FinalRelease(); } 
+                        try { _garbage[i]?.Release(); } 
                         catch { /* ignore */ }
-                        finally { _garbage[i] = default!; }
+                        // finally { _garbage[i] = default!; }
                     }
 
                     OnDisposing();
 
-                    FinalRelease();
+                    Release();
 
                     DidDispose();
                 }
@@ -56,6 +56,6 @@ namespace Fxcel.Core.Interop
         protected virtual void OnDisposing() { }
         protected virtual void DidDispose() { }
         public abstract int Release();
-        public abstract void FinalRelease();
+        public abstract void ForceRelease();
     }
 }
