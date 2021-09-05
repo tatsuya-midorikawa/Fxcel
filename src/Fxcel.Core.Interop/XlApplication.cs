@@ -80,19 +80,19 @@ namespace Fxcel.Core.Interop
         public XlMenus ShortcutMenus => new(this);
         //public XlMenu ShortcutMenus(int index) => new(raw.ShortcutMenus[index]);
 
-        public XlWorkbook ThisWorkbook => new(raw.ThisWorkbook);
-        public XlToolbars Toolbars => new(raw.Toolbars);
-        public XlWindows Windows => new(raw.Windows);
-        public XlWorkbooks Workbooks => new(raw.Workbooks);
-        public XlWorksheetFunction WorksheetFunction => new(raw.WorksheetFunction);
-        public XlSheets Worksheets => new(raw.Worksheets);
-        public XlSheets Excel4IntlMacroSheets => new(raw.Excel4IntlMacroSheets);
-        public XlSheets Excel4MacroSheets => new(raw.Excel4MacroSheets);
+        public XlWorkbook ThisWorkbook => ManageCom(new XlWorkbook(raw.ThisWorkbook));
+        public XlToolbars Toolbars => ManageCom(new XlToolbars(raw.Toolbars));
+        public XlWindows Windows => ManageCom(new XlWindows(raw.Windows));
+        public XlWorkbooks Workbooks => ManageCom(new XlWorkbooks(raw.Workbooks));
+        public XlWorksheetFunction WorksheetFunction => ManageCom(new XlWorksheetFunction(raw.WorksheetFunction));
+        public XlSheets Worksheets => ManageCom(new XlSheets(raw.Worksheets));
+        public XlSheets Excel4IntlMacroSheets => ManageCom(new XlSheets(raw.Excel4IntlMacroSheets));
+        public XlSheets Excel4MacroSheets => ManageCom(new XlSheets(raw.Excel4MacroSheets));
         public bool AlertBeforeOverwriting { get => raw.AlertBeforeOverwriting; set => raw.AlertBeforeOverwriting = value; }
         public string AltStartupPath { get => raw.AltStartupPath; set => raw.AltStartupPath = value; }
         public bool AskToUpdateLinks { get => raw.AskToUpdateLinks; set => raw.AskToUpdateLinks = value; }
         public bool EnableAnimations { get => raw.EnableAnimations; set => raw.EnableAnimations = value; }
-        public XlAutoCorrect AutoCorrect => new(raw.AutoCorrect);
+        public XlAutoCorrect AutoCorrect => ManageCom(new XlAutoCorrect(raw.AutoCorrect));
         public int Build => raw.Build;
         public bool CalculateBeforeSave { get => raw.CalculateBeforeSave; set => raw.CalculateBeforeSave = value; }
         public XlCalculation Calculation { get => (XlCalculation)raw.Calculation; set => raw.Calculation = (MicrosoftXlCalculation)value; }
@@ -113,7 +113,7 @@ namespace Fxcel.Core.Interop
         public XlDataEntryMode DataEntryMode { get => (XlDataEntryMode)raw.DataEntryMode; set => raw.DataEntryMode = (int)value; }
         public string _Default => raw._Default;
         public string DefaultFilePath { get => raw.DefaultFilePath; set => raw.DefaultFilePath = value; }
-        public XlDialogs Dialogs => new(raw.Dialogs);
+        public XlDialogs Dialogs => ManageCom(new XlDialogs(raw.Dialogs));
         public bool DisplayAlerts { get => raw.DisplayAlerts; set => raw.DisplayAlerts = value; }
         public bool DisplayFormulaBar { get => raw.DisplayFormulaBar; set => raw.DisplayFormulaBar = value; }
         public bool DisplayFullScreen { get => raw.DisplayFullScreen; set => raw.DisplayFullScreen = value; }
@@ -129,8 +129,8 @@ namespace Fxcel.Core.Interop
         public bool EnableSound { get => raw.EnableSound; set => raw.EnableSound = value; }
         public bool EnableTipWizard { get => raw.EnableTipWizard; set => raw.EnableTipWizard = value; }
         public object FileConverters => raw.FileConverters;
-        public XlFileSearch FileSearch => new(raw.FileSearch);
-        public XlIFind FileFind => new(raw.FileFind);
+        public XlFileSearch FileSearch => ManageCom(new XlFileSearch(raw.FileSearch));
+        public XlIFind FileFind => ManageCom(new XlIFind(raw.FileFind));
         public bool FixedDecimal { get => raw.FixedDecimal; set => raw.FixedDecimal = value; }
         public int FixedDecimalPlaces { get => raw.FixedDecimalPlaces; set => raw.FixedDecimalPlaces = value; }
         public double Height { get => raw.Height; set => raw.Height = value; }
@@ -152,10 +152,10 @@ namespace Fxcel.Core.Interop
         public bool MouseAvailable => raw.MouseAvailable;
         public bool MoveAfterReturn { get => raw.MoveAfterReturn; set => raw.MoveAfterReturn = value; }
         public XlDirection MoveAfterReturnDirection { get => (XlDirection)raw.MoveAfterReturnDirection; set => raw.MoveAfterReturnDirection = (MicrosoftXlDirection)value; }
-        public XlRecentFiles RecentFiles => new(raw.RecentFiles);
+        public XlRecentFiles RecentFiles => ManageCom(new XlRecentFiles(raw.RecentFiles));
         public string Name => raw.Name;
         public string NetworkTemplatesPath => raw.NetworkTemplatesPath;
-        public XlOdbcErrors OdbcErrors => new(raw.ODBCErrors);
+        public XlOdbcErrors OdbcErrors => ManageCom(new XlOdbcErrors(raw.ODBCErrors));
         public int OdbcTimeout { get => raw.ODBCTimeout; set => raw.ODBCTimeout = value; }
         public string OnCalculate { get => raw.OnCalculate; set => raw.OnCalculate = value; }
         public string OnData { get => raw.OnData; set => raw.OnData = value; }
@@ -168,6 +168,7 @@ namespace Fxcel.Core.Interop
         public string OrganizationName => raw.OrganizationName;
         public string Path => raw.Path;
         public string PathSeparator => raw.PathSeparator;
+        // TODO: 
         public XlRange PreviousSelections(int index) => new((MicrosoftRange)raw.PreviousSelections[index]);
         public bool PivotTableSelection { get => raw.PivotTableSelection; set => raw.PivotTableSelection = value; }
         public bool PromptForSummaryInfo { get => raw.PromptForSummaryInfo; set => raw.PromptForSummaryInfo = value; }
@@ -207,46 +208,47 @@ namespace Fxcel.Core.Interop
         public bool EnableEvents { get => raw.EnableEvents; set => raw.EnableEvents = value; }
         public bool DisplayInfoWindow { get => raw.DisplayInfoWindow; set => raw.DisplayInfoWindow = value; }
         public bool ExtendList { get => raw.ExtendList; set => raw.ExtendList = value; }
-        public XlOleDbErrors OleDbErrors => new(raw.OLEDBErrors);
-        public XlComAddIns ComAddIns => new(raw.COMAddIns);
-        public XlDefaultWebOptions DefaultWebOptions => new(raw.DefaultWebOptions);
+        public XlOleDbErrors OleDbErrors => ManageCom(new XlOleDbErrors(raw.OLEDBErrors));
+        public XlComAddIns ComAddIns => ManageCom(new XlComAddIns(raw.COMAddIns));
+        public XlDefaultWebOptions DefaultWebOptions => ManageCom(new XlDefaultWebOptions(raw.DefaultWebOptions));
         public string ProductCode => raw.ProductCode;
         public string UserLibraryPath => raw.UserLibraryPath;
         public bool AutoPercentEntry { get => raw.AutoPercentEntry; set => raw.AutoPercentEntry = value; }
-        public XlLanguageSettings LanguageSettings => new(raw.LanguageSettings);
-        public XlAnswerWizard AnswerWizard => new(raw.AnswerWizard);
+        public XlLanguageSettings LanguageSettings => ManageCom(new XlLanguageSettings(raw.LanguageSettings));
+        public XlAnswerWizard AnswerWizard => ManageCom(new XlAnswerWizard(raw.AnswerWizard));
         public int CalculationVersion => raw.CalculationVersion;
         public bool ShowWindowsInTaskbar { get => raw.ShowWindowsInTaskbar; set => raw.ShowWindowsInTaskbar = value; }
         public XlMsoFeatureInstall FeatureInstall { get => (XlMsoFeatureInstall)raw.FeatureInstall; set => raw.FeatureInstall = (MicrosoftMsoFeatureInstall)value; }
         public bool Ready => raw.Ready;
-        public XlCellFormat FindFormat { get => new(raw.FindFormat); set => raw.FindFormat = value.raw; }
-        public XlCellFormat ReplaceFormat { get => new(raw.ReplaceFormat); set => raw.ReplaceFormat = value.raw; }
-        public XlUsedObjects UsedObjects => new(raw.UsedObjects);
+        public XlCellFormat FindFormat { get => ManageCom(new XlCellFormat(raw.FindFormat)); set => raw.FindFormat = value.raw; }
+        public XlCellFormat ReplaceFormat { get => ManageCom(new XlCellFormat(raw.ReplaceFormat)); set => raw.ReplaceFormat = value.raw; }
+        public XlUsedObjects UsedObjects => ManageCom(new XlUsedObjects(raw.UsedObjects));
         public XlCalculationState CalculationState => (XlCalculationState)raw.CalculationState;
         public XlCalculationInterruptKey CalculationInterruptKey { get => (XlCalculationInterruptKey)raw.CalculationInterruptKey; set => raw.CalculationInterruptKey = (MicrosoftXlCalculationInterruptKey)value; }
-        public XlWatches Watches => new(raw.Watches);
+        public XlWatches Watches => ManageCom(new XlWatches(raw.Watches));
         public bool DisplayFunctionToolTips { get => raw.DisplayFunctionToolTips; set => raw.DisplayFunctionToolTips = value; }
         public XlMsoAutomationSecurity AutomationSecurity { get => (XlMsoAutomationSecurity)raw.AutomationSecurity; set => raw.AutomationSecurity = (MicrosoftMsoAutomationSecurity)value; }
+        // TODO: 
         public XlFileDialog FileDialog(XlMsoFileDialogType type) => new(raw.FileDialog[(MicrosoftMsoFileDialogType)type]);
         public bool DisplayPasteOptions { get => raw.DisplayPasteOptions; set => raw.DisplayPasteOptions = value; }
         public bool DisplayInsertOptions { get => raw.DisplayInsertOptions; set => raw.DisplayInsertOptions = value; }
         public bool GenerateGetPivotData { get => raw.GenerateGetPivotData; set => raw.GenerateGetPivotData = value; }
-        public XlAutoRecover AutoRecover => new(raw.AutoRecover);
+        public XlAutoRecover AutoRecover => ManageCom(new XlAutoRecover(raw.AutoRecover));
         public int Hwnd => raw.Hwnd;
         public int Hinstance => raw.Hinstance;
-        public XlErrorCheckingOptions ErrorCheckingOptions => new(raw.ErrorCheckingOptions);
+        public XlErrorCheckingOptions ErrorCheckingOptions => ManageCom(new XlErrorCheckingOptions(raw.ErrorCheckingOptions));
         public bool AutoFormatAsYouTypeReplaceHyperlinks { get => raw.AutoFormatAsYouTypeReplaceHyperlinks; set => raw.AutoFormatAsYouTypeReplaceHyperlinks = value; }
-        public XlSmartTagRecognizers SmartTagRecognizers => new(raw.SmartTagRecognizers);
-        public XlNewFile NewWorkbook => new(((Microsoft.Office.Interop.Excel._Application)raw).NewWorkbook);
-        public XlSpellingOptions SpellingOptions => new(raw.SpellingOptions);
-        public XlSpeech Speech => new(raw.Speech);
+        public XlSmartTagRecognizers SmartTagRecognizers => ManageCom(new XlSmartTagRecognizers(raw.SmartTagRecognizers));
+        public XlNewFile NewWorkbook => ManageCom(new XlNewFile(((Microsoft.Office.Interop.Excel._Application)raw).NewWorkbook));
+        public XlSpellingOptions SpellingOptions => ManageCom(new XlSpellingOptions(raw.SpellingOptions));
+        public XlSpeech Speech => ManageCom(new XlSpeech(raw.Speech));
         public bool MapPaperSize { get => raw.MapPaperSize; set => raw.MapPaperSize = value; }
         public bool ShowStartupDialog { get => raw.ShowStartupDialog; set => raw.ShowStartupDialog = value; }
         public string DecimalSeparator { get => raw.DecimalSeparator; set => raw.DecimalSeparator = value; }
         public string ThousandsSeparator { get => raw.ThousandsSeparator; set => raw.ThousandsSeparator = value; }
         public bool UseSystemSeparators { get => raw.UseSystemSeparators; set => raw.UseSystemSeparators = value; }
-        public XlRange ThisCell => new(raw.ThisCell);
-        public XlRTD RTD => new(raw.RTD);
+        public XlRange ThisCell => ManageCom(new XlRange(raw.ThisCell));
+        public XlRTD RTD => ManageCom(new XlRTD(raw.RTD));
         public bool DisplayDocumentActionTaskPane { get => raw.DisplayDocumentActionTaskPane; set => raw.DisplayDocumentActionTaskPane = value; }
         public bool ArbitraryXMLSupportAvailable => raw.ArbitraryXMLSupportAvailable;
         public int MeasurementUnit { get => raw.MeasurementUnit; set => raw.MeasurementUnit = value; }
@@ -260,30 +262,30 @@ namespace Fxcel.Core.Interop
         public int FormulaBarHeight { get => raw.FormulaBarHeight; set => raw.FormulaBarHeight = value; }
         public bool DisplayFormulaAutoComplete { get => raw.DisplayFormulaAutoComplete; set => raw.DisplayFormulaAutoComplete = value; }
         public XlGenerateTableRefs GenerateTableRefs { get => (XlGenerateTableRefs)raw.GenerateTableRefs; set => raw.GenerateTableRefs = (MicrosoftXlGenerateTableRefs)value; }
-        public XlIAssistance Assistance => new(raw.Assistance);
+        public XlIAssistance Assistance => ManageCom(new XlIAssistance(raw.Assistance));
         public bool EnableLargeOperationAlert { get => raw.EnableLargeOperationAlert; set => raw.EnableLargeOperationAlert = value; }
         public int LargeOperationCellThousandCount { get => raw.LargeOperationCellThousandCount; set => raw.LargeOperationCellThousandCount = value; }
         public bool DeferAsyncQueries { get => raw.DeferAsyncQueries; set => raw.DeferAsyncQueries = value; }
-        public XlMultiThreadedCalculation MultiThreadedCalculation => new(raw.MultiThreadedCalculation);
+        public XlMultiThreadedCalculation MultiThreadedCalculation => ManageCom(new XlMultiThreadedCalculation(raw.MultiThreadedCalculation));
         public int ActiveEncryptionSession => raw.ActiveEncryptionSession;
         public bool HighQualityModeForGraphics { get => raw.HighQualityModeForGraphics; set => raw.HighQualityModeForGraphics = value; }
-        public XlFileExportConverters FileExportConverters => new(raw.FileExportConverters);
-        public XlSmartArtLayouts SmartArtLayouts => new(raw.SmartArtLayouts);
-        public XlSmartArtQuickStyles SmartArtQuickStyles => new(raw.SmartArtQuickStyles);
-        public XlSmartArtColors SmartArtColors => new(raw.SmartArtColors);
-        public XlAddIns2 AddIns2 => new(raw.AddIns2);
+        public XlFileExportConverters FileExportConverters => ManageCom(new XlFileExportConverters(raw.FileExportConverters));
+        public XlSmartArtLayouts SmartArtLayouts => ManageCom(new XlSmartArtLayouts(raw.SmartArtLayouts));
+        public XlSmartArtQuickStyles SmartArtQuickStyles => ManageCom(new XlSmartArtQuickStyles(raw.SmartArtQuickStyles));
+        public XlSmartArtColors SmartArtColors => ManageCom(new XlSmartArtColors(raw.SmartArtColors));
+        public XlAddIns2 AddIns2 => ManageCom(new XlAddIns2(raw.AddIns2));
         public bool PrintCommunication { get => raw.PrintCommunication; set => raw.PrintCommunication = value; }
         public bool UseClusterConnector { get => raw.UseClusterConnector; set => raw.UseClusterConnector = value; }
         public string ClusterConnector { get => raw.ClusterConnector; set => raw.ClusterConnector = value; }
         public bool Quitting => raw.Quitting;
-        public XlProtectedViewWindows ProtectedViewWindows => new(raw.ProtectedViewWindows);
-        public XlProtectedViewWindow ActiveProtectedViewWindow => new(raw.ActiveProtectedViewWindow);
+        public XlProtectedViewWindows ProtectedViewWindows => ManageCom(new XlProtectedViewWindows(raw.ProtectedViewWindows));
+        public XlProtectedViewWindow ActiveProtectedViewWindow => ManageCom(new XlProtectedViewWindow(raw.ActiveProtectedViewWindow));
         public bool IsSandboxed => raw.IsSandboxed;
         public bool SaveISO8601Dates { get => raw.SaveISO8601Dates; set => raw.SaveISO8601Dates = value; }
         public XlMsoFileValidationMode FileValidation { get => (XlMsoFileValidationMode)raw.FileValidation; set => raw.FileValidation = (MicrosoftMsoFileValidationMode)value; }
         public XlFileValidationPivotMode FileValidationPivot { get => (XlFileValidationPivotMode)raw.FileValidationPivot; set => raw.FileValidationPivot = (MicrosoftXlFileValidationPivotMode)value; }
         public bool ShowQuickAnalysis { get => raw.ShowQuickAnalysis; set => raw.ShowQuickAnalysis = value; }
-        public XlQuickAnalysis QuickAnalysis => new(raw.QuickAnalysis);
+        public XlQuickAnalysis QuickAnalysis => ManageCom(new XlQuickAnalysis(raw.QuickAnalysis));
         public bool FlashFill { get => raw.FlashFill; set => raw.FlashFill = value; }
         public bool EnableMacroAnimations { get => raw.EnableMacroAnimations; set => raw.EnableMacroAnimations = value; }
         public bool ChartDataPointTrack { get => raw.ChartDataPointTrack; set => raw.ChartDataPointTrack = value; }
@@ -392,7 +394,8 @@ namespace Fxcel.Core.Interop
             [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg29,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg30
         ) =>
-            new(raw.Intersect(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27, arg28, arg29, arg30));
+            ManageCom(new XlRange(
+                raw.Intersect(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27, arg28, arg29, arg30)));
         public XlRange Intersect(
             [In] XlRange arg1,
             [In] XlRange arg2,
@@ -425,7 +428,8 @@ namespace Fxcel.Core.Interop
             [Optional][In] XlRange arg29,
             [Optional][In] XlRange arg30
         ) =>
-            new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw, arg29.raw, arg30.raw));
+            ManageCom(new XlRange(
+                raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw, arg29.raw, arg30.raw)));
         //public XlRange Intersect(XlRange arg1, XlRange arg2) => new(raw.Intersect(arg1.raw, arg2.raw));
         //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw));
         //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw));
@@ -575,7 +579,8 @@ namespace Fxcel.Core.Interop
             [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg29,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg30
         ) =>
-            new(raw.Union(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27, arg28, arg29, arg30));
+            ManageCom(new XlRange(
+                raw.Union(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27, arg28, arg29, arg30)));
         public XlRange Union(
             [In] XlRange arg1,
             [In] XlRange arg2,
@@ -608,7 +613,8 @@ namespace Fxcel.Core.Interop
             [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg29,
             [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg30
         ) =>
-            new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw, arg29.raw, arg30.raw));
+            ManageCom(new XlRange(
+                raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw, arg29.raw, arg30.raw)));
         //public XlRange Union(XlRange arg1, XlRange arg2) => new(raw.Union(arg1.raw, arg2.raw));
         //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw));
         //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw));
