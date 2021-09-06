@@ -1,26 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
+using Fxcel.Core.Interop.Common;
 
 namespace Fxcel.Core.Interop
 {
     using MicrosoftOdbcErrors = Microsoft.Office.Interop.Excel.ODBCErrors;
 
     [SupportedOSPlatform("windows")]
-    public sealed class XlOdbcErrors : XlComObject
+    public readonly struct XlOdbcErrors : IComObject
     {
-        internal XlOdbcErrors(MicrosoftOdbcErrors com) => raw = com;
-        internal MicrosoftOdbcErrors raw;
+        internal readonly MicrosoftOdbcErrors raw;
+        private readonly ComCollector collector;
+        private readonly bool disposed;
 
-        public override int Release() => ComHelper.Release(raw);
-        public override void ForceRelease() => ComHelper.FinalRelease(raw);
-        protected override void DidDispose()
+        internal XlOdbcErrors(MicrosoftOdbcErrors com)
         {
-            raw = default!;
-            base.DidDispose();
+            raw = com;
+            collector = new();
+            disposed = false;
         }
+
+        public readonly void Dispose()
+        {
+            if (!disposed)
+            {
+                // release managed objects
+                collector.Collect();
+                ForceRelease();
+
+                // update status
+                Unsafe.AsRef(disposed) = true;
+            }
+            GC.SuppressFinalize(this);
+        }
+
+        public readonly int Release() => ComHelper.Release(raw);
+        public readonly void ForceRelease() => ComHelper.FinalRelease(raw);
     }
 }

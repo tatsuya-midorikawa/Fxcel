@@ -13,7 +13,7 @@ namespace Fxcel.Core.Interop
     using MicrosoftDocumentProperty = Microsoft.Office.Core.DocumentProperty;
 
     [SupportedOSPlatform("windows")]
-    public readonly struct XlWorkbook : IDisposable, IComObject
+    public readonly struct XlWorkbook : IComObject
     {
         internal readonly MicrosoftWorkbook raw;
         private readonly ComCollector collector;
@@ -40,20 +40,20 @@ namespace Fxcel.Core.Interop
             GC.SuppressFinalize(this);
         }
 
-        public int Release() => ComHelper.Release(raw);
-        public void ForceRelease() => ComHelper.FinalRelease(raw);
+        public readonly int Release() => ComHelper.Release(raw);
+        public readonly void ForceRelease() => ComHelper.FinalRelease(raw);
 
-        public XlApplication Application => new(raw.Application);
-        public XlCreator Creator => (XlCreator)raw.Creator;
-        public XlApplication Parent => new(raw.Parent);
-        public bool AcceptLabelsInFormulas
+        public readonly XlApplication Application => collector.Mark(new XlApplication(raw.Application));
+        public readonly XlCreator Creator => (XlCreator)raw.Creator;
+        public readonly XlApplication Parent => collector.Mark(new XlApplication(raw.Parent));
+        public readonly bool AcceptLabelsInFormulas
         {
             get => raw.AcceptLabelsInFormulas;
             set => raw.AcceptLabelsInFormulas = value;
         }
-        public XlChart ActiveChart => new(raw.ActiveChart);
-        public XlWorksheet ActiveSheet => new(raw.ActiveSheet);
-        public string Author
+        public readonly XlChart ActiveChart => collector.Mark(new XlChart(raw.ActiveChart));
+        public readonly XlWorksheet ActiveSheet => collector.Mark(new XlWorksheet(raw.ActiveSheet));
+        public readonly string Author
         {
             get => raw.Author;
             set => raw.Author = value;
@@ -73,7 +73,14 @@ namespace Fxcel.Core.Interop
             get => raw.ChangeHistoryDuration;
             set => raw.ChangeHistoryDuration = value;
         }
-        public IEnumerable<XlDocumentProperty> BuiltinDocumentProperties => ((IEnumerable<MicrosoftDocumentProperty>)raw.BuiltinDocumentProperties).Select(p => new XlDocumentProperty(p));
+        public IEnumerable<XlDocumentProperty> BuiltinDocumentProperties
+        {
+            get
+            {
+                var c = collector;
+                return ((IEnumerable<MicrosoftDocumentProperty>)raw.BuiltinDocumentProperties).Select(p => c.Mark(new XlDocumentProperty(p)));
+            }
+        }
         public XlSheets Charts => new(raw.Charts);
         public string CodeName => raw.CodeName;
         // TODO:

@@ -1,21 +1,41 @@
-﻿using System.Runtime.Versioning;
+﻿using System;
+using System.Runtime.CompilerServices;
+using System.Runtime.Versioning;
+using Fxcel.Core.Interop.Common;
 
 namespace Fxcel.Core.Interop
 {
     using MicrosoftDocumentProperty = Microsoft.Office.Core.DocumentProperty;
 
     [SupportedOSPlatform("windows")]
-    public sealed class XlDocumentProperty : XlComObject
+    public readonly struct XlDocumentProperty : IComObject
     {
-        internal XlDocumentProperty(MicrosoftDocumentProperty com) => raw = com;
-        internal MicrosoftDocumentProperty raw;
+        internal readonly MicrosoftDocumentProperty raw;
+        private readonly ComCollector collector;
+        private readonly bool disposed;
 
-        public override int Release() => ComHelper.Release(raw);
-        public override void ForceRelease() => ComHelper.FinalRelease(raw);
-        protected override void DidDispose()
+        internal XlDocumentProperty(MicrosoftDocumentProperty com)
         {
-            raw = default!;
-            base.DidDispose();
+            raw = com;
+            collector = new();
+            disposed = false;
         }
+
+        public readonly void Dispose()
+        {
+            if (!disposed)
+            {
+                // release managed objects
+                collector.Collect();
+                ForceRelease();
+
+                // update status
+                Unsafe.AsRef(disposed) = true;
+            }
+            GC.SuppressFinalize(this);
+        }
+
+        public readonly int Release() => ComHelper.Release(raw);
+        public readonly void ForceRelease() => ComHelper.FinalRelease(raw);
     }
 }

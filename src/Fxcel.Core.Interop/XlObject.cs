@@ -1,15 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.Versioning;
 using Fxcel.Core.Interop.Common;
 
 namespace Fxcel.Core.Interop
 {
     [SupportedOSPlatform("windows")]
-    public sealed class XlObject : XlComObject
+    public readonly struct XlObject : IComObject
     {
-        internal XlObject(object com) => raw = com;
-        internal object raw;
+        internal readonly object raw;
+        private readonly ComCollector collector;
+        private readonly bool disposed;
+
+        internal XlObject(object com)
+        {
+            raw = com;
+            collector = new();
+            disposed = false;
+        }
+
+        public readonly void Dispose()
+        {
+            if (!disposed)
+            {
+                // release managed objects
+                collector.Collect();
+                ForceRelease();
+
+                // update status
+                Unsafe.AsRef(disposed) = true;
+            }
+            GC.SuppressFinalize(this);
+        }
+
+        public readonly int Release() => ComHelper.Release(raw);
+        public readonly void ForceRelease() => ComHelper.FinalRelease(raw);
+
         public bool TryGetValue<T>(out T value)
         {
             var isValid = typeof(T) == raw?.GetType();
@@ -20,14 +47,5 @@ namespace Fxcel.Core.Interop
         }
         public T GetValue<T>() => (T)raw;
         public new Type GetType() => raw is null ? typeof(XlObject) : raw.GetType();
-
-        public override int Release() => ComHelper.Release(raw);
-        public override void ForceRelease() => ComHelper.FinalRelease(raw);
-        protected override void DidDispose()
-        {
-            raw = default!;
-            base.DidDispose();
-        }
-
     }
 }
