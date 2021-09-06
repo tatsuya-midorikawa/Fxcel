@@ -1,4 +1,6 @@
-﻿using System.Runtime.Versioning;
+﻿using System;
+using System.Runtime.CompilerServices;
+using System.Runtime.Versioning;
 using Fxcel.Core.Interop.Common;
 
 namespace Fxcel.Core.Interop

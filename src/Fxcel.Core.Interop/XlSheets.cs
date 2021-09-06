@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Versioning;
 using Fxcel.Core.Interop.Common;
+using System.Runtime.CompilerServices;
 
 namespace Fxcel.Core.Interop
 {
