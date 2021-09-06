@@ -48,14 +48,14 @@ namespace Fxcel.Core.Interop
 
         public readonly IEnumerator<XlWorkbook> GetEnumerator()
         {
-            var c = collector;
-            return raw.OfType<MicrosoftWorkbook>().Select(wb => c.Mark(new XlWorkbook(wb))).GetEnumerator();
+            var collector = this.collector;
+            return raw.OfType<MicrosoftWorkbook>().Select(wb => collector.Mark(new XlWorkbook(wb))).GetEnumerator();
         }
 
         readonly IEnumerator IEnumerable.GetEnumerator()
         {
-            var c = collector;
-            return raw.OfType<MicrosoftWorkbook>().Select(wb => c.Mark(new XlWorkbook(wb))).GetEnumerator();
+            var collector = this.collector;
+            return raw.OfType<MicrosoftWorkbook>().Select(wb => collector.Mark(new XlWorkbook(wb))).GetEnumerator();
         }
 
         public readonly XlWorkbook this[int index] => collector.Mark(new XlWorkbook(raw[index]));
