@@ -32,18 +32,19 @@ namespace Fxcel.Core.Interop
     public readonly struct XlApplication : IComObject
     {
         internal readonly MicrosoftApplication raw;
-        private readonly bool disposed;
         internal readonly ComCollector collector;
+        private readonly bool disposed;
 
         internal XlApplication(MicrosoftApplication com)
         {
             raw = com;
-            disposed = false;
             collector = new();
+            disposed = false;
         }
 
         public readonly void Dispose()
         {
+            Console.WriteLine("XlApplication Dispose");
             if (!disposed)
             {
                 // release managed objects

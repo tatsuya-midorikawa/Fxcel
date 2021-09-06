@@ -16,14 +16,14 @@ namespace Fxcel.Core.Interop
     public readonly struct XlWorkbook : IDisposable, IComObject
     {
         internal readonly MicrosoftWorkbook raw;
-        private readonly bool disposed;
         private readonly ComCollector collector;
+        private readonly bool disposed;
 
         internal XlWorkbook(MicrosoftWorkbook com)
         {
             raw = com;
-            disposed = false;
             collector = new();
+            disposed = false;
         }
 
         public readonly void Dispose()

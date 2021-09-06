@@ -17,6 +17,7 @@ static class C
 {
     public static int Main(string[] args)
     {
+        Console.WriteLine("SizeOf({0}) = {1}", typeof(IntPtr), IntPtr.Size);
         Console.WriteLine("SizeOf({0}) = {1}", typeof(XlApplication), Marshal.SizeOf(typeof(XlApplication)));
         Console.WriteLine("SizeOf({0}) = {1}", typeof(XlWorkbooks), Marshal.SizeOf(typeof(XlWorkbooks)));
         using var app = XlApplication.BlankWorkbook();

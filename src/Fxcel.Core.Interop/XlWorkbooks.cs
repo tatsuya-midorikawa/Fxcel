@@ -18,18 +18,19 @@ namespace Fxcel.Core.Interop
     public readonly struct XlWorkbooks : IComObject, IEnumerable<XlWorkbook>
     {
         internal readonly MicrosoftWorkbooks raw;
-        private readonly bool disposed;
         private readonly ComCollector collector;
+        private readonly bool disposed;
 
         internal XlWorkbooks(MicrosoftWorkbooks com)
         {
             raw = com;
-            disposed = false;
             collector = new();
+            disposed = false;
         }
 
         public readonly void Dispose()
         {
+            Console.WriteLine("XlWorkbooks Dispose");
             if (!disposed)
             {
                 // release managed objects
@@ -45,7 +46,6 @@ namespace Fxcel.Core.Interop
         public readonly int Release() => ComHelper.Release(raw);
         public readonly void ForceRelease() => ComHelper.FinalRelease(raw);
 
-
         public readonly IEnumerator<XlWorkbook> GetEnumerator()
         {
             var c = collector;
@@ -58,16 +58,16 @@ namespace Fxcel.Core.Interop
             return raw.OfType<MicrosoftWorkbook>().Select(wb => c.Mark(new XlWorkbook(wb))).GetEnumerator();
         }
 
-        public readonly XlWorkbook this[int index] => new(raw[index]);
-        public readonly XlWorkbook this[string name] => new(raw[name]);
+        public readonly XlWorkbook this[int index] => collector.Mark(new XlWorkbook(raw[index]));
+        public readonly XlWorkbook this[string name] => collector.Mark(new XlWorkbook(raw[name]));
 
         public readonly XlApplication Application => collector.Mark(new XlApplication(raw.Application));
         public readonly XlCreator Creator => (XlCreator)raw.Creator;
         public readonly XlApplication Parent => collector.Mark(new XlApplication(raw.Parent));
         public readonly int Count => raw.Count;
 
-        public readonly XlWorkbook Add([Optional][In][MarshalAs(UnmanagedType.Struct)] string template) => 
-            new(string.IsNullOrEmpty(template) ? raw.Add() : raw.Add(template));
+        public readonly XlWorkbook Add([Optional][In][MarshalAs(UnmanagedType.Struct)] string template) =>
+            collector.Mark(new XlWorkbook(string.IsNullOrEmpty(template) ? raw.Add() : raw.Add(template)));
 
         public readonly void Close() => raw.Close();
 

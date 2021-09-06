@@ -10,10 +10,10 @@ namespace Fxcel.Core.Interop.Common
     {
         private readonly List<IComObject> _collection = new();
 
-        public readonly T Mark<T>(T target) where T : IComObject
+        public readonly ref readonly T Mark<T>(in T target) where T : IComObject
         {
             _collection.Add(target);
-            return target;
+            return ref target;
         }
 
         public readonly void Collect()
