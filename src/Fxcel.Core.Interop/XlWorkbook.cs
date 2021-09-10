@@ -201,5 +201,44 @@ namespace Fxcel.Core.Interop
 
         public bool CheckCompatibility { get => raw.CheckCompatibility; set => raw.CheckCompatibility = value; }
         public bool HasVBProject => raw.HasVBProject;
+
+        public XlCustomXmlParts CustomXmlParts => collector.Mark(new XlCustomXmlParts(raw.CustomXMLParts));
+        public bool Final { get => raw.Final; set => raw.Final = value; }
+        public XlResearch Research => collector.Mark(new XlResearch(raw.Research));
+        public XlOfficeTheme Theme => collector.Mark(new XlOfficeTheme(raw.Theme));
+        public bool Excel8CompatibilityMode => raw.Excel8CompatibilityMode;
+        public bool ConnectionsDisabled => raw.ConnectionsDisabled;
+        public bool ShowPivotChartActiveFields { get => raw.ShowPivotChartActiveFields; set => raw.ShowPivotChartActiveFields = value; }
+        public XlIconSets ThIconSetseme => collector.Mark(new XlIconSets(raw.IconSets));
+        public string EncryptionProvider { get => raw.EncryptionProvider; set => raw.EncryptionProvider = value; }
+        public bool DoNotPromptForConvert { get => raw.DoNotPromptForConvert; set => raw.DoNotPromptForConvert = value; }
+        public bool ForceFullCalculation { get => raw.ForceFullCalculation; set => raw.ForceFullCalculation = value; }
+        public XlSlicerCaches SlicerCaches => collector.Mark(new XlSlicerCaches(raw.SlicerCaches));
+        public XlSlicer ActiveSlicer => collector.Mark(new XlSlicer(raw.ActiveSlicer));
+
+        // TODO:
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._workbook.defaultslicerstyle?view=excel-pia" />
+        public XlObject DefaultSlicerStyle => collector.Mark(new XlObject(raw.DefaultSlicerStyle));
+
+        public int AccuracyVersion { get => raw.AccuracyVersion; set => raw.AccuracyVersion = value; }
+        public bool CaseSensitive => raw.CaseSensitive;
+        public bool UseWholeCellCriteria => raw.UseWholeCellCriteria;
+        public bool UseWildcards => raw.UseWildcards;
+
+        // TODO:
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._workbook.pivottables?view=excel-pia" />
+        public XlObject PivotTables => collector.Mark(new XlObject(raw.PivotTables));
+
+        public XlModel Model => collector.Mark(new XlModel(raw.Model));
+        public bool ChartDataPointTrack { get => raw.ChartDataPointTrack; set => raw.ChartDataPointTrack = value; }
+
+        // TODO:
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._workbook.defaulttimelinestyle?view=excel-pia" />
+        public XlObject DefaultTimelineStyle => collector.Mark(new XlObject(raw.DefaultTimelineStyle));
+
+        public XlQueries Queries => collector.Mark(new XlQueries(raw.Queries));
+        public string WorkIdentity { get => raw.WorkIdentity; set => raw.WorkIdentity = value; }
+        public bool AutoSaveOn { get => raw.AutoSaveOn; set => raw.AutoSaveOn = value; }
+        public XlSensitivityLabel SensitivityLabel => collector.Mark(new XlSensitivityLabel(raw.SensitivityLabel));
     }
 }
