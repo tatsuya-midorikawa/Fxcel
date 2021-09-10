@@ -12,6 +12,7 @@ namespace Fxcel.Core.Interop
     using MicrosoftWorkbook = Microsoft.Office.Interop.Excel.Workbook;
     using MicrosoftDocumentProperty = Microsoft.Office.Core.DocumentProperty;
     using MicrosoftDisplayDrawingObjects = Microsoft.Office.Interop.Excel.XlDisplayDrawingObjects;
+    using MicrosoftXlUpdateLinks = Microsoft.Office.Interop.Excel.XlUpdateLinks;
 
     [SupportedOSPlatform("windows")]
     public readonly struct XlWorkbook : IComObject
@@ -145,5 +146,45 @@ namespace Fxcel.Core.Interop
         public XlObject UserStatus => collector.Mark(new XlObject(raw.UserStatus));
         public XlCustomViews CustomViews => collector.Mark(new XlCustomViews(raw.CustomViews));
         public XlWindows Windows => collector.Mark(new XlWindows(raw.Windows));
+        public XlSheets Worksheets => collector.Mark(new XlSheets(raw.Worksheets));
+        public bool WriteReserved => raw.WriteReserved;
+        public string WriteReservedBy => raw.WriteReservedBy;
+        public XlSheets Excel4IntlMacroSheets => collector.Mark(new XlSheets(raw.Excel4IntlMacroSheets));
+        public XlSheets Excel4MacroSheets => collector.Mark(new XlSheets(raw.Excel4MacroSheets));
+        public bool TemplateRemoveExtData { get => raw.TemplateRemoveExtData; set => raw.TemplateRemoveExtData = value; }
+        public bool HighlightChangesOnScreen { get => raw.HighlightChangesOnScreen; set => raw.HighlightChangesOnScreen = value; }
+        public bool KeepChangeHistory { get => raw.KeepChangeHistory; set => raw.KeepChangeHistory = value; }
+        public bool ListChangesOnNewSheet { get => raw.ListChangesOnNewSheet; set => raw.ListChangesOnNewSheet = value; }
+        public bool IsInplace => raw.IsInplace;
+        public XlPublishObjects PublishObjects => collector.Mark(new XlPublishObjects(raw.PublishObjects));
+        public XlWebOptions WebOptions => collector.Mark(new XlWebOptions(raw.WebOptions));
+        public XlHtmlProject HtmlProject => collector.Mark(new XlHtmlProject(raw.HTMLProject));
+        public bool EnvelopeVisible { get => raw.EnvelopeVisible; set => raw.EnvelopeVisible = value; }
+        public int CalculationVersion => raw.CalculationVersion;
+        public bool VbaSigned => raw.VBASigned;
+        public bool ShowPivotTableFieldList { get => raw.ShowPivotTableFieldList; set => raw.ShowPivotTableFieldList = value; }
+        public XlUpdateLinks UpdateLinks { get => (XlUpdateLinks)raw.UpdateLinks; set => raw.UpdateLinks = (MicrosoftXlUpdateLinks)value; }
+        public bool EnableAutoRecover { get => raw.EnableAutoRecover; set => raw.EnableAutoRecover = value; }
+        public bool RemovePersonalInformation { get => raw.RemovePersonalInformation; set => raw.RemovePersonalInformation = value; }
+        public string FullNameURLEncoded => raw.FullNameURLEncoded;
+        public string Password { get => raw.Password; set => raw.Password = value; }
+        public string WritePassword { get => raw.WritePassword; set => raw.WritePassword = value; }
+        public string PasswordEncryptionProvider => raw.PasswordEncryptionProvider;
+        public string PasswordEncryptionAlgorithm => raw.PasswordEncryptionAlgorithm;
+        public int PasswordEncryptionKeyLength => raw.PasswordEncryptionKeyLength;
+        public bool PasswordEncryptionFileProperties => raw.PasswordEncryptionFileProperties;
+        public bool ReadOnlyRecommended { get => raw.ReadOnlyRecommended; set => raw.ReadOnlyRecommended = value; }
+        public XlSmartTagOptions SmartTagOptions => collector.Mark(new XlSmartTagOptions(raw.SmartTagOptions));
+        public XlPermission Permission => collector.Mark(new XlPermission(raw.Permission));
+        public XlSharedWorkspace SharedWorkspace => collector.Mark(new XlSharedWorkspace(raw.SharedWorkspace));
+        public XlSync Sync => collector.Mark(new XlSync(((Microsoft.Office.Interop.Excel._Workbook)raw).Sync));
+        public XlXmlNamespaces XmlNamespaces => collector.Mark(new XlXmlNamespaces(raw.XmlNamespaces));
+        public XlXmlMaps XmlMaps => collector.Mark(new XlXmlMaps(raw.XmlMaps));
+        public XlSmartDocument SmartDocument => collector.Mark(new XlSmartDocument(raw.SmartDocument));
+        public XlDocumentLibraryVersions DocumentLibraryVersions => collector.Mark(new XlDocumentLibraryVersions(raw.DocumentLibraryVersions));
+        public bool InactiveListBorderVisible { get => raw.InactiveListBorderVisible; set => raw.InactiveListBorderVisible = value; }
+        public bool DisplayInkComments { get => raw.DisplayInkComments; set => raw.DisplayInkComments = value; }
+        public XlMetaProperties ContentTypeProperties => collector.Mark(new XlMetaProperties(raw.ContentTypeProperties));
+        public XlConnections Connections => collector.Mark(new XlConnections(raw.Connections));
     }
 }
