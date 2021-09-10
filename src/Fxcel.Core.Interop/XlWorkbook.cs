@@ -186,5 +186,20 @@ namespace Fxcel.Core.Interop
         public bool DisplayInkComments { get => raw.DisplayInkComments; set => raw.DisplayInkComments = value; }
         public XlMetaProperties ContentTypeProperties => collector.Mark(new XlMetaProperties(raw.ContentTypeProperties));
         public XlConnections Connections => collector.Mark(new XlConnections(raw.Connections));
+        public XlSignatureSet SignatureSet => collector.Mark(new XlSignatureSet(raw.Signatures));
+        public XlServerPolicy ServerPolicy => collector.Mark(new XlServerPolicy(raw.ServerPolicy));
+        public XlDocumentInspectors DocumentInspectors => collector.Mark(new XlDocumentInspectors(raw.DocumentInspectors));
+        public XlServerViewableItems ServerViewableItems => collector.Mark(new XlServerViewableItems(raw.ServerViewableItems));
+        public XlTableStyles TableStyles => collector.Mark(new XlTableStyles(raw.TableStyles));
+
+        // TODO:
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._workbook.defaulttablestyle?view=excel-pia" />
+        public XlObject DefaultTableStyle => collector.Mark(new XlObject(raw.DefaultTableStyle));
+        // TODO:
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._workbook.defaultpivottablestyle?view=excel-pia" />
+        public XlObject DefaultPivotTableStyle => collector.Mark(new XlObject(raw.DefaultPivotTableStyle));
+
+        public bool CheckCompatibility { get => raw.CheckCompatibility; set => raw.CheckCompatibility = value; }
+        public bool HasVBProject => raw.HasVBProject;
     }
 }
