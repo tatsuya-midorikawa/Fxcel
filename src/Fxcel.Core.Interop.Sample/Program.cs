@@ -12,6 +12,23 @@ using Excel = Microsoft.Office.Interop.Excel;
 //var b = a.Parent;
 //Console.WriteLine(a.GetType());
 
+//public readonly ref struct S
+//{
+//    public readonly int Number;
+//    public readonly string Value;
+//}
+
+//public sealed class C
+//{
+//    public ref readonly S M(in S lhs, in S rhs)
+//    {
+//        ref readonly var l = ref lhs;
+//        ref readonly var r = ref rhs;
+//        return ref (l.Number < r.Number ? ref r : ref l);
+//    }
+//}
+
+readonly record struct Foo (int Bar);
 
 static class C
 {
