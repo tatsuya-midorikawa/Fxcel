@@ -2,6 +2,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using Fxcel.Core.Interop;
 using Fxcel.Core.Interop.Common;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -16,34 +17,9 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 static class C
 {
-    struct Struct
-    {
-        public int Value = 100;
-        public void M(int v) => Value = v;
-
-        [return: NotNullIfNotNull("value")]
-        public string? M(string? value) => value;
-    }
-
-    class Class
-    {
-        public int Value = 100;
-        public void M(int v) => Value = v;
-    }
-
-    private static readonly Struct s = new Struct();
-    private static readonly Class c = new Class();
-
+    [SupportedOSPlatform("windows")]
     public static int Main(string[] args)
     {
-        Console.WriteLine(s.Value);
-        s.M(500);
-        Console.WriteLine(s.Value);
-
-        Console.WriteLine(c.Value);
-        c.M(500);
-        Console.WriteLine(c.Value);
-
         //Console.WriteLine("SizeOf({0}) = {1}", typeof(IntPtr), IntPtr.Size);
         //Console.WriteLine("SizeOf({0}) = {1}", typeof(XlApplication), Marshal.SizeOf(typeof(XlApplication)));
         //Console.WriteLine("SizeOf({0}) = {1}", typeof(XlWorkbooks), Marshal.SizeOf(typeof(XlWorkbooks)));
@@ -51,6 +27,16 @@ static class C
         //var a = app.Workbooks;
         //var b = a.Parent;
         //Console.WriteLine(a.GetType());
+
+        try
+        {
+            using var app = XlApplication.New();
+            var book = app.Workbooks[1];
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
 
         return 0;
     }

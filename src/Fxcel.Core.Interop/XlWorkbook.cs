@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Runtime.Versioning;
 using Fxcel.Core.Interop.Common;
 using System.Runtime.CompilerServices;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Fxcel.Core.Interop
 {

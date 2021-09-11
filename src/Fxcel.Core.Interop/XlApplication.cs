@@ -47,6 +47,7 @@ namespace Fxcel.Core.Interop
             if (!disposed)
             {
                 // release managed objects
+                raw.Quit();
                 collector.Collect();
                 ForceRelease();
 
@@ -64,7 +65,6 @@ namespace Fxcel.Core.Interop
             app.IgnoreRemoteRequests = ignoreRemoteRequests;
             app.DisplayAlerts = displayAlerts;
             app.Visible = visible;
-            app.Calculation = calculation;
             return app;
         }
 
@@ -72,6 +72,7 @@ namespace Fxcel.Core.Interop
         {
             var app = NewBlank(ignoreRemoteRequests, displayAlerts, visible, calculation);
             app.Workbooks.Add();
+            app.Calculation = calculation;
             return app;
         }
 
@@ -79,6 +80,7 @@ namespace Fxcel.Core.Interop
         {
             var app = NewBlank(ignoreRemoteRequests, displayAlerts, visible, calculation);
             app.Workbooks.Add(template);
+            app.Calculation = calculation;
             return app;
         }
 
@@ -86,6 +88,7 @@ namespace Fxcel.Core.Interop
         {
             var app = NewBlank(ignoreRemoteRequests, displayAlerts, visible, calculation);
             app.Workbooks.Open(filepath);
+            app.Calculation = calculation;
             return app;
         }
 
@@ -93,6 +96,7 @@ namespace Fxcel.Core.Interop
         {
             var app = NewBlank(ignoreRemoteRequests, displayAlerts, visible, calculation);
             app.Workbooks.Open(filepath, password);
+            app.Calculation = calculation;
             return app;
         }
 
@@ -100,6 +104,7 @@ namespace Fxcel.Core.Interop
         {
             var app = NewBlank(ignoreRemoteRequests, displayAlerts, visible, calculation);
             app.Workbooks.Open(filepath, @readonly);
+            app.Calculation = calculation;
             return app;
         }
 
@@ -107,6 +112,7 @@ namespace Fxcel.Core.Interop
         {
             var app = NewBlank(ignoreRemoteRequests, displayAlerts, visible, calculation);
             app.Workbooks.Open(filepath, password, @readonly);
+            app.Calculation = calculation;
             return app;
         }
 

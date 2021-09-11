@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace Fxcel.Core.Interop.Common
         public readonly void Collect()
         {
             foreach (var item in _collection)
-                try { item?.Dispose(); } catch { /* ignore */ }
+                try { item?.Dispose(); } catch(Exception e) { Debug.WriteLine(e.Message); }
         }
 
         public readonly void Collect(Action didCollect)

@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using Fxcel.Core.Interop.Common;
 using System.Collections;
 using System.Runtime.CompilerServices;
+using System.Diagnostics;
 
 namespace Fxcel.Core.Interop
 {
@@ -64,8 +65,8 @@ namespace Fxcel.Core.Interop
         public readonly XlApplication Parent => collector.Mark(new XlApplication(raw.Parent));
         public readonly int Count => raw.Count;
 
-        public readonly XlWorkbook Add([Optional][In][MarshalAs(UnmanagedType.Struct)] string template) =>
-            collector.Mark(new XlWorkbook(string.IsNullOrEmpty(template) ? raw.Add() : raw.Add(template)));
+        public readonly XlWorkbook Add() => collector.Mark(new XlWorkbook(raw.Add()));
+        public readonly XlWorkbook Add(string template) => collector.Mark(new XlWorkbook(raw.Add(template)));
 
         public readonly void Close() => raw.Close();
         public readonly XlWorkbook Open(string filename) => collector.Mark(new XlWorkbook(raw.Open(Filename: filename)));
