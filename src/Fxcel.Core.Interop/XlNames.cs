@@ -35,7 +35,6 @@ namespace Fxcel.Core.Interop
                 // update status
                 Unsafe.AsRef(disposed) = true;
             }
-            GC.SuppressFinalize(this);
         }
 
         public readonly int Release() => ComHelper.Release(raw);
