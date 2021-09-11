@@ -6,7 +6,7 @@ namespace Fxcel.Core.Interop
     [SupportedOSPlatform("windows")]
     public static class ComHelper
     {
-        public static int Release(object com) => Marshal.ReleaseComObject(com);
-        public static int FinalRelease(object com) => Marshal.FinalReleaseComObject(com);
+        public static int Release(object com) => Marshal.IsComObject(com) ? Marshal.ReleaseComObject(com) : 0;
+        public static int FinalRelease(object com) => Marshal.IsComObject(com) ? Marshal.FinalReleaseComObject(com) : 0;
     }
 }
