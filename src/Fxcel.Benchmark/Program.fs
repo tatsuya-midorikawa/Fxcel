@@ -4,19 +4,13 @@ open System
 open BenchmarkDotNet.Attributes
 open BenchmarkDotNet.Running
 
+open Fxcel.Core.Interop
+
 type Benchmark() =
   [<Benchmark>]
-  member __.M100() =
-    for i in [| 1..100 |] do
-      let a = 100
-      ()
-
-  [<Benchmark>]
-  member __.M1000() =
-    for i in [| 1..1000 |] do
-      let a = 100
-      ()
-
+  member __.Struct() =
+    use a = XlApplication.BlankWorkbook()
+    ()
 
 [<EntryPoint>]
 let main argv =

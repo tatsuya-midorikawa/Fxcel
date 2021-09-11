@@ -44,7 +44,6 @@ namespace Fxcel.Core.Interop
 
         public readonly void Dispose()
         {
-            Console.WriteLine("XlApplication Dispose");
             if (!disposed)
             {
                 // release managed objects
@@ -59,13 +58,55 @@ namespace Fxcel.Core.Interop
         public readonly int Release() => ComHelper.Release(raw);
         public readonly void ForceRelease() => ComHelper.FinalRelease(raw);
 
-        public static XlApplication BlankWorkbook()
+        private static XlApplication NewBlank(bool ignoreRemoteRequests, bool displayAlerts, bool visible, XlCalculation calculation)
         {
             var app = new XlApplication(new MicrosoftApplication());
-            //var books = app.Workbooks;
-            //var book = books.Add();
-            //book.FinalRelease();
-            //books.FinalRelease();
+            app.IgnoreRemoteRequests = ignoreRemoteRequests;
+            app.DisplayAlerts = displayAlerts;
+            app.Visible = visible;
+            app.Calculation = calculation;
+            return app;
+        }
+
+        public static XlApplication New(bool ignoreRemoteRequests = true, bool displayAlerts = false, bool visible = false, XlCalculation calculation = XlCalculation.Automatic)
+        {
+            var app = NewBlank(ignoreRemoteRequests, displayAlerts, visible, calculation);
+            app.Workbooks.Add();
+            return app;
+        }
+
+        public static XlApplication New(string template, bool ignoreRemoteRequests = true, bool displayAlerts = false, bool visible = false, XlCalculation calculation = XlCalculation.Automatic)
+        {
+            var app = NewBlank(ignoreRemoteRequests, displayAlerts, visible, calculation);
+            app.Workbooks.Add(template);
+            return app;
+        }
+
+        public static XlApplication Open(string filepath, bool ignoreRemoteRequests = true, bool displayAlerts = false, bool visible = false, XlCalculation calculation = XlCalculation.Automatic)
+        {
+            var app = NewBlank(ignoreRemoteRequests, displayAlerts, visible, calculation);
+            app.Workbooks.Open(filepath);
+            return app;
+        }
+
+        public static XlApplication Open(string filepath, string password, bool ignoreRemoteRequests = true, bool displayAlerts = false, bool visible = false, XlCalculation calculation = XlCalculation.Automatic)
+        {
+            var app = NewBlank(ignoreRemoteRequests, displayAlerts, visible, calculation);
+            app.Workbooks.Open(filepath, password);
+            return app;
+        }
+
+        public static XlApplication Open(string filepath, bool @readonly, bool ignoreRemoteRequests = true, bool displayAlerts = false, bool visible = false, XlCalculation calculation = XlCalculation.Automatic)
+        {
+            var app = NewBlank(ignoreRemoteRequests, displayAlerts, visible, calculation);
+            app.Workbooks.Open(filepath, @readonly);
+            return app;
+        }
+
+        public static XlApplication Open(string filepath, string password, bool @readonly, bool ignoreRemoteRequests = true, bool displayAlerts = false, bool visible = false, XlCalculation calculation = XlCalculation.Automatic)
+        {
+            var app = NewBlank(ignoreRemoteRequests, displayAlerts, visible, calculation);
+            app.Workbooks.Open(filepath, password, @readonly);
             return app;
         }
 

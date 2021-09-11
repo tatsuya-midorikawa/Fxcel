@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using Fxcel.Core.Interop;
 using Fxcel.Core.Interop.Common;
@@ -11,6 +12,52 @@ using Excel = Microsoft.Office.Interop.Excel;
 //var a = app.Workbooks;
 //var b = a.Parent;
 //Console.WriteLine(a.GetType());
+
+
+static class C
+{
+    struct Struct
+    {
+        public int Value = 100;
+        public void M(int v) => Value = v;
+
+        [return: NotNullIfNotNull("value")]
+        public string? M(string? value) => value;
+    }
+
+    class Class
+    {
+        public int Value = 100;
+        public void M(int v) => Value = v;
+    }
+
+    private static readonly Struct s = new Struct();
+    private static readonly Class c = new Class();
+
+    public static int Main(string[] args)
+    {
+        Console.WriteLine(s.Value);
+        s.M(500);
+        Console.WriteLine(s.Value);
+
+        Console.WriteLine(c.Value);
+        c.M(500);
+        Console.WriteLine(c.Value);
+
+        //Console.WriteLine("SizeOf({0}) = {1}", typeof(IntPtr), IntPtr.Size);
+        //Console.WriteLine("SizeOf({0}) = {1}", typeof(XlApplication), Marshal.SizeOf(typeof(XlApplication)));
+        //Console.WriteLine("SizeOf({0}) = {1}", typeof(XlWorkbooks), Marshal.SizeOf(typeof(XlWorkbooks)));
+        //using var app = XlApplication.BlankWorkbook();
+        //var a = app.Workbooks;
+        //var b = a.Parent;
+        //Console.WriteLine(a.GetType());
+
+        return 0;
+    }
+}
+
+
+
 
 //public readonly ref struct S
 //{
@@ -28,22 +75,22 @@ using Excel = Microsoft.Office.Interop.Excel;
 //    }
 //}
 
-readonly record struct Foo (int Bar);
+//readonly record struct Foo (int Bar);
 
-static class C
-{
-    public static int Main(string[] args)
-    {
-        Console.WriteLine("SizeOf({0}) = {1}", typeof(IntPtr), IntPtr.Size);
-        Console.WriteLine("SizeOf({0}) = {1}", typeof(XlApplication), Marshal.SizeOf(typeof(XlApplication)));
-        Console.WriteLine("SizeOf({0}) = {1}", typeof(XlWorkbooks), Marshal.SizeOf(typeof(XlWorkbooks)));
-        using var app = XlApplication.BlankWorkbook();
-        var a = app.Workbooks;
-        var b = a.Parent;
-        Console.WriteLine(a.GetType());
-        return 0;
-    }
-}
+//static class C
+//{
+//    public static int Main(string[] args)
+//    {
+//        Console.WriteLine("SizeOf({0}) = {1}", typeof(IntPtr), IntPtr.Size);
+//        Console.WriteLine("SizeOf({0}) = {1}", typeof(XlApplication), Marshal.SizeOf(typeof(XlApplication)));
+//        Console.WriteLine("SizeOf({0}) = {1}", typeof(XlWorkbooks), Marshal.SizeOf(typeof(XlWorkbooks)));
+//        using var app = XlApplication.BlankWorkbook();
+//        var a = app.Workbooks;
+//        var b = a.Parent;
+//        Console.WriteLine(a.GetType());
+//        return 0;
+//    }
+//}
 
 
 //var books = app.Workbooks;

@@ -30,7 +30,6 @@ namespace Fxcel.Core.Interop
 
         public readonly void Dispose()
         {
-            Console.WriteLine("XlWorkbooks Dispose");
             if (!disposed)
             {
                 // release managed objects
@@ -69,6 +68,10 @@ namespace Fxcel.Core.Interop
             collector.Mark(new XlWorkbook(string.IsNullOrEmpty(template) ? raw.Add() : raw.Add(template)));
 
         public readonly void Close() => raw.Close();
+        public readonly XlWorkbook Open(string filename) => collector.Mark(new XlWorkbook(raw.Open(Filename: filename)));
+        public readonly XlWorkbook Open(string filename, string password) => collector.Mark(new XlWorkbook(raw.Open(Filename: filename, Password: password)));
+        public readonly XlWorkbook Open(string filename, bool @readonly) => collector.Mark(new XlWorkbook(raw.Open(Filename: filename, ReadOnly: @readonly)));
+        public readonly XlWorkbook Open(string filename, string password, bool @readonly) => collector.Mark(new XlWorkbook(raw.Open(Filename: filename, Password: password, ReadOnly: @readonly)));
 
     }
 }
