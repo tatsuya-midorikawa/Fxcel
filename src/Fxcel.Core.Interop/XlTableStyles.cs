@@ -1,20 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Versioning;
+using System.Text;
+using System.Threading.Tasks;
 using Fxcel.Core.Interop.Common;
 
 namespace Fxcel.Core.Interop
 {
-    using MicrosoftSmartTagRecognizers = Microsoft.Office.Interop.Excel.SmartTagRecognizers;
+    using MicrosoftTableStyles = Microsoft.Office.Interop.Excel.TableStyles;
 
     [SupportedOSPlatform("windows")]
-    public readonly struct XlSmartTagRecognizers : IComObject
+    public readonly struct XlTableStyles : IComObject
     {
-        internal readonly MicrosoftSmartTagRecognizers raw;
+        internal readonly MicrosoftTableStyles raw;
         private readonly ComCollector collector;
         private readonly bool disposed;
 
-        internal XlSmartTagRecognizers(MicrosoftSmartTagRecognizers com)
+        internal XlTableStyles(MicrosoftTableStyles com)
         {
             raw = com;
             collector = new();

@@ -5,16 +5,16 @@ using Fxcel.Core.Interop.Common;
 
 namespace Fxcel.Core.Interop
 {
-    using MicrosoftSmartTagRecognizers = Microsoft.Office.Interop.Excel.SmartTagRecognizers;
+    using MicrosoftDocumentLibraryVersions = Microsoft.Office.Core.DocumentLibraryVersions;
 
     [SupportedOSPlatform("windows")]
-    public readonly struct XlSmartTagRecognizers : IComObject
+    public readonly struct XlDocumentLibraryVersions : IComObject
     {
-        internal readonly MicrosoftSmartTagRecognizers raw;
+        internal readonly MicrosoftDocumentLibraryVersions raw;
         private readonly ComCollector collector;
         private readonly bool disposed;
 
-        internal XlSmartTagRecognizers(MicrosoftSmartTagRecognizers com)
+        internal XlDocumentLibraryVersions(MicrosoftDocumentLibraryVersions com)
         {
             raw = com;
             collector = new();

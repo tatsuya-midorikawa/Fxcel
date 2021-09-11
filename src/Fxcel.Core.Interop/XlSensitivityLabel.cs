@@ -5,16 +5,16 @@ using Fxcel.Core.Interop.Common;
 
 namespace Fxcel.Core.Interop
 {
-    using MicrosoftSmartTagRecognizers = Microsoft.Office.Interop.Excel.SmartTagRecognizers;
+    using MicrosoftSensitivityLabel = Microsoft.Office.Core.SensitivityLabel;
 
     [SupportedOSPlatform("windows")]
-    public readonly struct XlSmartTagRecognizers : IComObject
+    public readonly struct XlSensitivityLabel : IComObject
     {
-        internal readonly MicrosoftSmartTagRecognizers raw;
+        internal readonly MicrosoftSensitivityLabel raw;
         private readonly ComCollector collector;
         private readonly bool disposed;
 
-        internal XlSmartTagRecognizers(MicrosoftSmartTagRecognizers com)
+        internal XlSensitivityLabel(MicrosoftSensitivityLabel com)
         {
             raw = com;
             collector = new();
