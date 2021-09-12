@@ -370,62 +370,45 @@ namespace Fxcel.Core.Interop
         /// <param name="channel">DdeInitiateの戻り値.</param>
         /// <param name="message">受信アプリケーションで定義されたメッセージ.</param>
         /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.ddeexecute?view=excel-pia" />
-        public readonly void DdeExecute(
-            [In] int channel,
-            [In][MarshalAs(UnmanagedType.BStr)] string message
-        ) =>
-            raw.DDEExecute(channel, message);
+        public readonly void DdeExecute(int channel, string message) => raw.DDEExecute(channel, message);
 
         /// <summary>アプリケーションへのDDEチャネルを開く.</summary>
         /// <param name="app">アプリケーション名.</param>
         /// <param name="topic">チャネルを開いているアプリケーション内容についての説明.</param>
         /// <returns>チャネルID.</returns>
         /// <see href="https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.office.interop.excel._application.ddeinitiate?view=excel-pia" />
-        public readonly int DdeInitiate(
-            [In][MarshalAs(UnmanagedType.BStr)] string app,
-            [In][MarshalAs(UnmanagedType.BStr)] string topic
-        ) =>
-            raw.DDEInitiate(app, topic);
+        public readonly int DdeInitiate(string app, string topic) => raw.DDEInitiate(app, topic);
 
         /// <summary>アプリケーションにデータを送信する.</summary>
         /// <param name="channel">DdeInitiateの戻り値.</param>
         /// <param name="item">データの送信先アイテム名.</param>
         /// <param name="data">アプリケーションに送信されるデータ.</param>
         /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.ddepoke?view=excel-pia" />
-        public readonly void DdePoke(
-            [In] int channel,
-            [In][MarshalAs(UnmanagedType.Struct)] string item,
-            [In][MarshalAs(UnmanagedType.Struct)] object data
-        ) =>
-            raw.DDEPoke(channel, item, data);
+        public readonly void DdePoke(int channel, string item, object data) => raw.DDEPoke(channel, item, data);
 
         /// <summary>指定したアプリケーションに情報を要求する.</summary>
         /// <param name="channel">DdeInitiateの戻り値.</param>
         /// <param name="item">リクエストするアイテム.</param>
         /// <returns>配列アイテム.</returns>
         /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.dderequest?view=excel-pia" />
-        public readonly object DdeRequest(
-            [In] int channel,
-            [In][MarshalAs(UnmanagedType.BStr)] string item
-        ) =>
-            raw.DDERequest(channel, item);
+        public readonly XlObject DdeRequest(int channel, string item) => collector.Mark(new XlObject(raw.DDERequest(channel, item)));
 
         /// <summary>チャネルを閉じる.</summary>
         /// <param name="channel">DdeInitiateの戻り値.</param>
         /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.ddeterminate?view=excel-pia" />
-        public readonly void DdeTerminate([In] int channel) => raw.DDETerminate(channel);
+        public readonly void DdeTerminate(int channel) => raw.DDETerminate(channel);
 
         /// <summary></summary>
         /// <param name="name"></param>
         /// <returns></returns>
         /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.evaluate?view=excel-pia" />
-        public readonly object Evaluate([In][MarshalAs(UnmanagedType.Struct)] string name) => raw.Evaluate(name);
+        public readonly XlObject Evaluate(string name) => collector.Mark(new XlObject(raw.Evaluate(name)));
 
         /// <summary></summary>
         /// <param name="function"></param>
         /// <returns></returns>
         /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.executeexcel4macro?view=excel-pia" />
-        public readonly object ExecuteExcel4Macro([In][MarshalAs(UnmanagedType.BStr)] string function) => raw.ExecuteExcel4Macro(function);
+        public readonly XlObject ExecuteExcel4Macro(string function) => collector.Mark(new XlObject(raw.ExecuteExcel4Macro(function)));
 
         // TODO: 
         /// <summary></summary>
@@ -433,184 +416,180 @@ namespace Fxcel.Core.Interop
         /// <param name="arg2"></param>
         /// <returns></returns>
         /// <see href="https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.office.interop.excel._application.intersect?view=excel-pia" />
-        public readonly XlRange Intersect(
-            [In][MarshalAs(UnmanagedType.Interface)] MicrosoftRange arg1,
-            [In][MarshalAs(UnmanagedType.Interface)] MicrosoftRange arg2,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg3,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg4,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg5,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg6,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg7,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg8,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg9,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg10,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg11,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg12,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg13,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg14,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg15,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg16,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg17,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg18,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg19,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg20,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg21,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg22,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg23,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg24,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg25,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg26,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg27,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg28,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg29,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg30
-        ) =>
-            collector.Mark(new XlRange(
-                raw.Intersect(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27, arg28, arg29, arg30)));
-        public readonly XlRange Intersect(
-            [In] XlRange arg1,
-            [In] XlRange arg2,
-            [Optional][In] XlRange arg3,
-            [Optional][In] XlRange arg4,
-            [Optional][In] XlRange arg5,
-            [Optional][In] XlRange arg6,
-            [Optional][In] XlRange arg7,
-            [Optional][In] XlRange arg8,
-            [Optional][In] XlRange arg9,
-            [Optional][In] XlRange arg10,
-            [Optional][In] XlRange arg11,
-            [Optional][In] XlRange arg12,
-            [Optional][In] XlRange arg13,
-            [Optional][In] XlRange arg14,
-            [Optional][In] XlRange arg15,
-            [Optional][In] XlRange arg16,
-            [Optional][In] XlRange arg17,
-            [Optional][In] XlRange arg18,
-            [Optional][In] XlRange arg19,
-            [Optional][In] XlRange arg20,
-            [Optional][In] XlRange arg21,
-            [Optional][In] XlRange arg22,
-            [Optional][In] XlRange arg23,
-            [Optional][In] XlRange arg24,
-            [Optional][In] XlRange arg25,
-            [Optional][In] XlRange arg26,
-            [Optional][In] XlRange arg27,
-            [Optional][In] XlRange arg28,
-            [Optional][In] XlRange arg29,
-            [Optional][In] XlRange arg30
-        ) =>
-            collector.Mark(new XlRange(
-                raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw, arg29.raw, arg30.raw)));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2) => new(raw.Intersect(arg1.raw, arg2.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20, XlRange arg21) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20, XlRange arg21, XlRange arg22) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20, XlRange arg21, XlRange arg22, XlRange arg23) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20, XlRange arg21, XlRange arg22, XlRange arg23, XlRange arg24) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20, XlRange arg21, XlRange arg22, XlRange arg23, XlRange arg24, XlRange arg25) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20, XlRange arg21, XlRange arg22, XlRange arg23, XlRange arg24, XlRange arg25, XlRange arg26) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20, XlRange arg21, XlRange arg22, XlRange arg23, XlRange arg24, XlRange arg25, XlRange arg26, XlRange arg27) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20, XlRange arg21, XlRange arg22, XlRange arg23, XlRange arg24, XlRange arg25, XlRange arg26, XlRange arg27, XlRange arg28) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20, XlRange arg21, XlRange arg22, XlRange arg23, XlRange arg24, XlRange arg25, XlRange arg26, XlRange arg27, XlRange arg28, XlRange arg29) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw, arg29.raw));
-        //public XlRange Intersect(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20, XlRange arg21, XlRange arg22, XlRange arg23, XlRange arg24, XlRange arg25, XlRange arg26, XlRange arg27, XlRange arg28, XlRange arg29, XlRange arg30) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw, arg29.raw, arg30.raw));
+        //public readonly XlRange Intersect(
+        //    [In][MarshalAs(UnmanagedType.Interface)] MicrosoftRange arg1,
+        //    [In][MarshalAs(UnmanagedType.Interface)] MicrosoftRange arg2,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg3,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg4,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg5,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg6,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg7,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg8,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg9,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg10,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg11,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg12,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg13,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg14,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg15,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg16,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg17,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg18,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg19,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg20,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg21,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg22,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg23,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg24,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg25,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg26,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg27,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg28,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg29,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg30
+        //) =>
+        //    collector.Mark(new XlRange(
+        //        raw.Intersect(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27, arg28, arg29, arg30)));
+        //public readonly XlRange Intersect(
+        //    [In] XlRange arg1,
+        //    [In] XlRange arg2,
+        //    [Optional][In] XlRange arg3,
+        //    [Optional][In] XlRange arg4,
+        //    [Optional][In] XlRange arg5,
+        //    [Optional][In] XlRange arg6,
+        //    [Optional][In] XlRange arg7,
+        //    [Optional][In] XlRange arg8,
+        //    [Optional][In] XlRange arg9,
+        //    [Optional][In] XlRange arg10,
+        //    [Optional][In] XlRange arg11,
+        //    [Optional][In] XlRange arg12,
+        //    [Optional][In] XlRange arg13,
+        //    [Optional][In] XlRange arg14,
+        //    [Optional][In] XlRange arg15,
+        //    [Optional][In] XlRange arg16,
+        //    [Optional][In] XlRange arg17,
+        //    [Optional][In] XlRange arg18,
+        //    [Optional][In] XlRange arg19,
+        //    [Optional][In] XlRange arg20,
+        //    [Optional][In] XlRange arg21,
+        //    [Optional][In] XlRange arg22,
+        //    [Optional][In] XlRange arg23,
+        //    [Optional][In] XlRange arg24,
+        //    [Optional][In] XlRange arg25,
+        //    [Optional][In] XlRange arg26,
+        //    [Optional][In] XlRange arg27,
+        //    [Optional][In] XlRange arg28,
+        //    [Optional][In] XlRange arg29,
+        //    [Optional][In] XlRange arg30
+        //) =>
+        //    collector.Mark(new XlRange(
+        //        raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw, arg29.raw, arg30.raw)));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2) => collector.Mark(new XlRange(raw.Intersect(arg1.raw, arg2.raw)));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19, in XlRange arg20) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19, in XlRange arg20, in XlRange arg21) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19, in XlRange arg20, in XlRange arg21, in XlRange arg22) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19, in XlRange arg20, in XlRange arg21, in XlRange arg22, in XlRange arg23) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19, in XlRange arg20, in XlRange arg21, in XlRange arg22, in XlRange arg23, in XlRange arg24) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19, in XlRange arg20, in XlRange arg21, in XlRange arg22, in XlRange arg23, in XlRange arg24, in XlRange arg25) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19, in XlRange arg20, in XlRange arg21, in XlRange arg22, in XlRange arg23, in XlRange arg24, in XlRange arg25, in XlRange arg26) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19, in XlRange arg20, in XlRange arg21, in XlRange arg22, in XlRange arg23, in XlRange arg24, in XlRange arg25, in XlRange arg26, in XlRange arg27) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19, in XlRange arg20, in XlRange arg21, in XlRange arg22, in XlRange arg23, in XlRange arg24, in XlRange arg25, in XlRange arg26, in XlRange arg27, in XlRange arg28) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19, in XlRange arg20, in XlRange arg21, in XlRange arg22, in XlRange arg23, in XlRange arg24, in XlRange arg25, in XlRange arg26, in XlRange arg27, in XlRange arg28, in XlRange arg29) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw, arg29.raw));
+        public XlRange Intersect(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19, in XlRange arg20, in XlRange arg21, in XlRange arg22, in XlRange arg23, in XlRange arg24, in XlRange arg25, in XlRange arg26, in XlRange arg27, in XlRange arg28, in XlRange arg29, in XlRange arg30) => new(raw.Intersect(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw, arg29.raw, arg30.raw));
 
         // TODO: 
         /// <summary></summary>
         /// <param name="macro"></param>
         /// <returns></returns>
         /// <see href="https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.office.interop.excel._application.run?view=excel-pia" />
-        public readonly object Run(
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] string macro,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg1,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg2,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg3,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg4,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg5,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg6,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg7,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg8,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg9,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg10,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg11,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg12,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg13,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg14,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg15,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg16,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg17,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg18,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg19,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg20,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg21,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg22,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg23,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg24,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg25,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg26,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg27,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg28,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg29,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg30
-        ) =>
-            raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27, arg28, arg29, arg30);
-        //public object Run(string macro) => raw.Run(macro);
-        //public object Run(string macro, object arg1) => raw.Run(macro, arg1);
-        //public object Run(string macro, object arg1, object arg2) => raw.Run(macro, arg1, arg2);
-        //public object Run(string macro, object arg1, object arg2, object arg3) => raw.Run(macro, arg1, arg2, arg3);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4) => raw.Run(macro, arg1, arg2, arg3, arg4);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19, object arg20) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19, object arg20, object arg21) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19, object arg20, object arg21, object arg22) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19, object arg20, object arg21, object arg22, object arg23) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19, object arg20, object arg21, object arg22, object arg23, object arg24) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19, object arg20, object arg21, object arg22, object arg23, object arg24, object arg25) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19, object arg20, object arg21, object arg22, object arg23, object arg24, object arg25, object arg26) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19, object arg20, object arg21, object arg22, object arg23, object arg24, object arg25, object arg26, object arg27) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19, object arg20, object arg21, object arg22, object arg23, object arg24, object arg25, object arg26, object arg27, object arg28) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27, arg28);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19, object arg20, object arg21, object arg22, object arg23, object arg24, object arg25, object arg26, object arg27, object arg28, object arg29) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27, arg28, arg29);
-        //public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19, object arg20, object arg21, object arg22, object arg23, object arg24, object arg25, object arg26, object arg27, object arg28, object arg29, object arg30) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27, arg28, arg29, arg30);
+        //public readonly object Run(
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] string macro,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg1,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg2,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg3,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg4,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg5,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg6,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg7,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg8,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg9,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg10,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg11,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg12,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg13,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg14,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg15,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg16,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg17,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg18,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg19,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg20,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg21,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg22,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg23,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg24,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg25,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg26,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg27,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg28,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg29,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg30
+        //) =>
+        //    raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27, arg28, arg29, arg30);
+        public object Run(string macro) => raw.Run(macro);
+        public object Run(string macro, object arg1) => raw.Run(macro, arg1);
+        public object Run(string macro, object arg1, object arg2) => raw.Run(macro, arg1, arg2);
+        public object Run(string macro, object arg1, object arg2, object arg3) => raw.Run(macro, arg1, arg2, arg3);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4) => raw.Run(macro, arg1, arg2, arg3, arg4);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19, object arg20) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19, object arg20, object arg21) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19, object arg20, object arg21, object arg22) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19, object arg20, object arg21, object arg22, object arg23) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19, object arg20, object arg21, object arg22, object arg23, object arg24) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19, object arg20, object arg21, object arg22, object arg23, object arg24, object arg25) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19, object arg20, object arg21, object arg22, object arg23, object arg24, object arg25, object arg26) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19, object arg20, object arg21, object arg22, object arg23, object arg24, object arg25, object arg26, object arg27) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19, object arg20, object arg21, object arg22, object arg23, object arg24, object arg25, object arg26, object arg27, object arg28) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27, arg28);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19, object arg20, object arg21, object arg22, object arg23, object arg24, object arg25, object arg26, object arg27, object arg28, object arg29) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27, arg28, arg29);
+        public object Run(string macro, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19, object arg20, object arg21, object arg22, object arg23, object arg24, object arg25, object arg26, object arg27, object arg28, object arg29, object arg30) => raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27, arg28, arg29, arg30);
 
         /// <summary>アクティブなアプリケーションにキーストロークを送信する.</summary>
         /// <param name="keys">送信するキーの組み合わせ.</param>
         /// <param name="wait">マクロに制御を戻す前に, キーが処理されるのを待機させる場合は true を, キーが処理されるのを待機せずにマクロの実行をさせる場合は false を指定する. (default: false)</param>
         /// <see href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.excel._application.sendkeys?view=excel-pia" />
-        public readonly void SendKeys(
-            [In][MarshalAs(UnmanagedType.Struct)] string keys,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] bool wait
-        ) =>
-            raw.SendKeys(keys, wait);
+        public readonly void SendKeys(string keys, bool wait = false) => raw.SendKeys(keys, wait);
 
         // TODO: 
         /// <summary></summary>
@@ -618,103 +597,103 @@ namespace Fxcel.Core.Interop
         /// <param name="arg2"></param>
         /// <returns></returns>
         /// <see href="https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.office.interop.excel._application.union?view=excel-pia" />
-        public readonly XlRange Union(
-            [In][MarshalAs(UnmanagedType.Interface)] MicrosoftRange arg1,
-            [In][MarshalAs(UnmanagedType.Interface)] MicrosoftRange arg2,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg3,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg4,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg5,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg6,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg7,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg8,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg9,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg10,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg11,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg12,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg13,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg14,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg15,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg16,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg17,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg18,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg19,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg20,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg21,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg22,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg23,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg24,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg25,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg26,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg27,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg28,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg29,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg30
-        ) =>
-            collector.Mark(new XlRange(
-                raw.Union(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27, arg28, arg29, arg30)));
-        public readonly XlRange Union(
-            [In] XlRange arg1,
-            [In] XlRange arg2,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg3,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg4,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg5,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg6,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg7,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg8,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg9,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg10,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg11,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg12,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg13,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg14,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg15,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg16,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg17,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg18,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg19,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg20,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg21,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg22,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg23,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg24,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg25,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg26,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg27,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg28,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg29,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg30
-        ) =>
-            collector.Mark(new XlRange(
-                raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw, arg29.raw, arg30.raw)));
-        //public XlRange Union(XlRange arg1, XlRange arg2) => new(raw.Union(arg1.raw, arg2.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20, XlRange arg21) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20, XlRange arg21, XlRange arg22) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20, XlRange arg21, XlRange arg22, XlRange arg23) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20, XlRange arg21, XlRange arg22, XlRange arg23, XlRange arg24) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20, XlRange arg21, XlRange arg22, XlRange arg23, XlRange arg24, XlRange arg25) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20, XlRange arg21, XlRange arg22, XlRange arg23, XlRange arg24, XlRange arg25, XlRange arg26) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20, XlRange arg21, XlRange arg22, XlRange arg23, XlRange arg24, XlRange arg25, XlRange arg26, XlRange arg27) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20, XlRange arg21, XlRange arg22, XlRange arg23, XlRange arg24, XlRange arg25, XlRange arg26, XlRange arg27, XlRange arg28) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20, XlRange arg21, XlRange arg22, XlRange arg23, XlRange arg24, XlRange arg25, XlRange arg26, XlRange arg27, XlRange arg28, XlRange arg29) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw, arg29.raw));
-        //public XlRange Union(XlRange arg1, XlRange arg2, XlRange arg3, XlRange arg4, XlRange arg5, XlRange arg6, XlRange arg7, XlRange arg8, XlRange arg9, XlRange arg10, XlRange arg11, XlRange arg12, XlRange arg13, XlRange arg14, XlRange arg15, XlRange arg16, XlRange arg17, XlRange arg18, XlRange arg19, XlRange arg20, XlRange arg21, XlRange arg22, XlRange arg23, XlRange arg24, XlRange arg25, XlRange arg26, XlRange arg27, XlRange arg28, XlRange arg29, XlRange arg30) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw, arg29.raw, arg30.raw));
+        //public readonly XlRange Union(
+        //    [In][MarshalAs(UnmanagedType.Interface)] MicrosoftRange arg1,
+        //    [In][MarshalAs(UnmanagedType.Interface)] MicrosoftRange arg2,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg3,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg4,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg5,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg6,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg7,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg8,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg9,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg10,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg11,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg12,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg13,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg14,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg15,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg16,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg17,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg18,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg19,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg20,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg21,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg22,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg23,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg24,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg25,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg26,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg27,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg28,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg29,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg30
+        //) =>
+        //    collector.Mark(new XlRange(
+        //        raw.Union(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27, arg28, arg29, arg30)));
+        //public readonly XlRange Union(
+        //    [In] XlRange arg1,
+        //    [In] XlRange arg2,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg3,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg4,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg5,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg6,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg7,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg8,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg9,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg10,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg11,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg12,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg13,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg14,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg15,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg16,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg17,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg18,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg19,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg20,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg21,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg22,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg23,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg24,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg25,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg26,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg27,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg28,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg29,
+        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg30
+        //) =>
+        //    collector.Mark(new XlRange(
+        //        raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw, arg29.raw, arg30.raw)));
+        public XlRange Union(in XlRange arg1, in XlRange arg2) => new(raw.Union(arg1.raw, arg2.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19, in XlRange arg20) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19, in XlRange arg20, in XlRange arg21) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19, in XlRange arg20, in XlRange arg21, in XlRange arg22) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19, in XlRange arg20, in XlRange arg21, in XlRange arg22, in XlRange arg23) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19, in XlRange arg20, in XlRange arg21, in XlRange arg22, in XlRange arg23, in XlRange arg24) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19, in XlRange arg20, in XlRange arg21, in XlRange arg22, in XlRange arg23, in XlRange arg24, in XlRange arg25) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19, in XlRange arg20, in XlRange arg21, in XlRange arg22, in XlRange arg23, in XlRange arg24, in XlRange arg25, in XlRange arg26) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19, in XlRange arg20, in XlRange arg21, in XlRange arg22, in XlRange arg23, in XlRange arg24, in XlRange arg25, in XlRange arg26, in XlRange arg27) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19, in XlRange arg20, in XlRange arg21, in XlRange arg22, in XlRange arg23, in XlRange arg24, in XlRange arg25, in XlRange arg26, in XlRange arg27, in XlRange arg28) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19, in XlRange arg20, in XlRange arg21, in XlRange arg22, in XlRange arg23, in XlRange arg24, in XlRange arg25, in XlRange arg26, in XlRange arg27, in XlRange arg28, in XlRange arg29) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw, arg29.raw));
+        public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4, in XlRange arg5, in XlRange arg6, in XlRange arg7, in XlRange arg8, in XlRange arg9, in XlRange arg10, in XlRange arg11, in XlRange arg12, in XlRange arg13, in XlRange arg14, in XlRange arg15, in XlRange arg16, in XlRange arg17, in XlRange arg18, in XlRange arg19, in XlRange arg20, in XlRange arg21, in XlRange arg22, in XlRange arg23, in XlRange arg24, in XlRange arg25, in XlRange arg26, in XlRange arg27, in XlRange arg28, in XlRange arg29, in XlRange arg30) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw, arg29.raw, arg30.raw));
 
         /// <summary></summary>
         /// <param name="application"></param>
@@ -725,14 +704,8 @@ namespace Fxcel.Core.Interop
         /// <param name="chart"></param>
         /// <param name="name"></param>
         /// <see href="https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.office.interop.excel._application.addchartautoformat?view=excel-pia" />
-        public readonly void AddChartAutoFormat(
-            [In][MarshalAs(UnmanagedType.Struct)] object chart,
-            [In][MarshalAs(UnmanagedType.BStr)] string name,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] object description
-        ) =>
-            raw.AddChartAutoFormat(chart, name, description);
-        //public void AddChartAutoFormat(object chart, string name) => raw.AddChartAutoFormat(chart, name);
-        //public void AddChartAutoFormat(object chart, string name, object description) => raw.AddChartAutoFormat(chart, name, description);
+        public readonly void AddChartAutoFormat(object chart, string name) => raw.AddChartAutoFormat(chart, name);
+        public readonly void AddChartAutoFormat(object chart, string name, object description) => raw.AddChartAutoFormat(chart, name, description);
 
         ///// <summary>ユーザー設定リストに追加する</summary>
         ///// <param name="listArray">追加する文字列を配列で指定</param>
