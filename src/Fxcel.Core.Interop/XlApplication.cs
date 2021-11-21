@@ -519,40 +519,6 @@ namespace Fxcel.Core.Interop
         /// <param name="macro"></param>
         /// <returns></returns>
         /// <see href="https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.office.interop.excel._application.run?view=excel-pia" />
-        //public readonly object Run(
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] string macro,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg1,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg2,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg3,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg4,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg5,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg6,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg7,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg8,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg9,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg10,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg11,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg12,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg13,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg14,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg15,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg16,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg17,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg18,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg19,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg20,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg21,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg22,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg23,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg24,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg25,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg26,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg27,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg28,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg29,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] object arg30
-        //) =>
-        //    raw.Run(macro, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27, arg28, arg29, arg30);
         public object Run(string macro) => raw.Run(macro);
         public object Run(string macro, object arg1) => raw.Run(macro, arg1);
         public object Run(string macro, object arg1, object arg2) => raw.Run(macro, arg1, arg2);
@@ -597,74 +563,6 @@ namespace Fxcel.Core.Interop
         /// <param name="arg2"></param>
         /// <returns></returns>
         /// <see href="https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.office.interop.excel._application.union?view=excel-pia" />
-        //public readonly XlRange Union(
-        //    [In][MarshalAs(UnmanagedType.Interface)] MicrosoftRange arg1,
-        //    [In][MarshalAs(UnmanagedType.Interface)] MicrosoftRange arg2,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg3,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg4,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg5,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg6,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg7,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg8,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg9,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg10,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg11,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg12,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg13,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg14,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg15,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg16,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg17,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg18,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg19,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg20,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg21,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg22,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg23,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg24,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg25,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg26,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg27,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg28,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg29,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange arg30
-        //) =>
-        //    collector.Mark(new XlRange(
-        //        raw.Union(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20, arg21, arg22, arg23, arg24, arg25, arg26, arg27, arg28, arg29, arg30)));
-        //public readonly XlRange Union(
-        //    [In] XlRange arg1,
-        //    [In] XlRange arg2,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg3,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg4,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg5,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg6,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg7,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg8,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg9,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg10,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg11,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg12,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg13,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg14,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg15,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg16,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg17,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg18,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg19,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg20,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg21,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg22,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg23,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg24,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg25,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg26,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg27,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg28,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg29,
-        //    [Optional][In][MarshalAs(UnmanagedType.Struct)] XlRange arg30
-        //) =>
-        //    collector.Mark(new XlRange(
-        //        raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw, arg5.raw, arg6.raw, arg7.raw, arg8.raw, arg9.raw, arg10.raw, arg11.raw, arg12.raw, arg13.raw, arg14.raw, arg15.raw, arg16.raw, arg17.raw, arg18.raw, arg19.raw, arg20.raw, arg21.raw, arg22.raw, arg23.raw, arg24.raw, arg25.raw, arg26.raw, arg27.raw, arg28.raw, arg29.raw, arg30.raw)));
         public XlRange Union(in XlRange arg1, in XlRange arg2) => new(raw.Union(arg1.raw, arg2.raw));
         public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw));
         public XlRange Union(in XlRange arg1, in XlRange arg2, in XlRange arg3, in XlRange arg4) => new(raw.Union(arg1.raw, arg2.raw, arg3.raw, arg4.raw));
@@ -707,43 +605,24 @@ namespace Fxcel.Core.Interop
         public readonly void AddChartAutoFormat(object chart, string name) => raw.AddChartAutoFormat(chart, name);
         public readonly void AddChartAutoFormat(object chart, string name, object description) => raw.AddChartAutoFormat(chart, name, description);
 
-        ///// <summary>ユーザー設定リストに追加する</summary>
-        ///// <param name="listArray">追加する文字列を配列で指定</param>
-        ///// <see href="https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.office.interop.excel._application.addcustomlist?view=excel-pia" />
-        //public void AddCustomList(string[] listArray) => raw.AddCustomList(listArray);
-        ///// <summary>ユーザー設定リストに追加する</summary>
-        ///// <param name="listArray">追加する文字列を配列で指定</param>
-        ///// <param name="byRow">行単位の場合はtrue, 列単位の場合はfalseを指定</param>
-        ///// <see href="https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.office.interop.excel._application.addcustomlist?view=excel-pia" />
-        //public void AddCustomList(string[] listArray, bool byRow) => raw.AddCustomList(listArray, byRow);
-        ///// <summary>ユーザー設定リストに追加する</summary>
-        ///// <param name="listArray">追加する文字列をセル範囲で指定</param>
-        ///// <see href="https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.office.interop.excel._application.addcustomlist?view=excel-pia" />
-        //public void AddCustomList(XlRange listArray) => raw.AddCustomList(listArray.raw);
-        ///// <summary>ユーザー設定リストに追加する</summary>
-        ///// <param name="listArray">追加する文字列をセル範囲で指定</param>
-        ///// <param name="byRow">行単位の場合はtrue, 列単位の場合はfalseを指定</param>
-        ///// <see href="https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.office.interop.excel._application.addcustomlist?view=excel-pia" />
-        //public void AddCustomList(XlRange listArray, bool byRow) => raw.AddCustomList(listArray.raw, byRow);\
-
+        /// <summary>ユーザー設定リストに追加する</summary>
+        /// <param name="listArray">追加する文字列を配列で指定</param>
+        /// <see href="https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.office.interop.excel._application.addcustomlist?view=excel-pia" />
+        public void AddCustomList(string[] listArray) => raw.AddCustomList(listArray);
         /// <summary>ユーザー設定リストに追加する</summary>
         /// <param name="listArray">追加する文字列を配列で指定</param>
         /// <param name="byRow">行単位の場合はtrue, 列単位の場合はfalseを指定</param>
         /// <see href="https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.office.interop.excel._application.addcustomlist?view=excel-pia" />
-        public readonly void AddCustomList(
-            [In][MarshalAs(UnmanagedType.Struct)] string[] listArray,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] bool byRow
-        ) =>
-            raw.AddCustomList(listArray, byRow);
+        public void AddCustomList(string[] listArray, bool byRow) => raw.AddCustomList(listArray, byRow);
+        /// <summary>ユーザー設定リストに追加する</summary>
+        /// <param name="listArray">追加する文字列をセル範囲で指定</param>
+        /// <see href="https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.office.interop.excel._application.addcustomlist?view=excel-pia" />
+        public void AddCustomList(XlRange listArray) => raw.AddCustomList(listArray.raw);
         /// <summary>ユーザー設定リストに追加する</summary>
         /// <param name="listArray">追加する文字列をセル範囲で指定</param>
         /// <param name="byRow">行単位の場合はtrue, 列単位の場合はfalseを指定</param>
         /// <see href="https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.office.interop.excel._application.addcustomlist?view=excel-pia" />
-        public readonly void AddCustomList(
-            [In][MarshalAs(UnmanagedType.Struct)] MicrosoftRange listArray,
-            [Optional][In][MarshalAs(UnmanagedType.Struct)] bool byRow
-        ) =>
-            raw.AddCustomList(listArray, byRow);
+        public void AddCustomList(XlRange listArray, bool byRow) => raw.AddCustomList(listArray.raw, byRow);
 
         /// <summary></summary>
         /// <param name="centimeters"></param>
